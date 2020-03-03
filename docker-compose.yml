@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  web:
+    container_name: react_frontend
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - '/app/node_modules'
+    ports:
+      - "3000:3000"
+    links:
+      - api_server
+    environment:
+      - NODE_ENV=development
+
+  api_server:
+    container_name: rocket_api
+    build: ./api_server
+    ports: 
+      - "3001:3001"
+    volumes:
+      - ./api_server:/usr/src/app
+    links:
+      - db
+    # diesel infer_schema macro gives warnings with this flag.
+    # environment:
+    #   - CARGO_INCREMENTAL=1
+    command: bash -c "bash ./wait-for-it.sh db:5432 -q -- diesel setup && cargo watch -x run"
+
+  db:
+    image: "postgres:9"
+    ports: 
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+      POSTGRES_PASSWORD: supersecretpassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+
+# cargo will try to redownload packages @ docker-compose up so store them here.
+volumes:
+  pgdata: {}
