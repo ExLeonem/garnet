@@ -61,14 +61,16 @@ body {
 
 .leaflet-container {
   float: left;
-  width: 60vw;
+  width: 70vw;
   height: 100vh;
   padding: 0; }
 
 .interactive-elements {
   display: flex;
   float: left;
-  width: 40vw;
+  justify-content: center;
+  align-items: center;
+  width: 30vw;
   height: 100vh;
   padding: 0; }
 
@@ -77,6 +79,13 @@ body {
   height: 40px;
   border: 2px solid #8F97C0;
   background-color: none; }
+
+.leaflet-routing-container {
+  padding: 15px 15px; }
+  .leaflet-routing-container h3 {
+    margin-bottom: 15px; }
+  .leaflet-routing-container td {
+    padding: 7px 0px; }
 
 .button {
   display: flex;
@@ -89,7 +98,11 @@ body {
   text-align: center;
   font-size: 16px;
   border: 1px solid #402E46;
-  border-radius: 2%; }
+  border-radius: 2%;
+  font-family: 'Roboto', sans-serif; }
   .button:hover {
     color: white;
     background-color: #402E46; }
+
+.input {
+  font-family: 'Roboto', sans-serif; }

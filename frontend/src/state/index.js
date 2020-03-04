@@ -1,20 +1,11 @@
+/**
+ * @author Maksim Sandybekov
+ * @date 4.2.2020
+ * 
+ */
 
-import { state } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './reducers';
 
-const DEFAULT_STATE = {
-    collect: {
-        bin: [
-            {
-                lang: 0.0,
-                long: 0.0,
-                fillState: 0.77
-            }
-        ],
-        position: []
-    },
-    user: {
-        username: "Test User",
-        role: "Collector"
-    }
-}
 
+export default createStore(rootReducer);

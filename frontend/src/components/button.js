@@ -5,18 +5,39 @@
  */
 
 import React, { Component } from 'react'
+import { CheckMark } from './icons'
 
-class Button extends Component {
-    render() {
+/**
+ * Renders a ciruclar button with an icon inside
+ * 
+ * @param {*} param0 
+ */
+let ButtonCircle =({type, onClick}) => {
 
-        let className = "button" + (this.props.className? " " + this.props.className : "");
-
-        return (
-            <div className={className} onClick={this.props.onClick}>
-                {this.props.children}
-            </div>
-        )
-    }
+    return (
+        <div className="button-circular">
+            <CheckMark/>
+        </div>
+    )
 }
 
-export default Button;
+
+/**
+ * Renders a regular text button.
+ * 
+ * @param {string} className - additional class names to append
+ * @param {callback} onClick - callback for the onClick method
+ * @param {string} children - Button text to display 
+ */
+let ButtonText = ({className, onClick, children}) => {
+
+    let style = "button" + (className? " " + className : "");
+
+    return (
+        <div className={style} onClick={onClick}>
+            {children}
+        </div>
+    )
+}
+
+export default ButtonText;

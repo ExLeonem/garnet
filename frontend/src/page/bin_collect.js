@@ -12,21 +12,8 @@ import MapView from '../components/map'
 
 export class BinCollectPage extends Component {
 
+
     render() {
-
-        // Update & track current position
-        if ("geolocation" in navigator) {
-        
-            navigator.geolocation.getCurrentPosition((position) => {
-                let newViewport = {
-                    center: [position.coords.latitude, position.coords.longitude],
-                    zoom: 15
-                }
-
-                // Set Viewport on current position
-                this.setState({viewport: newViewport});
-            });
-        }
 
         // Render component
         return (
