@@ -1,5 +1,33 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+
+# Inhaltsverzeichnis
+
+1. [Setup and basic commands](#Setup-and-basic-commands)
+2. [Project structure](#Project-structure)
+3. [Available Scripts](#Available-Scripts)
+
+
+
+
+## Setup and basic commands
+
+To initialize the projekt locally switch into the frontend directory and execute `npm install`
+
+
+To run the frontend without docker attached to it, make sure that the web container is down. Then execute: `npm start`
+
+
+If you want to extend the react-project with other npm packages, install them locally via `npm i <package>`. After spinning up the web-container you will recognize that the module(s) can't be found. Run `[sudo] docker exec <web-container id> npm install` to install the packages inside the docker container. **Look for better solution, because re-install needed everytime container is shutdown and spun up again**
+
+
+## Project structure
+
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
