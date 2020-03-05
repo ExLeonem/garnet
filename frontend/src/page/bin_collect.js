@@ -7,11 +7,12 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
+import { Switch, Route } from 'react-router-dom';
 
 // import Button from '../components/button';
 import MapView from '../components/map'
 import DistrictSelection from '../components/district';
-
+import BinView from '../components/bin';
 
 /**
  * Render page for the collection routine.
@@ -28,9 +29,6 @@ export class BinCollectPage extends Component {
 
 
     render() {
-
-
-        // Render component
         return (
             <React.Fragment>
                 <div className={"map" + (this.props.route? " active" : "")}>
@@ -39,8 +37,16 @@ export class BinCollectPage extends Component {
                 </div>
 
                 <div className="interactive-elements">
-                    <DistrictSelection/>
-                   
+
+                     <Switch>
+                         <Route path="/collect/districts">
+                             <DistrictSelection/>
+                         </Route>
+                         <Route path="/collect/route">
+                            <BinView/>
+                         </Route>
+                     </Switch>
+
                 </div>
             </React.Fragment>
         )

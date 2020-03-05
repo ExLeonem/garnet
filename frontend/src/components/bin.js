@@ -1,4 +1,13 @@
+/**
+ * @author Maksim Sandybekov
+ * @date 5.3.2020
+ * 
+ */
+
 import React, { Component } from 'react'
+
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 
 /**
@@ -42,4 +51,46 @@ let BinList = ({bins}) => {
 }
 
 
-export default Bin
+/**
+ * Renders the bins and thei'r filling state.
+ * 
+ */
+export class BinView extends Component {
+
+    renderRedirect = (routeLocations) => {
+        return routeLocations? null : <Redirect to="/collect/districts"/>;
+    }
+
+
+    render() {
+        return (
+            <React.Fragment>
+                {this.renderRedirect(this.props.route)}
+
+                <div className="header">
+                    
+                </div>
+
+            </React.Fragment>
+        )
+    }
+}
+
+
+const mapStateToProps = state => {
+    return {
+        route: state.collect.route
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(BinView);
+
+
+

@@ -21,7 +21,7 @@ function App() {
         
 
         <Switch>
-          <Route path="/collect">
+          <Route path="/collect/:directive">
             <BinCollectPage/>
           </Route>
           <Route path="/">

@@ -6,9 +6,11 @@
 
 import React, { Component } from 'react'
 
+import { Redirect } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { LOAD_DISTRICTS } from '../state/types/env';
-import { addDistrict, removeDistrict } from '../state/actions/collect';
+import { addDistrict, removeDistrict, startRouting } from '../state/actions/collect';
 
 import { ButtonText, ButtonCircle } from './button';
 import { Add } from './icons';
@@ -82,6 +84,13 @@ export class DistrictSelection extends Component {
         return selectables;
     }
 
+
+    // Redirects to the routing view
+    renderRedirect = routeLocations => {
+        
+        return routeLocations? <Redirect to="/collect/route"/> : null;
+    }
+
     
     render() {
 
@@ -92,13 +101,16 @@ export class DistrictSelection extends Component {
             this.props.loadDistricts();
         }
 
+
         return (
             <React.Fragment>
+                {this.renderRedirect(this.props.route)}
+
                 <div className="header">
                     <p>Wähle ein oder mehrere Bezirke.
                         <i className={"selected-districts" + (this.state.countSelected > 0? " active" : "")}>{this.state.countSelected}</i>
                     </p>
-                    <ButtonCircle onClick={() => console.log("route")}/>
+                    <ButtonCircle onClick={this.props.startRouting}/>
                 </div>
 
                 <ul className="districts">
@@ -111,7 +123,8 @@ export class DistrictSelection extends Component {
 
 const mapStateToProps = state => {
     return {
-        districts: state.env.districts
+        districts: state.env.districts,
+        route: state.collect.route
     }
 }
 
@@ -120,7 +133,8 @@ const mapDispatchToProps = dispatch => {
     return {
         loadDistricts: () => dispatch({type: LOAD_DISTRICTS}),
         addDistrict: id => dispatch(addDistrict(id)),
-        removeDistrict: id => dispatch(removeDistrict(id))
+        removeDistrict: id => dispatch(removeDistrict(id)),
+        startRouting: () => dispatch(startRouting())
     }
 }
 

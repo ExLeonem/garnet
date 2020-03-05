@@ -5,10 +5,12 @@
 
 import { 
     ADD_DISTRICT, 
+    REMOVE_DISTRICT,
+    LOAD_BINS,
     REMOVE_BIN, 
-    REMOVE_DISTRICT
+    START_ROUTING,
+    END_ROUTING
 } from '../types/collect';
-
 
 
 let initialState = {
@@ -50,8 +52,23 @@ export default function(state = initialState, action) {
             break;
         }
 
+        case LOAD_BINS: {
+
+            break;
+        }
+
         case REMOVE_BIN: {
 
+            break;
+        }
+
+        case START_ROUTING: {
+            newState = {...state, route: true};
+            break;
+        }
+
+        case END_ROUTING: {
+            newState = initialState;
             break;
         }
 

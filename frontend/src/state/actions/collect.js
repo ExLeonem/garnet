@@ -7,7 +7,10 @@
 import {
     ADD_DISTRICT,
     REMOVE_DISTRICT,
-    REMOVE_BIN
+    REMOVE_BIN,
+
+    START_ROUTING,
+    END_ROUTING
 } from '../types/collect';
 
 
@@ -34,9 +37,24 @@ const removeBin = (binID) => {
     }
 }
 
+const startRouting = () => {
+    return {
+        type: START_ROUTING,
+        payload: null
+    };
+}
+
+const endRouting = () => {
+    return {
+        type: END_ROUTING,
+        payload: null
+    };
+}
 
 export {
     addDistrict,
     removeDistrict,
-    removeBin
+    removeBin,
+    startRouting,
+    endRouting
 }
