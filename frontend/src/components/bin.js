@@ -57,7 +57,7 @@ let BinList = ({bins}) => {
  */
 export class BinView extends Component {
 
-    renderRedirect = (routeLocations) => {
+    renderRedirect(routeLocations) {
         return routeLocations? null : <Redirect to="/collect/districts"/>;
     }
 
@@ -68,7 +68,7 @@ export class BinView extends Component {
                 {this.renderRedirect(this.props.route)}
 
                 <div className="header">
-                    
+
                 </div>
 
             </React.Fragment>

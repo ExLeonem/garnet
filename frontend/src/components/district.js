@@ -45,7 +45,7 @@ export class DistrictSelection extends Component {
      * 
      * @param {object[]} districts - objects of districts [{id: number, name: string}]
      */
-    renderDistricts = districts => {
+    renderDistricts(districts) {
 
         let selectables = [];
         districts.forEach(dist => {
@@ -86,7 +86,7 @@ export class DistrictSelection extends Component {
 
 
     // Redirects to the routing view
-    renderRedirect = routeLocations => {
+    renderRedirect(routeLocations) {
         
         return routeLocations? <Redirect to="/collect/route"/> : null;
     }

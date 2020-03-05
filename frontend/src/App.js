@@ -21,9 +21,11 @@ function App() {
         
 
         <Switch>
+
           <Route path="/collect/:directive">
             <BinCollectPage/>
           </Route>
+
           <Route path="/">
             <StartPage/>
           </Route>
