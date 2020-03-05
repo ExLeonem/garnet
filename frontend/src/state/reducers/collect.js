@@ -40,7 +40,6 @@ export default function(state = initialState, action) {
                 
                 currentDistricts.push(action.payload);
                 newState = {...state, district: currentDistricts};
-                
                 setItem("selectedDistricts", currentDistricts);
             }
 
@@ -51,13 +50,11 @@ export default function(state = initialState, action) {
         case REMOVE_DISTRICT: {
 
             let currentDistricts = state.districts;
-
             if (currentDistricts.includes(action.payload)) {
 
-                currentDistricts.filter((districtID) => districtID !== action.payload);
-                newState = {...state, districts: currentDistricts};
-
-                setItem("selectedDistricts", currentDistricts);
+                let updatedDistricts = currentDistricts.filter((districtID) => districtID !== action.payload);
+                newState = {...state, districts: updatedDistricts};
+                setItem("selectedDistricts", updatedDistricts);
             }
 
             break;
