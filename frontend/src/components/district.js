@@ -30,11 +30,17 @@ export class DistrictSelection extends Component {
         // Eventually better in component will mount
         let selectedDistricts = {};
         props.districts.forEach((dist) => {
-            selectedDistricts[dist.id] = false;
+
+            let valueToSet = false;
+            if (this.props.selectedDistricts.includes(dist.id)) {
+                valueToSet = true
+            } 
+
+            selectedDistricts[dist.id] = valueToSet;
         });
 
         this.state = {
-            countSelected: 0,
+            countSelected: this.props.selectedDistricts.length,
             selectedIds: selectedDistricts
         };
     }
@@ -45,7 +51,7 @@ export class DistrictSelection extends Component {
      * 
      * @param {object[]} districts - objects of districts [{id: number, name: string}]
      */
-    renderDistricts(districts) {
+    renderDistricts(districts, selectedDistricts) {
 
         let selectables = [];
         districts.forEach(dist => {
@@ -57,10 +63,10 @@ export class DistrictSelection extends Component {
                 let count = this.state.countSelected;
                 if (updatedState[id]) {
                     count--;
-                    this.props.removeDistrict(id);
+                    this.props.removeDistrict(dist.id);
                 } else {
                     count++;
-                    this.props.addDistrict(id);
+                    this.props.addDistrict(dist.id);
                 }
                 this.setState({countSelected: count});
                 
@@ -101,7 +107,6 @@ export class DistrictSelection extends Component {
             this.props.loadDistricts();
         }
 
-
         return (
             <React.Fragment>
                 {this.renderRedirect(this.props.route)}
@@ -114,7 +119,7 @@ export class DistrictSelection extends Component {
                 </div>
 
                 <ul className="districts">
-                    {this.renderDistricts(districts)}
+                    {this.renderDistricts(districts, this.props.selectedDistricts)}
                 </ul>
             </React.Fragment>
         )
@@ -124,6 +129,7 @@ export class DistrictSelection extends Component {
 const mapStateToProps = state => {
     return {
         districts: state.env.districts,
+        selectedDistricts: state.collect.districts,
         route: state.collect.route
     }
 }

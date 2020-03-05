@@ -9,6 +9,9 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { ButtonText } from '../components/button';
+import { endRouting } from '../state/actions/collect';
+
 
 /**
  * Renders the state of the bin to collect.
@@ -71,6 +74,8 @@ export class BinView extends Component {
 
                 </div>
 
+                <ButtonText onClick={() => this.props.endRouting()}>Tour Beenden</ButtonText>
+
             </React.Fragment>
         )
     }
@@ -85,7 +90,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        endRouting: () => dispatch(endRouting())
     };
 }
 
