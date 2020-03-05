@@ -10,7 +10,8 @@ import { CheckMark } from './icons'
 /**
  * Renders a ciruclar button with an icon inside
  * 
- * @param {*} param0 
+ * @param {string} type - Which icon to use {check, close, ...} look into ./icons.js
+ * @param {callback} onClick - Callback for the onClick even
  */
 let ButtonCircle =({type, onClick}) => {
 
@@ -41,3 +42,7 @@ let ButtonText = ({className, onClick, children}) => {
 }
 
 export default ButtonText;
+export {
+    ButtonText,
+    ButtonCircle
+}

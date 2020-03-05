@@ -13,7 +13,7 @@ import {
 
 let initialState = {
     districts: [], // selected districts to use for collection
-    bin: [], // array of {id: id, position: [lat, long], fillState: fillState}
+    bins: [], // array of {id: id, position: [lat, long], fillState: fillState}
     position: [] // current position
 }
 

@@ -1,3 +1,9 @@
+/**
+ * @author Maksim Sandybeikov
+ * @date 5.3.2020
+ */
+
+
 import React, { Component } from 'react'
 
 

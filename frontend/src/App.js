@@ -22,11 +22,11 @@ function App() {
         
 
         <Switch>
-          <Route path="/">
-            <StartPage/>
-          </Route>
           <Route path="/collect">
             <BinCollectPage/>
+          </Route>
+          <Route path="/">
+            <StartPage/>
           </Route>
         </Switch>
 

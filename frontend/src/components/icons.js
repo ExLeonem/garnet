@@ -4,6 +4,8 @@
  * 
  */
 
+import React from 'react';
+
 const CheckMark = () => {
     return (
         <svg width="15" height="11" viewBox="0 0 15 11" fill="none" xmlns="http://www.w3.org/2000/svg">

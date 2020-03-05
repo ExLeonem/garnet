@@ -11,12 +11,14 @@ import {
 } from '../types/collect';
 
 
+// Add district for selection its bins 
 const addDistrict = (districtID) => {
     return {
         type: ADD_DISTRICT,
         payload: districtID
     }
-} 
+}
+
 
 const removeDistrict = (districtID) => {
     return {
