@@ -11,6 +11,7 @@ services:
       - "3000:3000"
     links:
       - api_server
+      - routing
     environment:
       - NODE_ENV=development
 
@@ -27,6 +28,10 @@ services:
     # environment:
     #   - CARGO_INCREMENTAL=1
     command: bash -c "bash ./wait-for-it.sh db:5432 -q -- diesel setup && cargo watch -x run"
+
+  # routing:
+  #   image: graphhopper/graphhopper:stable
+
 
   db:
     image: "postgres:9"
