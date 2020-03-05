@@ -1,3 +1,19 @@
+
+
+# Garbage Netowrk (Garnet)
+
+## Inhaltsverzeichnis
+
+1. [Architecture](#Architecture)
+2. [Frontend](./frontend/README.md)
+3. [API](./api_server/README.md)
+
+
+
+
+
+
+
 # Rust Web Starter
 Pre-configured starter template for web apps using React ([create-react-app w/ Typescript](https://github.com/Microsoft/TypeScript-React-Starter)) on the frontend and Rust ([Rocket](https://rocket.rs), [Diesel](http://diesel.rs), & [PostgreSQL](https://www.postgresql.org/)) on the backend.
 
