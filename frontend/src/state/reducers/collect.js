@@ -14,7 +14,8 @@ import {
 let initialState = {
     districts: [], // selected districts to use for collection
     bins: [], // array of {id: id, position: [lat, long], fillState: fillState}
-    position: [] // current position
+    position: [], // current position
+    route: false // wether or not to start routing
 }
 
 
@@ -42,7 +43,7 @@ export default function(state = initialState, action) {
             let currentDistricts = state.districts;
             if (action.payload in currentDistricts) {
 
-                currentDistricts.filter((districtID) => districtID != action.payload);
+                currentDistricts.filter((districtID) => districtID !== action.payload);
                 newState = {...state, districts: currentDistricts};
             }
 
@@ -51,7 +52,11 @@ export default function(state = initialState, action) {
 
         case REMOVE_BIN: {
 
+            break;
         }
+
+        default:
+            return state;
     }
 
     return newState;

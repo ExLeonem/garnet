@@ -63,22 +63,113 @@ body {
   float: left;
   width: 70vw;
   height: 100vh;
-  padding: 0; }
+  padding: 0;
+  z-index: 1; }
 
-.interactive-elements {
-  display: flex;
+.map {
   float: left;
-  justify-content: center;
-  align-items: center;
-  width: 30vw;
+  width: 70vw;
   height: 100vh;
   padding: 0; }
+  .map:not(.active) .overlay {
+    position: absolute;
+    content: "";
+    width: 70vw;
+    height: 100vh;
+    background-color: #8F97C0;
+    opacity: 0.6;
+    z-index: 2; }
+  .map:not(.active) .leaflet-tile {
+    background-color: black;
+    filter: blur(4px); }
 
-.circle {
+.interactive-elements {
+  position: relative;
+  display: flex;
+  float: left;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 30vw;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 10px;
+  padding-top: 50px;
+  overflow-y: auto;
+  overflow-x: hidden; }
+  .interactive-elements .header {
+    top: 0;
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 20%;
+    padding-right: 5%;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+    background: white;
+    opacity: none;
+    z-index: 2; }
+    .interactive-elements .header p {
+      position: relative;
+      user-select: none; }
+    .interactive-elements .header .selected-districts {
+      visibility: hidden;
+      font-size: 12px;
+      transition: background-color .2s; }
+      .interactive-elements .header .selected-districts.active {
+        position: absolute;
+        visibility: visible;
+        top: -20px;
+        background-color: #402E46;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 50px; }
+
+.districts li {
+  margin: 20px 0px; }
+
+.districts .button.active {
+  color: white;
+  background-color: #8F97C0; }
+
+.districts .button {
+  border: none; }
+  .districts .button i {
+    position: absolute;
+    left: 20px; }
+  .districts .button:not(.active):not(:hover) {
+    color: #999999; }
+  .districts .button .add svg path {
+    transform: rotate(0deg);
+    transform-origin: 50% 50%;
+    transition: transform 0.5s; }
+  .districts .button.active .add svg path {
+    fill: white;
+    transform: rotate(45deg);
+    transform-origin: 50% 50%; }
+  .districts .button:hover:not(.active) {
+    background-color: white;
+    color: #666666; }
+
+.button-circular {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  content: "a";
   width: 40px;
   height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border: 2px solid #8F97C0;
-  background-color: none; }
+  border-radius: 100%;
+  background-color: #8F97C0;
+  transition: background-color .2s, border-color .2s; }
+  .button-circular:hover {
+    border-color: #a6accd;
+    background-color: #a6accd; }
 
 .leaflet-routing-container {
   padding: 15px 15px; }
@@ -88,6 +179,7 @@ body {
     padding: 7px 0px; }
 
 .button {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,12 +189,13 @@ body {
   cursor: pointer;
   text-align: center;
   font-size: 16px;
-  border: 1px solid #402E46;
+  border: 1px solid #8F97C0;
   border-radius: 2%;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Roboto', sans-serif;
+  user-select: none; }
   .button:hover {
     color: white;
-    background-color: #402E46; }
+    background-color: #8F97C0; }
 
 .input {
   font-family: 'Roboto', sans-serif; }

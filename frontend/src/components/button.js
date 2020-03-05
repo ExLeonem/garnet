@@ -4,8 +4,8 @@
  * 
  */
 
-import React, { Component } from 'react'
-import { CheckMark } from './icons'
+import React from 'react'
+import { CheckMark} from './icons'
 
 /**
  * Renders a ciruclar button with an icon inside
@@ -16,8 +16,29 @@ import { CheckMark } from './icons'
 let ButtonCircle =({type, onClick}) => {
 
     return (
-        <div className="button-circular">
+        <div className="button-circular" onClick={() => onClick()}>
             <CheckMark/>
+        </div>
+    )
+}
+
+
+/**
+ * Renders a mixed button, displaying text and a button.
+ * 
+ * @param {string} className - append to the already existing classes.
+ * @param {callback} onClick - callback function for the onClick event
+ * @param {string} children -  Text displayed by the button
+ */
+let ButtonMixed = ({className, onClick, children, iconName}) => {
+
+    let style = "button" + (className? " " + className : "");
+    let icon = "";
+
+    return (
+        <div className={style} onClick={onClick}>
+            {children}
+            <i className="icon">{icon}</i>
         </div>
     )
 }
@@ -35,7 +56,7 @@ let ButtonText = ({className, onClick, children}) => {
     let style = "button" + (className? " " + className : "");
 
     return (
-        <div className={style} onClick={onClick}>
+        <div className={style} onClick={() => onClick()}>
             {children}
         </div>
     )
@@ -44,5 +65,6 @@ let ButtonText = ({className, onClick, children}) => {
 export default ButtonText;
 export {
     ButtonText,
-    ButtonCircle
+    ButtonCircle,
+    ButtonMixed
 }

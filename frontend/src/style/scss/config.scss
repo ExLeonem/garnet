@@ -10,3 +10,13 @@ $ceil: #8F97C0;
 $pale_cornflower_blue: #ACCEF7;
 $alice_blue: #EEF5FD;
 $cadmium_red: #E40521;
+
+
+
+// Shortcut for media queries (max-width, max-height)
+@mixin screen($max_width, $max_height) {
+
+    @media only screen and (max-width: $max_width) {
+        @content
+    }
+}

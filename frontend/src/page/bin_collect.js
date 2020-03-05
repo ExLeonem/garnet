@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
 
-import Button from '../components/button';
+// import Button from '../components/button';
 import MapView from '../components/map'
 import DistrictSelection from '../components/district';
 
@@ -29,11 +29,14 @@ export class BinCollectPage extends Component {
 
     render() {
 
+
         // Render component
         return (
             <React.Fragment>
-                
-                <MapView/>
+                <div className={"map" + (this.props.route? " active" : "")}>
+                    <div className="overlay"/>
+                    <MapView/>
+                </div>
 
                 <div className="interactive-elements">
                     <DistrictSelection/>
@@ -50,6 +53,7 @@ const mapStateToProps = state => {
         districts: state.collect.districts,
         bins: state.collect.bins,
         position: state.collect.position,
+        route: state.collect.route
     }
 }
 

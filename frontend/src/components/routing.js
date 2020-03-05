@@ -3,7 +3,7 @@
  * @date 4.3.2020
  */
 
-import React, { Component } from 'react'
+// import React, { Component } from 'react'
 import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
