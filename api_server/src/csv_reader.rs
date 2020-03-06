@@ -1,12 +1,15 @@
 // Inspired by https://docs.rs/csv/1.1.1/csv/tutorial/index.html#writing-csv
 use std::error::Error;
+use std::path::Path;
 use csv::StringRecord;
 use crate::models::{NewTrashcan, NewTrashType};
 
+
 pub fn run() -> Result<(Vec<NewTrashType>, Vec<NewTrashcan>), Box<dyn Error>> {
-        let mut rdr = csv::ReaderBuilder::new()
-        .delimiter(b';')
-        .from_path("C:/Users/Valentin/GARNET/garnet-backend/csv/Öffentlichen_Mülltonnen2.csv")?;
+
+    let mut rdr = csv::ReaderBuilder::new()
+    .delimiter(b';')
+    .from_path("./csv/trash_bins_kn.csv")?;
 
     let mut trashcans: Vec<NewTrashcan> = vec![];
     let mut trash_types: Vec<NewTrashType> = vec![];
