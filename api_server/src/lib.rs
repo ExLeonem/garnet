@@ -8,6 +8,7 @@ pub mod models;
 pub mod csv_reader;
 pub mod schema;
 pub mod db;
+pub mod tsp;
 
 // Alle db zugriffe ausgelagert in db.rs
 // Hier nur API Aufruf als Einstiegspunkt.

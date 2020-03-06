@@ -21,8 +21,3 @@ darwin-rs = "0.4"
 time = "0.1"
 rand = "0.3"
 simplelog = "0.4"
-
-[dependencies.rocket_contrib]
-version = "*"
-default-features = false
-features = ["json", "diesel_postgres_pool"]

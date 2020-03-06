@@ -1,10 +1,6 @@
 use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
-use std::convert::TryFrom;
-use fast_paths::InputGraph;
-use fast_paths::NodeId;
-use fast_paths::ShortestPath;
 use super::schema;
 use crate::models::*;
 
@@ -64,46 +60,12 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
      result.pop()
  }
 
- fn select_edge_weight(id_1: i32, id_2: i32) -> usize {
-     //todo add schema, filter for ids.
-    // use schema::trashcan::dsl::*;
-    // let connection = establish_connection();
-    // let mut result = edges.filter(trashcan_id_1.eq(id_1)).filter(trashcan_id_2.eq(id_2)).load::<Trashcan>(&connection).expect("Error loading Trashcan.");
-    // result.pop()
-    30 as usize
- }
-
- fn compute_input_graph(trashcans: Vec<Trashcan>) -> InputGraph {
-    let mut input_graph = InputGraph::new();
-    let c = trashcans.len();
-    //println!("c set to {}", c);
-    let cans = &trashcans;
-    for trashcan in &trashcans {
-
-        let id_1 = trashcan.id;
-        //usize Cast needed for input_graph
-        let id_1_us = id_1 as usize;
-        //println!("id_1_us: {}", id_1);
-        for t in 0..c {
-            let id_2 = cans[t].id;
-            let id_2_us = id_2 as usize;
-            //println!("id_2_us: {}", id_2_us);
-            if !id_1.eq(&id_2) {
-                println!("adding edge: ids: {},{} ", id_1_us, id_2_us);
-               input_graph.add_edge(id_1_us, id_2_us, select_edge_weight(id_1, id_2));
-            }
-        }
-    }
-    input_graph
- }
-
-pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<NodeId>{
+pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan>{
     use schema::trashcan::dsl::*;
     let connection = establish_connection();
     let mut result: Vec<Trashcan> = vec![];
 
     for d in districts {
-        //TODO: Filter Trashcans for fillweight > Treshhold x
         let mut filled_trashcans = 
         trashcan.filter(district.eq(d))
         .filter(fill_weight.gt(Some(100.0)))
@@ -113,21 +75,7 @@ pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<NodeId
 
         result.append(&mut filled_trashcans);
     }
-
-    //TODO: Compute Optimal Path for Trashcans with Trashcan-Table
-    let mut graph = compute_input_graph(result);
-    graph.freeze();
-    println!("edges: {:?}", graph.get_edges());
-    let fast_graph = fast_paths::prepare(&graph);
-    let shortest_path = fast_paths::calc_path(&fast_graph, 1, 3);
-
-    println!("path: {:?}", shortest_path);
-
-    let nodes: Vec<NodeId> = match shortest_path {
-        Some(p) => p.get_nodes().to_vec(),
-        None => {vec![]}
-    };
-    nodes
+    result
 }
 
 pub fn insert_user(new_user: NewUser) -> User {

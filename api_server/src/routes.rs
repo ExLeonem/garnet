@@ -4,7 +4,25 @@ use rocket_contrib::json::Json;
 use serde::{Deserialize};
 use rocket::response::content::Html;
 use super::db;
-use super::models::{Trashcan, NewTrashcan};
+use super::models::{NewTrashcan};
+use super::tsp;
+
+#[derive(Deserialize)]
+pub struct Input {
+    id: i32,
+    fill_weight: f64
+}
+
+#[derive(Deserialize)]
+pub struct DistrictsInput {
+    districts: Vec<i32>
+}
+
+#[derive(Deserialize)]
+pub struct District {
+    id: i32,
+    district: i32
+}
 
 #[get("/")]
 pub fn index() -> Html<&'static str> {
@@ -40,25 +58,17 @@ pub fn get_all_districts() -> JsonValue {
     disctricts_json
 } 
 
-#[derive(Deserialize)]
-pub struct Input {
-    id: i32,
-    fill_weight: f64
-}
-
-#[derive(Deserialize)]
-pub struct District {
-    id: i32,
-    district: i32
-}
-
-//TODO: List of District Ints as Parameter
-#[get("/optimalPath", format="json")]
-pub fn get_optimal_path() -> JsonValue {
-    let d = vec![1, 2];
-    let node_ids = db::select_filled_trashcans_from_districts(d);
-    println!("nodes: {:?}", node_ids);
-    let trashcans_json = json!(node_ids);
+#[get("/optimalPath", data="<d_input>", format="json")]
+pub fn get_optimal_path(d_input: Json<DistrictsInput>) -> JsonValue {
+    let mut vec = Vec::new();
+    for i in 0..d_input.districts.len() {
+        vec.push(d_input.districts[i])
+    }
+    let trashcans = db::select_filled_trashcans_from_districts(vec);
+    println!("Computing TSP with trashcans: {:?}", trashcans);
+    let result_coordinates = tsp::compute_tsp(trashcans);
+    println!("result -> {:?}", result_coordinates);
+    let trashcans_json = json!(result_coordinates);
     trashcans_json
 }
 
@@ -79,8 +89,7 @@ pub fn add_trashcan(trashcan: Json<NewTrashcan>) -> () {
  pub fn fill_trashcan(input: Json<Input>) -> () {
     println!("fill can: {:?} with value: {:?}", input.id, input.fill_weight);
     db::update_trashcan_fill_weight(input.id, input.fill_weight);
-  }
-
+}
 
 #[post("/updateTrashcan", data = "<district_input>", format="json")]
 pub fn update_trashcan(district_input: Json<District>) -> () {
