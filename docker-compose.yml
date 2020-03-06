@@ -27,7 +27,7 @@ services:
     # diesel infer_schema macro gives warnings with this flag.
     # environment:
     #   - CARGO_INCREMENTAL=1
-    command: bash -c "bash ./wait-for-it.sh db:5432 -q -- diesel setup && cargo watch -x run"
+    command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x run"
 
   # Add for routing
   # routing:
