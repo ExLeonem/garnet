@@ -24,14 +24,6 @@ table! {
     }
 }
 
-// table! {
-//     edges (id) {
-//         trashcan_id_1 -> Integer,
-//         trashcan_id_2 -> Integer,
-//         distance -> Double
-//     }
-// }
-
 table! {
     user (id) {
         id -> Integer,

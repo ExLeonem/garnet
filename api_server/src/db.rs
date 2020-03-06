@@ -12,7 +12,8 @@ pub fn establish_connection() -> MysqlConnection {
     let database_url = env::var("DATABASE_URL")
     .expect("DATABASE_URL must be set.");
     // Meine SQL-DB URL hart-codiert. URL in Z.17 anpassen.
-    let _database_url = "mysql://localhost:3306/garnet_db";
+    // let _database_url = "mysql://localhost:3306/garnet_db";
+    let _database_url = "mysql://garnet:garnet@db/garnet_db";
 
     MysqlConnection::establish(&_database_url)
         .expect(&format!("Error connecting to {}", _database_url))
