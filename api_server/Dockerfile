@@ -1,8 +1,9 @@
 FROM rustlang/rust:nightly
 
-# RUN apt-get update && apt-get install -y curl default-libmysqlclient-dev build-essential
+# Already installed
+# RUN apt-get update && apt-get install default-libmysqlclient-dev
 
-RUN cargo install diesel_cli --no-default-features --features postgres
+RUN cargo install diesel_cli --no-default-features --features mysql
 
 RUN cargo install cargo-watch
 

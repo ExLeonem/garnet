@@ -2,5 +2,8 @@
 address = "0.0.0.0"
 port = 3001
 
+[print_schema]
+file = "src/schema.rs"
+
 [global.databases]
-rustydb = { url = "postgres://postgres:supersecretpassword@db/rustydb" }
+rustydb = { url = "mysql://mysql:garnet@db/garnet_db" }
