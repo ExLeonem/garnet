@@ -17,10 +17,10 @@ Mit windows 10 nicht ausführbar, da fehler exec "diesel" not found bisher nicht
 
 ## WIndows 10 Home
 
-Benötigt Docker Toolbox.
-Docker run
+Benötigt wird Docker Toolbox, npm, mysql
+Docker muss gestartet werden
 Umgebungsariable setzten: MYSQLCLIENT_LIB_DIR = C:\Program Files\MySQL\MySQL Connector C 6.1\lib\vs14
-docker-compose up
+docker-compose up im Projekt-Verzeichnis
 Nachdem die Container laufen (docker ps -a)
 docker exec [Container ID des Servers] diesel migration run
 IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
@@ -30,8 +30,6 @@ IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
 
 # UNix/Linux
 keine Probleme bekannt
-
-
 
 
 # Rust Web Starter
