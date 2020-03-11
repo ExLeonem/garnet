@@ -10,6 +10,26 @@
 
 
 
+# How To make it run
+
+## WIn 10 Pro
+Mit windows 10 nicht ausführbar, da fehler exec "diesel" not found bisher nicht lösbar ist.
+
+## WIndows 10 Home
+
+Benötigt Docker Toolbox.
+Docker run
+Umgebungsariable setzten: MYSQLCLIENT_LIB_DIR = C:\Program Files\MySQL\MySQL Connector C 6.1\lib\vs14
+docker-compose up
+Nachdem die Container laufen (docker ps -a)
+docker exec [Container ID des Servers] diesel migration run
+IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
+Über DockerIP:3000 kann über auf das Frontend zugegriffen werden
+Über DockerIP:3001 kann über bspw. Postman das Backend manipuliert werden
+Über DockerIP:1234 PhpMyAdmin
+
+# UNix/Linux
+keine Probleme bekannt
 
 
 
