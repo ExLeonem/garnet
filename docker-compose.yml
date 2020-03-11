@@ -34,8 +34,20 @@ services:
   #   image: graphhopper/graphhopper:stable
   # Additional config needed
 
+  graphhopper:
+    container_name: osm-graph-hopper
+    image: graphhopper/graphhopper:stable
+    build: ./graphhopper
+    environment:
+      JAVA_OPTS: "-Xmx1000m -Xms1000m"
+    ports:
+      - "8989:8989"
+    command: ./data/freiburg-regbez-latest.osm.pbf
+
   db:
     image: "mysql:5.7"
+    user: "1000:50"
+    command: --innodb_use_native_aio=0
     restart: always
     environment:
       MYSQL_DATABASE: garnet_db
