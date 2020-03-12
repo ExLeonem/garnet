@@ -6,7 +6,7 @@ For the initial setup we used [Rust-Web-Start](#https://github.com/ghotiphud/rus
 Additional Changes we made:
 - React-Frontend without TypeScript
 - Switch from Postgres to MySQL
-- Setup Graphhopper for routing
+- OSRM-engine for routing
 
 
 ## Inhaltsverzeichnis
@@ -22,6 +22,19 @@ Additional Changes we made:
 
 
 ### Linux
+To setup the project localy follow these steps.
+
+1. Setup the project. Execute `npm install` in `/frontend` For more information read [Frontend setup](#Frontend-setup)
+2. Setup the Map data for routing. Check out [Map setup](#Map-setup) for more information.
+
+After you've made the below setups you can simply spin up the containers. Afterwards you simply need to migrate the database include you'r bins.
+
+To migrate the model execute (In general all commands to work with the api container are also listed in the [Rust-Web starter](https://github.com/ghotiphud/rust-web-starter) Readme):
+`docker exec <container-name> diesel migration run`
+
+
+
+### Frontend setup
 
 Make sure that NPM/Node is installed. We used for the frontend setup.
 Following version of Node/NPM were used.
@@ -31,16 +44,27 @@ NPM-version: 6.13.7
 Node-version: 13.0.0
 ```
 
-1. Install NPM modules of the frontend. (Reason is the current dockerfile doesen't seem to install the packages correctly)
-    - cd into the frontend folder `./frontend`
-    - execute `npm install`
-2. Spin up the Docker containers, if everything went right:
-    - MY-SQL: Port 3306
-    - PhpMyAdmin is accessible by localhost:1234. User & Password = garnet
-3. Migrate the database scheme. (follow the workflow of the rust-web-starter)
+First of install NPM modules of the frontend. (Reason is the current dockerfile doesen't seem to install the packages correctly)
+
+- cd into the frontend folder `./frontend`
+- execute `npm install`
 
 
+### Map setup
 
+Download the needed data from [Geofabrik](#Geofabrik).
+
+Example command: `wget http://download.geofabrik.de/europe/germany/<file-name>.osm.pbf`
+
+Create a directory called `routing_data` in the project root and put the map file inside.
+
+Run following commands in order to convert the `osm.pfg` file to a usable `osrm` file. 
+
+1. `docker run -t -v "${PWD}/routing_data:/data" osrm/osrm-backend osrm-extract -p /opt/car.lua /data/<file-name>.osm.pbf`
+2. `docker run -t -v "${PWD}/routing_data:/data" osrm/osrm-backend osrm-partition /data/<file-name>.osrm`
+3. `docker run -t -v "${PWD}/routing_data:/data" osrm/osrm-backend osrm-customize /data/<file-name>.osrm`
+
+After everything worked out you should be able to use the osrm api. For reference checkout the [osrm-backend](https://hub.docker.com/r/osrm/osrm-backend/) documentation.
 
 
 

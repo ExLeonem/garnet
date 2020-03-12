@@ -8,7 +8,7 @@ services:
       - ./frontend:/app
       - '/app/node_modules'
     ports:
-      - "3000:3000"
+      - 3000:3000
     links:
       - api_server
       # - routing
@@ -19,7 +19,7 @@ services:
     container_name: rocket_api
     build: ./api_server
     ports: 
-      - "3001:3001"
+      - 3001:3001
     volumes:
       - ./api_server:/usr/src/app
     links:
@@ -29,16 +29,26 @@ services:
     #   - CARGO_INCREMENTAL=1
     command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x 'run --bin crud'"
 
-  graphhopper:
-    container_name: osm-graph-hopper
-    image: graphhopper/graphhopper:stable
+  # graphhopper:
+  #   container_name: osm-graph-hopper
+  #   image: graphhopper/graphhopper:stable
+  #   volumes:
+  #     - ./routing_data:/data
+  #   environment:
+  #     JAVA_OPTS: "-Xmx1000m -Xms1000m"
+  #   ports:
+  #     - 8989:8989
+  #   command: -a web -i /data/freiburg-regbez-latest.osm.pbf
+
+
+  routing:
+    container_name: osrm_router
+    image: osrm/osrm-backend:v5.22.0
     volumes:
       - ./routing_data:/data
-    environment:
-      JAVA_OPTS: "-Xmx1000m -Xms1000m"
     ports:
-      - "8989:8989"
-    command: ./data/freiburg-regbez-latest.osm.pbf
+      - 5000:5000
+    command: bash -c "osrm-routed --algorithm mld /data/freiburg-regbez-latest.osrm"
 
   db:
     image: "mysql:5.7"
