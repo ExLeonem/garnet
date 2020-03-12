@@ -11,7 +11,7 @@ Additional Changes we made:
 
 ## Inhaltsverzeichnis
 
-1. [Setup][#Setup]
+1. [Setup](#Setup)
 2. [Architecture](#Architecture)
 3. [Frontend](./frontend/README.md)
 4. [API](./api_server/README.md)
@@ -22,6 +22,26 @@ Additional Changes we made:
 
 
 ### Linux
+
+Make sure that NPM/Node is installed. We used for the frontend setup.
+Following version of Node/NPM were used.
+
+```
+NPM-version: 6.13.7
+Node-version: 13.0.0
+```
+
+1. Install NPM modules of the frontend. (Reason is the current dockerfile doesen't seem to install the packages correctly)
+    - cd into the frontend folder `./frontend`
+    - execute `npm install`
+2. Spin up the Docker containers, if everything went right:
+    - MY-SQL: Port 3306
+    - PhpMyAdmin is accessible by localhost:1234. User & Password = garnet
+3. Migrate the database scheme. (follow the workflow of the rust-web-starter)
+
+
+
+
 
 
 ### Win 10 Home
