@@ -29,18 +29,6 @@ services:
     #   - CARGO_INCREMENTAL=1
     command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x 'run --bin crud'"
 
-  # graphhopper:
-  #   container_name: osm-graph-hopper
-  #   image: graphhopper/graphhopper:stable
-  #   volumes:
-  #     - ./routing_data:/data
-  #   environment:
-  #     JAVA_OPTS: "-Xmx1000m -Xms1000m"
-  #   ports:
-  #     - 8989:8989
-  #   command: -a web -i /data/freiburg-regbez-latest.osm.pbf
-
-
   routing:
     container_name: osrm_router
     image: osrm/osrm-backend:v5.22.0

@@ -9,8 +9,8 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { LOAD_DISTRICTS } from '../state/types/env';
 import { addDistrict, removeDistrict, startRouting } from '../state/actions/collect';
+import { loadDistricts } from '../state/actions/env';
 
 import { ButtonText, ButtonCircle } from './button';
 import { Add } from './icons';
@@ -138,7 +138,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadDistricts: () => dispatch({type: LOAD_DISTRICTS}),
+        loadDistricts: () => dispatch(loadDistricts()),
         addDistrict: id => dispatch(addDistrict(id)),
         removeDistrict: id => dispatch(removeDistrict(id)),
         startRouting: () => dispatch(startRouting())

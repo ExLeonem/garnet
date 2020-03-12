@@ -4,6 +4,8 @@
  * 
  */
 
+import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env';
+
 
 let initialState = {
     districts: [
@@ -32,6 +34,18 @@ let initialState = {
 export default function(state = initialState, action) {
 
     switch (action.type) {
+
+        case LOAD_DISTRICTS_SUCCESS: {
+            // Successfully loaded
+
+            break;
+        }
+
+        case LOAD_DISTRICTS_ERROR: {
+            // Error loading, display hint and reload button (with timeout)
+
+            break;
+        }
 
         default:
             return state;

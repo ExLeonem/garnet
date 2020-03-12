@@ -6,7 +6,8 @@
 import { 
     ADD_DISTRICT, 
     REMOVE_DISTRICT,
-    LOAD_BINS,
+    LOAD_BINS_SUCCESS,
+    LOAD_BINS_ERROR,
     REMOVE_BIN, 
     START_ROUTING,
     END_ROUTING
@@ -60,12 +61,20 @@ export default function(state = initialState, action) {
             break;
         }
 
-        case LOAD_BINS: {
+        case LOAD_BINS_SUCCESS: {
+            // Successfully loaded bins
+
+            break;
+        }
+
+        case LOAD_BINS_ERROR: {
+            // Error loading bins
 
             break;
         }
 
         case REMOVE_BIN: {
+
 
             break;
         }

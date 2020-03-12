@@ -49,7 +49,7 @@ export class Routing extends MapLayer {
 
             waypoints: createWaypoints(positions),
             router: new L.Routing.OSRMv1({
-                serviceUrl: "http://127.0.0.1:5000/route/v1"
+                serviceUrl: process.env.REACT_APP_ROUTING_BACKEND
             }),
             lineOptions: {
                 styles: [{
