@@ -1,4 +1,6 @@
 /end_device
 /lora_gateway
-/assets
 /db_data
+/routing_data
+
+/assets/icons

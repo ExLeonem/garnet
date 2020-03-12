@@ -48,7 +48,9 @@ export class Routing extends MapLayer {
         let leafletElement = L.Routing.control({
 
             waypoints: createWaypoints(positions),
-
+            router: new L.Routing.OSRMv1({
+                serviceUrl: process.env.REACT_APP_ROUTING_BACKEND
+            }),
             lineOptions: {
                 styles: [{
                     color: "blue",

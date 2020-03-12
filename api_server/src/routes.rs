@@ -58,6 +58,17 @@ pub fn get_all_districts() -> JsonValue {
     disctricts_json
 } 
 
+#[get("/getFilledTrashcans", data="<d_input>", format="json")]
+pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
+    let mut vec = Vec::new();
+    for i in 0..d_input.districts.len() {
+        vec.push(d_input.districts[i])
+    }
+    let result = db::select_filled_trashcans_from_districts(vec);
+    let trashcans_json = json!(result);
+    trashcans_json
+}
+
 #[get("/optimalPath", data="<d_input>", format="json")]
 pub fn get_optimal_path(d_input: Json<DistrictsInput>) -> JsonValue {
     let mut vec = Vec::new();

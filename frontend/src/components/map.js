@@ -106,7 +106,7 @@ class MapView extends Component {
                     <TileLayer
                         attribution={MAP_PROVIDER.openStreetmap.attribution}
                         url={MAP_PROVIDER.openStreetmap.url}/>
-                    {/* {this.state.isMapInit && <Routing map={this.map} positions={POS} />} */}
+                    {this.state.isMapInit && <Routing map={this.map} positions={POS} />}
                 </Map>
             </React.Fragment>
         )

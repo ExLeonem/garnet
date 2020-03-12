@@ -4,9 +4,15 @@
  * 
  */
 
+// import axios from 'axios';
+import axios from 'axios';
+
 import {
     ADD_DISTRICT,
     REMOVE_DISTRICT,
+
+    LOAD_BINS_SUCCESS,
+    LOAD_BINS_ERROR,
     REMOVE_BIN,
 
     START_ROUTING,
@@ -29,6 +35,40 @@ const removeDistrict = (districtID) => {
         payload: districtID
     }
 }
+
+
+const loadBins = (districtID) => {
+
+    let apiUrl = process.env.REACT_APP_GARNET_BACKEND;
+    
+    return dispatch => {
+
+        axios.get(apiUrl, {
+            headers: {"Content-Type": "application/json"},
+            completed: false
+        }).then(res => {
+            // success
+            dispatch(loadBinsSuccess(res));
+        }).catch(err => {
+            // error
+            dispatch(loadBinsError(err));
+        });
+    }
+}
+
+const loadBinsSuccess = (bins) => ({
+    type: LOAD_BINS_SUCCESS,
+    payload: {
+        ...bins
+    }
+});
+
+const loadBinsError = error => ({
+    type: LOAD_BINS_ERROR,
+    payload: {
+        ...error
+    }
+});
 
 const removeBin = (binID) => {
     return {
@@ -54,6 +94,7 @@ const endRouting = () => {
 export {
     addDistrict,
     removeDistrict,
+    loadBins,
     removeBin,
     startRouting,
     endRouting

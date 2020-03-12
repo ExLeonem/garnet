@@ -18,7 +18,7 @@ pub fn start_api() {
     rocket::ignite()
     .register(catchers![routes::not_found])
     .mount("/", routes![routes::index, routes::get_all_trashcans,
-    routes::trashcan, routes::add_trashcan, routes::get_all_districts, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
+    routes::trashcan, routes::add_trashcan, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
     .launch();
 }
 
