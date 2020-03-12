@@ -112,7 +112,8 @@ export class DistrictSelection extends Component {
                 {this.renderRedirect(this.props.route)}
 
                 <div className="header">
-                    <p>Wähle ein oder mehrere Bezirke.
+                    <p>
+                        {this.state.countSelected > 0? "Ausgewählte Bezirke" : "Wähle ein oder mehrere Bezirke."}
                         <i className={"selected-districts" + (this.state.countSelected > 0? " active" : "")}>{this.state.countSelected}</i>
                     </p>
                     <ButtonCircle onClick={this.props.startRouting}/>
