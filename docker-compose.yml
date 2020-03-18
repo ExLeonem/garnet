@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 
 services:
   web:
@@ -37,6 +37,17 @@ services:
     ports:
       - 5000:5000
     command: bash -c "osrm-routed --algorithm mld /data/freiburg-regbez-latest.osrm"
+
+  graphhopper:
+    container_name: osm-graph-hopper
+    image: graphhopper/graphhopper:stable
+    build: ./graphhopper
+    environment:
+      JAVA_OPTS: "-Xmx1000m -Xms1000m"
+    ports:
+      - "8989:8989"
+    command: ./data/freiburg-regbez-latest.osm.pbf
+    
 
   db:
     image: "mysql:5.7"
