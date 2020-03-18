@@ -3,6 +3,15 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_contrib;
 #[macro_use] extern crate diesel;
+#[macro_use] extern crate rocket_cors;
+
+use rocket::http::Method;
+
+use rocket_cors::{
+    AllowedHeaders, AllowedOrigins, Error,
+    Cors, CorsOptions
+};
+
 pub mod routes;
 pub mod models;
 pub mod csv_reader;
@@ -19,7 +28,27 @@ pub fn start_api() {
     .register(catchers![routes::not_found])
     .mount("/", routes![routes::index, routes::get_all_trashcans,
     routes::trashcan, routes::add_trashcan, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
+    .attach(make_cors()).
     .launch();
+}
+
+fn make_cors() -> Cors {
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:1234",
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+    ]);
+
+    CorsOptions {
+        allowed_origins, //see above
+        allowed_methods: rocket_cors::CorsOptions::default(), // default = ["POST","PATCH","PUT","DELETE","HEAD","OPTIONS","GET"]
+        allowed_headers:"All", //accept all headers
+        allow_credentials: false,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("error while building CORS")
 }
 
 pub fn read_csv() {
