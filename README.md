@@ -133,7 +133,55 @@ Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
 
 ## API
 
+### Endpoints
 
+/allTrashcans
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+/trashCan/{id}
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+/allDistricts
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+
+/getFilledTrashcans
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: {"districts": [id_1, id_2, (...)] }
+
+/trashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: { 
+    "fill_weight": 2.0,
+    "latitude": 1.0,
+    "longitude": 1.0,
+    "trashtype": 1,
+    "district": 1
+}
+
+/fillTrashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: {
+"id": 5,
+"fill_weight": 101.2384
+}
+
+/updateTrashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: {
+"id": 1,
+"district": 1
+}
 
 ## Issues
 
