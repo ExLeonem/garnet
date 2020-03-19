@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ButtonText } from '../components/button';
-import { endRouting } from '../state/actions/collect';
+import { endRouting, loadBins } from '../state/actions/collect';
 
 
 /**
@@ -64,6 +64,13 @@ export class BinView extends Component {
         return routeLocations? null : <Redirect to="/collect/districts"/>;
     }
 
+    componentWillMount() {
+
+        console.log(this.props.districts);
+
+        this.props.loadBins(this.props.districts);
+    }
+
 
     render() {
         return (
@@ -84,13 +91,15 @@ export class BinView extends Component {
 
 const mapStateToProps = state => {
     return {
-        route: state.collect.route
+        route: state.collect.route,
+        districts: state.collect.districts
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        endRouting: () => dispatch(endRouting())
+        endRouting: () => dispatch(endRouting()),
+        loadBins: (districtIds) => dispatch(loadBins(districtIds))
     };
 }
 

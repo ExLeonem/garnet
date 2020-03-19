@@ -22,25 +22,28 @@ export default function(state = initialState, action) {
                 
             // Only for demo-case
             let districtMapping = {
-                "10": "Altstadt",
-                "20": "Paradies",
-                "30": "Petershausen-West",
-                "35": "Petershausen-Ost",
-                "40": "Königsbau",
-                "50": "Allmansdorf",
-                "60": "Staad",
-                "70": "Fürstenberg",
-                "80": "Wolmatingen",
-                "90": "Industriegebiet",
-                "100": "Egg",
-                "110": "Litzelstetten",
-                "120": "Dingelsdorf",
-                "130": "Dettingen",
-                "140": "Wallhausen"
+                "1": "Altstadt",
+                "2": "Paradies",
+                "3": "Petershausen-West",
+                "4": "Petershausen-Ost",
+                "5": "Königsbau",
+                "6": "Allmansdorf",
+                "7": "Staad",
+                "8": "Fürstenberg",
+                "9": "Wolmatingen",
+                "10": "Industriegebiet",
+                "11": "Egg",
+                "12": "Litzelstetten",
+                "13": "Dingelsdorf",
+                "14": "Dettingen",
+                "15": "Wallhausen"
             };
 
-            let data = action.payload.data;
-            let mapped = data.map(dist => ({id: dist.id, name: districtMapping[dist.district_number]}));
+            console.log(action.payload);
+
+            let data = action.payload.body;
+
+            let mapped = data.map(dist => ({id: dist, name: districtMapping[dist]}));
 
             return {...state, districts: mapped};
             break;

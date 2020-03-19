@@ -3,36 +3,24 @@
  * @date 5.3.2020
  */
 
-import axios from 'axios';
+// import axios from 'axios';
+import superagent from 'superagent';
 import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env'
 
 
  const loadDistricts = () => {
-    // 
 
-    let apiURL = process.env.REACT_APP_GARNET_BACKEND;
-
+    let endpoint = process.env.REACT_APP_GARNET_BACKEND + 'allFilledDistricts';
     return dispatch => {
 
-        console.log(apiURL);
-
-        axios.get(apiURL + "allDistricts", 
-        {
-            crossDomain: "true",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res => {
-            // succesfull request
-            console.log("success: ");
-            console.log(res);
+        superagent.get(endpoint)
+        .set('content-type', 'application/json')
+        .then(res => {
             dispatch(loadDistrictsSuccess(res));
-        }).catch(err => {
-            // failed request
-            console.log("error: ");
-            console.log(err);
 
+        }).catch(err => {
             dispatch(loadDistrictsError(err));
+
         });
     };
  }

@@ -5,7 +5,8 @@
  */
 
 // import axios from 'axios';
-import axios from 'axios';
+// import axios from 'axios';
+import superagent from 'superagent';
 
 import {
     ADD_DISTRICT,
@@ -37,22 +38,23 @@ const removeDistrict = (districtID) => {
 }
 
 
-const loadBins = (districtID) => {
+const loadBins = (districIds) => {
 
-    let apiUrl = process.env.REACT_APP_GARNET_BACKEND;
-    
+    let endpoint = process.env.REACT_APP_GARNET_BACKEND + 'getFilledTrashcans';
     return dispatch => {
 
-        axios.get(apiUrl, {
-            headers: {"Content-Type": "application/json"},
-            completed: false
-        }).then(res => {
-            // success
-            dispatch(loadBinsSuccess(res));
-        }).catch(err => {
-            // error
-            dispatch(loadBinsError(err));
-        });
+        superagent.post(endpoint)
+            .set('content-type', 'application/json')
+            .send({'districts': districIds})
+            .then(res => {
+                console.log(res);
+                dispatch(loadBinsSuccess(res));
+
+            }).catch(err => {
+                console.log(err);
+                dispatch(loadBinsError(err));
+
+            });
     }
 }
 

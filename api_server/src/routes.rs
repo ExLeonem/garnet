@@ -65,7 +65,7 @@ pub fn get_all_filled_districts() -> JsonValue {
     trashcans_json
 } 
 
-#[get("/getFilledTrashcans", data="<d_input>", format="json")]
+#[post("/getFilledTrashcans", data="<d_input>", format="json")]
 pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
     let mut vec = Vec::new();
     for i in 0..d_input.districts.len() {

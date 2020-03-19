@@ -13,10 +13,12 @@ import { CheckMark} from './icons'
  * @param {string} type - Which icon to use {check, close, ...} look into ./icons.js
  * @param {callback} onClick - Callback for the onClick even
  */
-let ButtonCircle =({type, onClick}) => {
+let ButtonCircle =({type, className = null, onClick = () => {return null}}) => {
+
+    let classes = "button-circular" + (className != null? " " + className : ""); 
 
     return (
-        <div className="button-circular" onClick={() => onClick()}>
+        <div className={classes} onClick={() => onClick()}>
             <CheckMark/>
         </div>
     )

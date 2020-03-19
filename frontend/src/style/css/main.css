@@ -57,7 +57,34 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100vw; }
+  width: 100vw;
+  height: 100vh; }
+
+#root {
+  width: 100vw;
+  height: 100vh; }
+  #root .welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh; }
+    #root .welcome svg {
+      height: 150px;
+      width: 150px;
+      animation: jump 0.5s infinite;
+      animation-timing-function: cubic-bezier(0.08, 0.87, 0.23, 1.02);
+      animation-direction: alternate-reverse; }
+
+@keyframes jump {
+  from {
+    transform: translate(0px, 0px); }
+  100% {
+    transform: translate(0px, -10px); } }
+    #root .welcome h3 {
+      margin-top: 25px;
+      user-select: none; }
 
 .leaflet-container {
   float: left;

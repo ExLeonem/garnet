@@ -64,6 +64,8 @@ export default function(state = initialState, action) {
         case LOAD_BINS_SUCCESS: {
             // Successfully loaded bins
 
+            console.log(action.payload);
+
             break;
         }
 

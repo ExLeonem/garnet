@@ -135,7 +135,7 @@ export class DistrictSelection extends Component {
                         {this.state.countSelected > 0? "Ausgewählte Bezirke" : "Wähle ein oder mehrere Bezirke."}
                         <i className={"selected-districts" + (this.state.countSelected > 0? " active" : "")}>{this.state.countSelected}</i>
                     </p>
-                    <ButtonCircle onClick={this.props.startRouting}/>
+                    <ButtonCircle className={this.state.countSelected > 0? null : "disable"} onClick={this.state.countSelected > 0? this.props.startRouting : () => {return null;}}/>
                 </div>
 
                 <ul className="districts">
