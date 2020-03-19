@@ -14,13 +14,24 @@ import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env'
 
     return dispatch => {
 
-        axios.get(apiURL, {
-            headers: {"Content-Type": "application/json"}
+        console.log(apiURL);
+
+        axios.get(apiURL + "allDistricts", 
+        {
+            crossDomain: "true",
+            headers: {
+                "Content-Type": "application/json"
+            }
         }).then(res => {
             // succesfull request
+            console.log("success: ");
+            console.log(res);
             dispatch(loadDistrictsSuccess(res));
         }).catch(err => {
             // failed request
+            console.log("error: ");
+            console.log(err);
+
             dispatch(loadDistrictsError(err));
         });
     };
@@ -33,13 +44,16 @@ import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env'
     }
  });
 
-const loadDistrictsError = error => ({
+const loadDistrictsError = error => {
+    console.log(error);
+
+    return {
     type: LOAD_DISTRICTS_ERROR,
     payload: {
         ...error
-    }
-
-});
+        }
+    };
+}
 
  export {
      loadDistricts

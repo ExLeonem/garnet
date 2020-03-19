@@ -16,6 +16,25 @@ import { ButtonText, ButtonCircle } from './button';
 import { Add } from './icons';
 
 
+// Usage for demo-case
+let districtMapping = {
+    "010": "Altstadt",
+    "020": "Paradies",
+    "030": "Petershausen-West",
+    "035": "Petershausen-Ost",
+    "040": "Königsbau",
+    "050": "Allmansdorf",
+    "060": "Staad",
+    "070": "Fürstenberg",
+    "080": "Wolmatingen",
+    "090": "Industriegebiet",
+    "100": "Egg",
+    "110": "Litzelstetten",
+    "120": "Dingelsdorf",
+    "130": "Dettingen",
+    "140": "Wallhausen"
+};
+
 
 /**
  * Renders a list of selectable districts.

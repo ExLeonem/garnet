@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
 
         case ADD_DISTRICT: {
 
-            console.log(state.districts);
+            // console.log(state.districts);
 
             // Add not already added district
             let currentDistricts = state.districts;

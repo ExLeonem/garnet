@@ -8,27 +8,9 @@ import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env';
 
 
 let initialState = {
-    districts: [
-        {id: 1, name: "Petershausen-Ost"},
-        {id: 2, name: "Königsbau"},
-        {id: 3, name: "Allmannsdorf"},
-        {id: 4, name: "Staad"},
-        {id: 5, name: "Altstadt"},
-        {id: 6, name: "Paradies"},
-        {id: 7, name: "Petershausen-West"},
-        {id: 8, name: "Königsbau"},
-        {id: 9, name: "Fürstenberg"},
-        {id: 10, name: "Wollmatingen"},
-        {id: 11, name: "Industriegebiet"},
-        {id: 12, name: "Egg"},
-        {id: 13, name: "Litzelstetten"},
-        {id: 14, name: "Dingelsdorf"},
-        {id: 15, name: "Dettingen"},
-        {id: 16, name: "Wallhausen"}
-    ], // all districts
+    districts: [], // all districts
     active: [], // List of active collectors (objects)
 }
-
 
 
 export default function(state = initialState, action) {
@@ -37,13 +19,30 @@ export default function(state = initialState, action) {
 
         case LOAD_DISTRICTS_SUCCESS: {
             // Successfully loaded
+                
+            // Only for demo-case
+            let districtMapping = {
+                "10": "Altstadt",
+                "20": "Paradies",
+                "30": "Petershausen-West",
+                "35": "Petershausen-Ost",
+                "40": "Königsbau",
+                "50": "Allmansdorf",
+                "60": "Staad",
+                "70": "Fürstenberg",
+                "80": "Wolmatingen",
+                "90": "Industriegebiet",
+                "100": "Egg",
+                "110": "Litzelstetten",
+                "120": "Dingelsdorf",
+                "130": "Dettingen",
+                "140": "Wallhausen"
+            };
 
-            break;
-        }
+            let data = action.payload.data;
+            let mapped = data.map(dist => ({id: dist.id, name: districtMapping[dist.district_number]}));
 
-        case LOAD_DISTRICTS_ERROR: {
-            // Error loading, display hint and reload button (with timeout)
-
+            return {...state, districts: mapped};
             break;
         }
 

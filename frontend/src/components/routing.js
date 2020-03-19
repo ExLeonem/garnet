@@ -23,7 +23,7 @@ const createWaypoints = (positions) => {
         return [];
     }
 
-    console.log(positions);
+    // console.log(positions);
 
     let waypoints = [];
     positions.forEach(pos => {

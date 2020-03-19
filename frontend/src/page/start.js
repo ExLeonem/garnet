@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 
 /**
  * Renders the starting page. Where the user is able to select the bins.
