@@ -58,6 +58,13 @@ pub fn get_all_districts() -> JsonValue {
     disctricts_json
 } 
 
+#[get("/allFilledDistricts", format="json")]
+pub fn get_all_filled_districts() -> JsonValue {
+    let result = db::select_filled_district_ids();
+    let trashcans_json = json!(result);
+    trashcans_json
+} 
+
 #[get("/getFilledTrashcans", data="<d_input>", format="json")]
 pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
     let mut vec = Vec::new();

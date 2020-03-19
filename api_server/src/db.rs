@@ -61,6 +61,25 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
      result.pop()
  }
 
+ pub fn select_filled_district_ids() -> Vec<i32>{
+    use schema::trashcan::dsl::*;
+    let connection = establish_connection();
+    let mut t_ids: Vec<i32> = vec![];
+    let mut trashcans = trashcan
+    .filter(fill_weight.gt(100.00))
+    .order_by(id.asc())
+    .load::<Trashcan>(&connection)
+    .expect("Error loading filled Trashcans.");
+
+    for can in trashcans {
+        t_ids.push(can.district.unwrap());
+    }
+
+    t_ids.sort();
+    t_ids.dedup();
+    t_ids
+}
+
 pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan>{
     use schema::trashcan::dsl::*;
     let connection = establish_connection();
