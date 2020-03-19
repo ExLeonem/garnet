@@ -14,11 +14,11 @@ chrono = { version = "0.4.6", features = ["serde"] }
 # For connecting with the MySQL database
 diesel = { version = "1.4.2", features = ["mysql", "numeric"] }
 dotenv = "0.15.0"
-#fast_paths = "0.1.0"
+fast_paths = "0.1.0"
 rocket_cors = "0.5.0"
 
 # TSP Crates
-#darwin-rs = "0.4"
-#time = "0.1"
-#rand = "0.3"
-#simplelog = "0.4"
+darwin-rs = "0.4"
+time = "0.1"
+rand = "0.3"
+simplelog = "0.4"

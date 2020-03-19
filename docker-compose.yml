@@ -1,19 +1,19 @@
 version: "2"
 
 services:
-  web:
-    container_name: react_frontend
-    build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - '/app/node_modules'
-    ports:
-      - 3000:3000
-    links:
-      - api_server
-      # - routing
-    environment:
-      - NODE_ENV=development
+  # web:
+  #   container_name: react_frontend
+  #   build: ./frontend
+  #   volumes:
+  #     - ./frontend:/app
+  #     - '/app/node_modules'
+  #   ports:
+  #     - 3000:3000
+  #   links:
+  #     - api_server
+  #     # - routing
+  #   environment:
+  #     - NODE_ENV=development
 
   api_server:
     container_name: rocket_api
@@ -38,15 +38,16 @@ services:
       - 5000:5000
     command: bash -c "osrm-routed --algorithm mld /data/freiburg-regbez-latest.osrm"
 
-  graphhopper:
-    container_name: osm-graph-hopper
-    image: graphhopper/graphhopper:stable
-    build: ./graphhopper
-    environment:
-      JAVA_OPTS: "-Xmx1000m -Xms1000m"
-    ports:
-      - "8989:8989"
-    command: ./data/freiburg-regbez-latest.osm.pbf
+  # graphhopper:
+  #   container_name: osm-graph-hopper
+  #   image: graphhopper/graphhopper:stable
+  #   volumes:
+  #     - ./routing_data:/data
+  #   environment:
+  #     JAVA_OPTS: "-Xmx1000m -Xms1000m"
+  #   ports:
+  #     - "8989:8989"
+  #   command: ./data/freiburg-regbez-latest.osm.pbf
     
 
   db:

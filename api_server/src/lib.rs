@@ -6,6 +6,7 @@
 #[macro_use] extern crate rocket_cors;
 
 use rocket::http::Method;
+use std::str::FromStr;
 
 use rocket_cors::{
     AllowedHeaders, AllowedOrigins, Error,
@@ -28,8 +29,7 @@ pub fn start_api() {
     .register(catchers![routes::not_found])
     .mount("/", routes![routes::index, routes::get_all_trashcans,
     routes::trashcan, routes::add_trashcan, routes::get_all_filled_districts, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
-    .attach(make_cors()).
-    .launch();
+    .attach(make_cors()).launch();
 }
 
 fn make_cors() -> Cors {
@@ -38,12 +38,19 @@ fn make_cors() -> Cors {
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3002",
+        "https://garnet.works",
+        "http://garnet.works"
     ]);
+
+    let methods = ["POST","PATCH","PUT","DELETE","HEAD","OPTIONS","GET"]
+        .iter()
+        .map(|s| FromStr::from_str(s).unwrap())
+        .collect();
 
     CorsOptions {
         allowed_origins, //see above
-        allowed_methods: rocket_cors::CorsOptions::default(), // default = ["POST","PATCH","PUT","DELETE","HEAD","OPTIONS","GET"]
-        allowed_headers:"All", //accept all headers
+        allowed_methods: methods, // default = ["POST","PATCH","PUT","DELETE","HEAD","OPTIONS","GET"]
+        allowed_headers: AllowedHeaders::all(), //accept all headers
         allow_credentials: false,
         ..Default::default()
     }
