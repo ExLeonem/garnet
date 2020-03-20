@@ -1,10 +1,10 @@
 
 
 # Garbage Network (Garnet)
-A proof of concept for an intelligent waste-management-system. Trashcans sending the current fill state over LoRa to an api-server. The optimal route to collect the trashcans filled to a certain degree is calculated via a separate routing engine. The route and trashcans to empty is displayed in a frontend application.
+A proof of concept for an intelligent waste-management-system. Trashcans sending the current fill state over LoRa to an api-server. The optimal route to collect the trashcans filled to a certain degree is calculated via a separate routing engine. The route and trashcans to empty are displayed in a react application.
 
 
-![GarNet Demo](./assets/images/garnet_showcase.gif)
+![GarNet app showcase](./assets/images/garnet_showcase.gif)
 
 ## Built with
 - [Rust-Web-Starter](https://github.com/ghotiphud/rust-web-starter)
@@ -17,7 +17,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 1. [About](#About)
     1. [Roadmap](#Roadmap)
     2. [Communication](#Communication)
-    3. [Hardware Prototype](#Hardware-Prototype)
+    3. [Trashcan Prototype](#Trashcan-Prototype)
 2. [Gettings Started](#Getting-Started)
     1. [Setup](#Setup)
     2. [Windows](#Windows)
@@ -39,13 +39,34 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 - [ ] API/Backend
     - [x] Endpoint for retrieval of districts containing filled trashcans  
     - [x] Endpoint for retrieval of filled trashcans
-    - [ ]
+    - [ ] TSP Calculation using airline distance
 - [ ] Frontend
-    - [ ] Display district in which to collect 
+    - [x] Display district in which to collect 
+    - [x] Display the a route to collect the filled trashcans 
+- [ ] Prototype
+    - [x] Create 3D-Models
+    - [x] Print&Assemble the model
+    - [x] Read ultrasonic sensor values
+    - [ ] Communicate with the TTN via LORA
+    - [ ] Send data from prototype to the backend
+
 
 ### Communication
 
-### Hardware Prototype
+<img src="./assets/images/connection_schema.png" alt="Communication schema" style="max-height:300px; margin: 0 auto;"/>
+
+
+
+### Trashcan Prototype
+
+
+| Component 
+| ---
+| Arduino MKR 1300 WAN
+| Lora Antenna
+| US-015 Ultrasonic sensor
+| Li-on Battery
+| Battery Adapter
 
 
 ## Getting Started
@@ -56,13 +77,13 @@ Additional Changes we made:
 - Switch from Postgres to MySQL
 - OSRM-engine for routing
 
-| Functionality | Port
-| ---           | ---
-| Frontend      | 3000
-| Backend       | 3001
-| PhpMyAdmin    | 1234
-| MySQL         | 3306
-| OSRM Backend  | 5000 
+| Container functionality   | Port
+| ---                       | ---
+| React-Frontend            | 3000
+| Rust-Backend              | 3001
+| PhpMyAdmin                | 1234
+| MySQL                     | 3306
+| OSRM Backend              | 5000 
 
 
 ### Setup
