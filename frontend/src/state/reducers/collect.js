@@ -8,14 +8,14 @@ import {
     REMOVE_DISTRICT,
     LOAD_BINS_SUCCESS,
     LOAD_BINS_ERROR,
-    REMOVE_BIN, 
+    REMOVE_BIN,
+    SET_POSITION, 
     START_ROUTING,
     END_ROUTING
 } from '../types/collect';
 
 import { getItem, setItem } from './local_storage';
 
-// let storage = window.localStorage;
 
 let initialState = {
     districts: getItem("selectedDistricts", []), // selected districts to use for collection
@@ -62,22 +62,28 @@ export default function(state = initialState, action) {
         }
 
         case LOAD_BINS_SUCCESS: {
-            // Successfully loaded bins
 
-            console.log(action.payload);
+            newState = {...state, bins: action.payload.body};
 
+            // to many garbage bins potentially not saveable in localStorage
+            setItem("bins", action.payload.body); 
             break;
         }
 
         case LOAD_BINS_ERROR: {
-            // Error loading bins
 
             break;
         }
 
         case REMOVE_BIN: {
 
+            break;
+        }
 
+        case SET_POSITION: {
+            
+            setItem("position", action.payload);
+            newState = {...state, position: action.payload};
             break;
         }
 
@@ -106,6 +112,12 @@ export default function(state = initialState, action) {
             setItem("bins", bins);
             setItem("position", position);
             setItem("route", route);
+
+            // Clear geo-watcher
+            if ("geolocation" in navigator) {
+                navigator.geolocation.clearWatch();
+            }
+
             break;
         }
 

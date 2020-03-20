@@ -5,9 +5,10 @@
 
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker} from 'react-leaflet';
+import { connect } from 'react-redux';
+
 import Routing from './routing';
-
-
+import { setPosition } from '../state/actions/collect';
 
 // Fallback if no access to geo-coordinates
 const DEFAULT_POSITION = [47.672473, 9.173396];
@@ -56,6 +57,10 @@ class MapView extends Component {
         }
     }
 
+    componentWillMount() {
+        
+    }
+
 
     onClickReset = () => {
         this.setState({ viewport: DEFAULT_VIEWPORT })
@@ -75,10 +80,14 @@ class MapView extends Component {
     
     render() {
 
-        // Set the current position
+        // Track current position if possible by the device
         if ("geolocation" in navigator) {
                 
-            navigator.geolocation.getCurrentPosition((position) => {
+            navigator.geolocation.watchPosition((position) => {
+
+                // Set current position in state
+                this.props.setPosition(position.coords);
+
                 let newViewport = {
                     center: [position.coords.latitude, position.coords.longitude],
                     zoom: 15
@@ -88,8 +97,14 @@ class MapView extends Component {
                 this.setState({viewport: newViewport});
                 this.setState({currentPosition: [position.coords.latitude, position.coords.longitude]})
             });
+        } else {
+            // Error message: Browser does not support geolocation
 
-            // TODO: Add watch
+        }
+
+        // Empty position: halt, cause not enabled
+        if (this.props.position == []) {
+            
         }
 
 
@@ -106,11 +121,23 @@ class MapView extends Component {
                     <TileLayer
                         attribution={MAP_PROVIDER.openStreetmap.attribution}
                         url={MAP_PROVIDER.openStreetmap.url}/>
-                    {this.state.isMapInit && <Routing map={this.map} positions={POS} />}
+                    {this.state.isMapInit && <Routing map={this.map} bins={POS} />}
                 </Map>
             </React.Fragment>
         )
     }
 }
 
-export default MapView
+const mapStateToProps = state => {
+    return {
+        currentPosition: state.collect.position
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPosition: position => dispatch(setPosition(position))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapView)

@@ -199,6 +199,7 @@ body {
     background-color: #a6accd; }
 
 .leaflet-routing-container {
+  display: none;
   padding: 15px 15px; }
   .leaflet-routing-container h3 {
     margin-bottom: 15px; }

@@ -4,8 +4,6 @@
  * 
  */
 
-// import axios from 'axios';
-// import axios from 'axios';
 import superagent from 'superagent';
 
 import {
@@ -15,6 +13,8 @@ import {
     LOAD_BINS_SUCCESS,
     LOAD_BINS_ERROR,
     REMOVE_BIN,
+
+    SET_POSITION,
 
     START_ROUTING,
     END_ROUTING
@@ -79,6 +79,13 @@ const removeBin = (binID) => {
     }
 }
 
+const setPosition = (position) => {
+    return {
+        type: SET_POSITION,
+        payload: position
+    }
+}
+
 const startRouting = () => {
     return {
         type: START_ROUTING,
@@ -98,6 +105,7 @@ export {
     removeDistrict,
     loadBins,
     removeBin,
+    setPosition,
     startRouting,
     endRouting
 }

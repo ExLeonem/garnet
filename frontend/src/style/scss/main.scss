@@ -283,7 +283,8 @@ body {
 // Customize-Leaflet alt-text
 
 .leaflet-routing-container {
-
+    display: none;
+    
     padding: 15px 15px;
     
     h3 {

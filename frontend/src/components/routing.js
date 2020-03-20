@@ -44,10 +44,10 @@ export class Routing extends MapLayer {
 
     createLeafletElement() {
 
-        const {map, positions} = this.props;
+        const {map, bins, position} = this.props;
         let leafletElement = L.Routing.control({
 
-            waypoints: createWaypoints(positions),
+            waypoints: createWaypoints(bins),
             router: new L.Routing.OSRMv1({
                 serviceUrl: process.env.REACT_APP_ROUTING_BACKEND
             }),
