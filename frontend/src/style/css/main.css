@@ -109,6 +109,26 @@ body {
   .map:not(.active) .leaflet-tile {
     background-color: black;
     filter: blur(4px); }
+  .map.active {
+    width: 100vw; }
+    .map.active .leaflet-container {
+      width: 100%; }
+  .map.active + .interactive-elements {
+    position: absolute;
+    display: flex;
+    z-index: 100;
+    padding: 0;
+    height: auto;
+    width: auto;
+    bottom: 20px;
+    left: 20px; }
+    .map.active + .interactive-elements .button {
+      background-color: #b0b5d2;
+      border-color: #b0b5d2;
+      color: white; }
+      .map.active + .interactive-elements .button:hover {
+        background-color: #8F97C0;
+        border-color: #8F97C0; }
 
 .interactive-elements {
   position: relative;
@@ -197,9 +217,11 @@ body {
   .button-circular:hover {
     border-color: #a6accd;
     background-color: #a6accd; }
+  .button-circular.disable {
+    background-color: #d0d4e5;
+    border-color: #d0d4e5; }
 
 .leaflet-routing-container {
-  display: none;
   padding: 15px 15px; }
   .leaflet-routing-container h3 {
     margin-bottom: 15px; }

@@ -73,8 +73,6 @@ export class BinView extends Component {
 
     componentWillMount() {
 
-        console.log(this.props.districts);
-
         this.props.loadBins(this.props.districts);
     }
 
@@ -83,12 +81,7 @@ export class BinView extends Component {
         return (
             <React.Fragment>
                 {this.renderRedirect(this.props.route)}
-
-                <div className="header">Sammelweg</div>
-                <BinList>{this.props.bins}</BinList>
-
                 <ButtonText onClick={() => this.props.endRouting()}>Tour Beenden</ButtonText>
-
             </React.Fragment>
         )
     }

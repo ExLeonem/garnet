@@ -33,7 +33,6 @@ import { LOAD_DISTRICTS_SUCCESS, LOAD_DISTRICTS_ERROR } from '../types/env'
  });
 
 const loadDistrictsError = error => {
-    console.log(error);
 
     return {
     type: LOAD_DISTRICTS_ERROR,

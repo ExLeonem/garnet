@@ -7,7 +7,7 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
-import { loadBins } from '../state/actions/collect';
+import { loadBins, setPosition } from '../state/actions/collect';
 import { Switch, Route } from 'react-router-dom';
 
 import MapView from '../components/map'
@@ -24,12 +24,6 @@ export class BinCollectPage extends Component {
         super(props);
         this.state = {
             districtSelection: true,
-        }
-    }
-
-    componentWillMount() {
-        if (this.props.bins === []) {
-            this.props.loadBins(this.props.districts);
         }
     }
 
@@ -69,11 +63,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        loadBins: districtIds => dispatch(loadBins(districtIds))
-    }
-}
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(BinCollectPage);
+export default connect(mapStateToProps)(BinCollectPage);

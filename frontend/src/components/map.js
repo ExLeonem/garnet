@@ -8,7 +8,8 @@ import { Map, TileLayer, Marker} from 'react-leaflet';
 import { connect } from 'react-redux';
 
 import Routing from './routing';
-import { setPosition } from '../state/actions/collect';
+import { setPosition, setLocationId } from '../state/actions/collect';
+import { thisExpression } from '@babel/types';
 
 // Fallback if no access to geo-coordinates
 const DEFAULT_POSITION = [47.672473, 9.173396];
@@ -31,14 +32,6 @@ const MAP_PROVIDER = {
     }
 }
 
-// Example points used to test render of route
-const POS = [
-    [47.674682, 9.180758],
-    [47.673538, 9.184933],
-    [47.676096, 9.180624]
-]
-
-
 /**
  * 
  * Renders the map displaying the bin locations and the path to take for optimal time efficency.
@@ -56,11 +49,6 @@ class MapView extends Component {
             isMapInit: false
         }
     }
-
-    componentWillMount() {
-        
-    }
-
 
     onClickReset = () => {
         this.setState({ viewport: DEFAULT_VIEWPORT })
@@ -83,31 +71,36 @@ class MapView extends Component {
         // Track current position if possible by the device
         if ("geolocation" in navigator) {
                 
-            navigator.geolocation.watchPosition((position) => {
+            let locationId = navigator.geolocation.watchPosition((position) => {
 
                 // Set current position in state
                 this.props.setPosition(position.coords);
 
-                let newViewport = {
-                    center: [position.coords.latitude, position.coords.longitude],
-                    zoom: 15
+                if (this.state.viewport == null) {
+
+                    let newViewport = {
+                        center: [position.coords.latitude, position.coords.longitude],
+                        zoom: 15
+                    }
+    
+                    // Set Viewport & Position 
+                    this.setState({viewport: newViewport});
                 }
 
-                // Set Viewport & Position 
-                this.setState({viewport: newViewport});
-                this.setState({currentPosition: [position.coords.latitude, position.coords.longitude]})
+                this.setState({currentPosition: position.coords});
+            }, err => {
+                // User declined
+                
             });
-        } else {
-            // Error message: Browser does not support geolocation
-
+            this.props.setLocationId(locationId);
         }
+
 
         // Empty position: halt, cause not enabled
         if (this.props.position == []) {
             
         }
-
-
+        
         return (
             <React.Fragment>
                 <Map
@@ -121,7 +114,7 @@ class MapView extends Component {
                     <TileLayer
                         attribution={MAP_PROVIDER.openStreetmap.attribution}
                         url={MAP_PROVIDER.openStreetmap.url}/>
-                    {this.state.isMapInit && <Routing map={this.map} bins={POS} />}
+                    {this.state.isMapInit && <Routing map={this.map} bins={this.props.bins} position={this.state.currentPosition}/>}
                 </Map>
             </React.Fragment>
         )
@@ -130,13 +123,15 @@ class MapView extends Component {
 
 const mapStateToProps = state => {
     return {
-        currentPosition: state.collect.position
+        position: state.collect.position,
+        bins: state.collect.bins
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        setPosition: position => dispatch(setPosition(position))
+        setPosition: position => dispatch(setPosition(position)),
+        setLocationId: id => dispatch(setLocationId(id))
     }
 }
 

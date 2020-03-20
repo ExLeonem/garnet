@@ -15,6 +15,7 @@ import {
     REMOVE_BIN,
 
     SET_POSITION,
+    SET_LOCATION_ID,
 
     START_ROUTING,
     END_ROUTING
@@ -58,7 +59,7 @@ const loadBins = (districIds) => {
     }
 }
 
-const loadBinsSuccess = (bins) => ({
+const loadBinsSuccess = bins => ({
     type: LOAD_BINS_SUCCESS,
     payload: {
         ...bins
@@ -72,17 +73,24 @@ const loadBinsError = error => ({
     }
 });
 
-const removeBin = (binID) => {
+const removeBin = binID => {
     return {
         type: REMOVE_BIN,
         payload: binID
     }
 }
 
-const setPosition = (position) => {
+const setPosition = position => {
     return {
         type: SET_POSITION,
         payload: position
+    }
+}
+
+const setLocationId = id => {
+    return {
+        type: SET_LOCATION_ID,
+        payload: id 
     }
 }
 
@@ -106,6 +114,7 @@ export {
     loadBins,
     removeBin,
     setPosition,
+    setLocationId,
     startRouting,
     endRouting
 }

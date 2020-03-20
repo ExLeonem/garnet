@@ -16,26 +16,6 @@ import { ButtonText, ButtonCircle } from './button';
 import { Add } from './icons';
 
 
-// Usage for demo-case
-let districtMapping = {
-    "010": "Altstadt",
-    "020": "Paradies",
-    "030": "Petershausen-West",
-    "035": "Petershausen-Ost",
-    "040": "Königsbau",
-    "050": "Allmansdorf",
-    "060": "Staad",
-    "070": "Fürstenberg",
-    "080": "Wolmatingen",
-    "090": "Industriegebiet",
-    "100": "Egg",
-    "110": "Litzelstetten",
-    "120": "Dingelsdorf",
-    "130": "Dettingen",
-    "140": "Wallhausen"
-};
-
-
 /**
  * Renders a list of selectable districts.
  * 
@@ -106,7 +86,21 @@ export class DistrictSelection extends Component {
             selectables.push(toAdd);
         });
 
-        return selectables;
+        if (selectables.length >= 0) {
+            
+            return (
+                <ul className="districts">
+                    {selectables}   
+                </ul>
+            )
+        }
+
+        // No garbage bins/district from which to collect
+        return (
+            <div>
+                Aktuell sind müssen keine Mülltonnen abgeholt werden.
+            </div>
+        )
     }
 
 
@@ -138,9 +132,8 @@ export class DistrictSelection extends Component {
                     <ButtonCircle className={this.state.countSelected > 0? null : "disable"} onClick={this.state.countSelected > 0? this.props.startRouting : () => {return null;}}/>
                 </div>
 
-                <ul className="districts">
-                    {this.renderDistricts(districts, this.props.selectedDistricts)}
-                </ul>
+
+                {this.renderDistricts(districts, this.props.selectedDistricts)}
             </React.Fragment>
         )
     }

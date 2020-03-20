@@ -7,6 +7,7 @@
 import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import binIcon from '../icons/alt_bin_icon.png';
 
 
 // TODO: Add track of current position + remove waypoints.
@@ -44,13 +45,47 @@ export class Routing extends MapLayer {
 
     createLeafletElement() {
 
-        const {map, bins, position} = this.props;
+        const {map, bins} = this.props;
+
+
+        let mappedBinPositions = [];
+        bins.forEach(bin => {
+            mappedBinPositions.push([bin.latitude, bin.longitude])
+        })
+
+        mappedBinPositions.push(this.props.position);
+        mappedBinPositions = mappedBinPositions.reverse();
+
+
+        console.log(mappedBinPositions);
+
         let leafletElement = L.Routing.control({
 
-            waypoints: createWaypoints(bins),
+            waypoints: createWaypoints(mappedBinPositions),
             router: new L.Routing.OSRMv1({
                 serviceUrl: process.env.REACT_APP_ROUTING_BACKEND
             }),
+            createMarker: (i, waypoint, n) => {
+
+
+                // Default icon for positio
+                if (i == 0) {
+                    return L.marker(waypoint.latLng);
+                }
+
+                
+                // Bin icon for garbage bins
+                let binIndicator = L.icon({
+                    iconUrl: binIcon,
+                    iconSize: [20, 30],
+                    shadowSize: [68, 95],
+                    shadowAnchor: [22, 94]
+                });
+
+                return L.marker(waypoint.latLng, {
+                    icon: binIndicator
+                });
+            },
             lineOptions: {
                 styles: [{
                     color: "blue",
@@ -65,6 +100,12 @@ export class Routing extends MapLayer {
         }).addTo(map.leafletElement);
 
         return leafletElement.getPlan();
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        position: state.collect.position
     }
 }
 

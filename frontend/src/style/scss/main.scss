@@ -117,6 +117,39 @@ body {
         filter: blur(4px);
     }
 
+    &.active {
+        width: 100vw;
+
+        .leaflet-container {
+            width: 100%;
+        }
+    }
+
+    &.active + .interactive-elements {
+        position: absolute;
+        display: flex;
+        z-index: 100;
+
+        padding: 0;
+
+        height: auto;
+        width: auto;
+
+        bottom: 20px;
+        left: 20px;
+
+        .button {
+            background-color: lighten($ceil, 10);
+            border-color: lighten($ceil, 10);
+            color: white;
+
+            &:hover {
+                background-color: $ceil;
+                border-color: $ceil;
+            }
+        }
+    }
+
     // -webkit-backgrop-filter: blur(0.8);
     // backdrop-filter: blur(0.8);
 }
@@ -275,6 +308,11 @@ body {
         border-color: lighten($ceil, 7);
         background-color: lighten($ceil, 7);
     }
+
+    &.disable {
+        background-color: lighten($ceil, 20);
+        border-color: lighten($ceil, 20);
+    }
 }
 
 
@@ -283,7 +321,7 @@ body {
 // Customize-Leaflet alt-text
 
 .leaflet-routing-container {
-    display: none;
+    // display: none;
     
     padding: 15px 15px;
     

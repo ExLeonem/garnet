@@ -10,6 +10,7 @@ import {
     LOAD_BINS_ERROR,
     REMOVE_BIN,
     SET_POSITION, 
+    SET_LOCATION_ID,
     START_ROUTING,
     END_ROUTING
 } from '../types/collect';
@@ -21,7 +22,15 @@ let initialState = {
     districts: getItem("selectedDistricts", []), // selected districts to use for collection
     bins: getItem("bins", []), // array of {id: id, position: [lat, long], fillState: fillState}
     position: getItem("position", []), // current position
+    locationId: getItem("locationId", null), // Id of geolocation
     route: getItem("route", false) // wether or not to start routing
+}
+
+// Fallback if no access to geo-coordinates
+const DEFAULT_POSITION = [47.672473, 9.173396];
+const DEFAULT_VIEWPORT = {
+    center: DEFAULT_POSITION,
+    zoom: 15,
 }
 
 
@@ -82,8 +91,17 @@ export default function(state = initialState, action) {
 
         case SET_POSITION: {
             
-            setItem("position", action.payload);
-            newState = {...state, position: action.payload};
+            let position = action.payload;
+            setItem("position", position);
+            newState = {...state, position: position};
+            break;
+        }
+
+        case SET_LOCATION_ID: {
+
+            let id = action.payload;
+            setItem("locationId", id);
+            newState = {...state, locationId: id};
             break;
         }
 
@@ -115,7 +133,7 @@ export default function(state = initialState, action) {
 
             // Clear geo-watcher
             if ("geolocation" in navigator) {
-                navigator.geolocation.clearWatch();
+                navigator.geolocation.clearWatch(state.locationId);
             }
 
             break;
