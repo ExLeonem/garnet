@@ -12,7 +12,8 @@ import {
     SET_POSITION, 
     SET_LOCATION_ID,
     START_ROUTING,
-    END_ROUTING
+    END_ROUTING,
+    RESET_MAP
 } from '../types/collect';
 
 import { getItem, setItem } from './local_storage';
@@ -23,7 +24,9 @@ let initialState = {
     bins: getItem("bins", []), // array of {id: id, position: [lat, long], fillState: fillState}
     position: getItem("position", []), // current position
     locationId: getItem("locationId", null), // Id of geolocation
-    route: getItem("route", false) // wether or not to start routing
+    route: getItem("route", false), // wether or not to start routing
+    mapKey: getItem("mapKey", Math.random()),
+    tileKey: getItem("tileKey", Math.random()),
 }
 
 // Fallback if no access to geo-coordinates
@@ -72,10 +75,16 @@ export default function(state = initialState, action) {
 
         case LOAD_BINS_SUCCESS: {
 
-            newState = {...state, bins: action.payload.body};
+            let route = state.route;
+            if (state.position !== []) {
+                route = true;
+            }
+
+            newState = {...state, bins: action.payload.body, route: route};
 
             // to many garbage bins potentially not saveable in localStorage
             setItem("bins", action.payload.body); 
+            setItem("route", true);
             break;
         }
 
@@ -91,9 +100,14 @@ export default function(state = initialState, action) {
 
         case SET_POSITION: {
             
+            let route = state.route;
+            if (state.bins !== []) {
+                route = true;
+            }
+
             let position = action.payload;
             setItem("position", position);
-            newState = {...state, position: position};
+            newState = {...state, position: position, route: route};
             break;
         }
 
@@ -105,7 +119,16 @@ export default function(state = initialState, action) {
             break;
         }
 
+        case RESET_MAP: {
+
+            let newKey = Math.random();
+            newState = {...state, mapKey: newKey};
+            setItem("mapKey", newKey);
+            break;
+        }
+
         case START_ROUTING: {
+
             newState = {...state, route: true};
             setItem("route", true);
             break;
@@ -113,16 +136,19 @@ export default function(state = initialState, action) {
 
         case END_ROUTING: {
 
+            // Default values
             let districts = [];
             let bins = [];
             let position = [];
             let route = false;
+            let newKey = Math.random();
             
             newState = {
                 districts: districts,
                 bins: bins,
                 position: position,
-                route: route
+                route: route,
+                mapKey: newKey
             };
 
             // Reset local storage
@@ -135,6 +161,10 @@ export default function(state = initialState, action) {
             if ("geolocation" in navigator) {
                 navigator.geolocation.clearWatch(state.locationId);
             }
+            setItem("locationId", null);
+
+            // Reset Map key
+            setItem("mapKey", newKey);
 
             break;
         }

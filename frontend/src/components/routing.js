@@ -8,6 +8,7 @@ import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 import binIcon from '../icons/alt_bin_icon.png';
+import { connect } from 'react-redux';
 
 
 // TODO: Add track of current position + remove waypoints.
@@ -47,18 +48,19 @@ export class Routing extends MapLayer {
 
         const {map, bins} = this.props;
 
+        console.log("Bins: ");
+        console.log(bins);
+
+        console.log("Inner position: ");
+        console.log(this.props.position);
 
         let mappedBinPositions = [];
         bins.forEach(bin => {
             mappedBinPositions.push([bin.latitude, bin.longitude])
         })
 
-        mappedBinPositions.push(this.props.position);
+        mappedBinPositions.push([this.props.position.latitude, this.props.position.longitude]);
         mappedBinPositions = mappedBinPositions.reverse();
-
-
-        console.log(mappedBinPositions);
-
         let leafletElement = L.Routing.control({
 
             waypoints: createWaypoints(mappedBinPositions),
@@ -100,12 +102,6 @@ export class Routing extends MapLayer {
         }).addTo(map.leafletElement);
 
         return leafletElement.getPlan();
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        position: state.collect.position
     }
 }
 

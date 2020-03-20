@@ -43,7 +43,6 @@ export default function(state = initialState, action) {
             let mapped = data.map(dist => ({id: dist, name: districtMapping[dist]}));
 
             return {...state, districts: mapped};
-            break;
         }
 
         default:

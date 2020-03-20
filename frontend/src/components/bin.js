@@ -72,7 +72,6 @@ export class BinView extends Component {
     }
 
     componentWillMount() {
-
         this.props.loadBins(this.props.districts);
     }
 

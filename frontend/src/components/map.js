@@ -8,13 +8,12 @@ import { Map, TileLayer, Marker} from 'react-leaflet';
 import { connect } from 'react-redux';
 
 import Routing from './routing';
-import { setPosition, setLocationId } from '../state/actions/collect';
-import { thisExpression } from '@babel/types';
+import { setPosition, setLocationId, resetMap } from '../state/actions/collect';
 
 // Fallback if no access to geo-coordinates
-const DEFAULT_POSITION = [47.672473, 9.173396];
+const DEFAULT_POSITION = {latitude: 47.672473, longitude: 9.173396};
 const DEFAULT_VIEWPORT = {
-    center: DEFAULT_POSITION,
+    center: [47.672473, 9.173396],
     zoom: 15,
 }
 
@@ -46,7 +45,8 @@ class MapView extends Component {
         this.state = {
             viewport: DEFAULT_VIEWPORT,
             currentPosition: DEFAULT_POSITION,
-            isMapInit: false
+            isMapInit: false,
+            bins: []
         }
     }
 
@@ -65,12 +65,9 @@ class MapView extends Component {
         })
     }
 
-    
     render() {
 
-        // Track current position if possible by the device
         if ("geolocation" in navigator) {
-                
             let locationId = navigator.geolocation.watchPosition((position) => {
 
                 // Set current position in state
@@ -85,25 +82,29 @@ class MapView extends Component {
     
                     // Set Viewport & Position 
                     this.setState({viewport: newViewport});
+                    this.setState({currentPosition: position.coords});
                 }
-
-                this.setState({currentPosition: position.coords});
             }, err => {
                 // User declined
+                console.log("error");
                 
             });
             this.props.setLocationId(locationId);
         }
 
 
-        // Empty position: halt, cause not enabled
-        if (this.props.position == []) {
-            
+        // console.log("current Position:");
+        // console.log(this.state.currentPosition);
+
+        let router = null;
+        if (this.props.route) {
+            router = <Routing map={this.map} bins={this.props.bins} position={this.state.currentPosition}/>;
         }
-        
+
         return (
             <React.Fragment>
                 <Map
+                    key={this.props.mapKey}
                     onClick={this.onClickReset}
                     onViewportChanged={this.onViewportChanged}
                     viewport={this.state.viewport}
@@ -114,7 +115,7 @@ class MapView extends Component {
                     <TileLayer
                         attribution={MAP_PROVIDER.openStreetmap.attribution}
                         url={MAP_PROVIDER.openStreetmap.url}/>
-                    {this.state.isMapInit && <Routing map={this.map} bins={this.props.bins} position={this.state.currentPosition}/>}
+                    {this.state.isMapInit && router}
                 </Map>
             </React.Fragment>
         )
@@ -124,14 +125,18 @@ class MapView extends Component {
 const mapStateToProps = state => {
     return {
         position: state.collect.position,
-        bins: state.collect.bins
+        bins: state.collect.bins,
+        route: state.collect.route,
+        mapKey: state.collect.mapKey,
+        tileKey: state.collect.tileKey
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         setPosition: position => dispatch(setPosition(position)),
-        setLocationId: id => dispatch(setLocationId(id))
+        setLocationId: id => dispatch(setLocationId(id)),
+        resetMap: () => dispatch(resetMap())
     }
 }
 

@@ -56,9 +56,6 @@ export class BinCollectPage extends Component {
 
 const mapStateToProps = state => {
     return {
-        districts: state.collect.districts,
-        bins: state.collect.bins,
-        position: state.collect.position,
         route: state.collect.route
     }
 }

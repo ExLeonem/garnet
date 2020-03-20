@@ -18,7 +18,8 @@ import {
     SET_LOCATION_ID,
 
     START_ROUTING,
-    END_ROUTING
+    END_ROUTING,
+    RESET_MAP
 } from '../types/collect';
 
 
@@ -40,6 +41,7 @@ const removeDistrict = (districtID) => {
 
 
 const loadBins = (districIds) => {
+
 
     let endpoint = process.env.REACT_APP_GARNET_BACKEND + 'getFilledTrashcans';
     return dispatch => {
@@ -94,6 +96,12 @@ const setLocationId = id => {
     }
 }
 
+const resetMap = () => {
+    return {
+        type: RESET_MAP
+    }
+}
+
 const startRouting = () => {
     return {
         type: START_ROUTING,
@@ -115,6 +123,7 @@ export {
     removeBin,
     setPosition,
     setLocationId,
+    resetMap,
     startRouting,
     endRouting
 }
