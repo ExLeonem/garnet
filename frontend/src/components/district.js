@@ -86,7 +86,7 @@ export class DistrictSelection extends Component {
             selectables.push(toAdd);
         });
 
-        if (selectables.length >= 0) {
+        if (selectables.length > 0) {
             
             return (
                 <ul className="districts">
@@ -106,7 +106,10 @@ export class DistrictSelection extends Component {
 
     // Redirects to the routing view
     renderRedirect(routeLocations) {
-        
+
+
+        console.log(routeLocations);
+
         return routeLocations? <Redirect to="/collect/route"/> : null;
     }
 

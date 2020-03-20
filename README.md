@@ -13,7 +13,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 2. [Architecture](#Architecture)
 3. [Frontend](./frontend/README.md)
 4. [API](./api_server/README.md)
-5. [Issues](#Issues)
+5. [Known Issues](#Known-Issues)
 
 
 ## Setup
@@ -135,55 +135,21 @@ Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
 
 ### Endpoints
 
-/allTrashcans
-- Request-Type: GET
-- Headers: content-Type:application/json
-- Body: 
+The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
+**To receive responses from the backend, the content-type needs to be set to: `content-type: application/json`.**
 
-/trashCan/{id}
-- Request-Type: GET
-- Headers: content-Type:application/json
-- Body: 
-
-/allDistricts
-- Request-Type: GET
-- Headers: content-Type:application/json
-- Body: 
+| Endpoint              | Method    |  Description  | Body
+| ---                   | ---       |  ---          | ---
+| /allTrashcans         | GET       | Retrieve all trashcans known to the system |
+| /trashCan/{id}        | GET       |   |
+| /allDistricts         | GET       | Retrieves all districts known to the system
+| /getFilledTrashcans   | POST      | Retriev all district where an trashcan exists that needs to be emptied. | `{"districsts": \[id_1, id_2, ...\]}`
+| /trashcan             | POST      | Add a trashcan to the system | `{"fill_weight": number, "latitude": number, "longitude": number, "trashtype": number, "districts": number}`
+| /fillTrashcan         | POST      | Update the current fill state of trashcan | `{"id": <bin_id>, "fill_state": number}`
+| /updateTrashcan       | POST      | Update the curent values of a trashcan    | `{"id": <bin_id>, "district": <district_id>}`
 
 
-/getFilledTrashcans
-- Request-Type: GET
-- Headers: content-Type:application/json
-- Body: {"districts": [id_1, id_2, (...)] }
-
-/trashcan
-- Request-Type: POST
-- Headers: content-Type:application/json
-- Body: { 
-    "fill_weight": 2.0,
-    "latitude": 1.0,
-    "longitude": 1.0,
-    "trashtype": 1,
-    "district": 1
-}
-
-/fillTrashcan
-- Request-Type: POST
-- Headers: content-Type:application/json
-- Body: {
-"id": 5,
-"fill_weight": 101.2384
-}
-
-/updateTrashcan
-- Request-Type: POST
-- Headers: content-Type:application/json
-- Body: {
-"id": 1,
-"district": 1
-}
-
-## Issues
+## Known Issues
 
 Issues are only occuring in Windows Environments, in Linux everything works fine.
 

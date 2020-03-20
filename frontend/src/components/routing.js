@@ -8,7 +8,6 @@ import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
 import binIcon from '../icons/alt_bin_icon.png';
-import { connect } from 'react-redux';
 
 
 // TODO: Add track of current position + remove waypoints.
