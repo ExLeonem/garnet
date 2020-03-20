@@ -11,6 +11,7 @@ import { CheckMark} from './icons'
  * Renders a ciruclar button with an icon inside
  * 
  * @param {string} type - Which icon to use {check, close, ...} look into ./icons.js
+ * @param {string} className - Additional class names to be add.
  * @param {callback} onClick - Callback for the onClick even
  */
 let ButtonCircle =({type, className = null, onClick = () => {return null}}) => {
@@ -32,7 +33,7 @@ let ButtonCircle =({type, className = null, onClick = () => {return null}}) => {
  * @param {callback} onClick - callback function for the onClick event
  * @param {string} children -  Text displayed by the button
  */
-let ButtonMixed = ({className, onClick, children, iconName}) => {
+let ButtonMixed = ({className, onClick, children}) => {
 
     let style = "button" + (className? " " + className : "");
     let icon = "";

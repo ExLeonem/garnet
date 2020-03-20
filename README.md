@@ -4,16 +4,22 @@
 A proof of concept for an intelligent waste-management-system. Trashcans sending the current fill state over LoRa to an api-server. The optimal route to collect the trashcans filled to a certain degree is calculated via a separate routing engine. The route and trashcans to empty is displayed in a frontend application.
 
 
+![GarNet Demo](./assets/images/garnet_demo.gif)
 
-## Inhaltsverzeichnis
+
+## Index
 
 1. [Setup](#Setup)
     1. [General](#General)
     2. [Windows](#Windows)
-2. [Architecture](#Architecture)
-3. [Frontend](./frontend/README.md)
-4. [API](./api_server/README.md)
-5. [Known Issues](#Known-Issues)
+2. [Frontend](./frontend/README.md)
+    1. Visual Concept
+    2. Project Structure
+    3. Avaible Script
+3. [Backend](./api_server/README.md)
+    1. Endpoints
+    2. Architecture
+4. [Known Issues](#Known-Issues)
 
 
 ## Setup
@@ -70,8 +76,6 @@ In the last step you should add information about trashcan positions and optiona
 As this project resembles a proof of concept for the town of constance a .csv file with bin positions is included which could be 
 
 
-
-
 ### Map setup
 
 Download the needed data from [Geofabrik](#Geofabrik).
@@ -87,7 +91,6 @@ Run following commands in order to convert the `osm.pfg` file to a usable `osrm`
 3. `docker run -t -v "${PWD}/routing_data:/data" osrm/osrm-backend osrm-customize /data/<file-name>.osrm`
 
 After everything worked out you should be able to use the osrm api. For reference checkout the [osrm-backend](https://hub.docker.com/r/osrm/osrm-backend/) documentation.
-
 
 
 
@@ -124,35 +127,15 @@ Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
 
 Über DockerIP:1234 PhpMyAdmin
 
-## Architecture
-
-
-## Frontend
-
-
-
-## API
-
-### Endpoints
-
-The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
-**To receive responses from the backend, the content-type needs to be set to: `content-type: application/json`.**
-
-| Endpoint              | Method    |  Description  | Body
-| ---                   | ---       |  ---          | ---
-| /allTrashcans         | GET       | Retrieve all trashcans known to the system |
-| /trashCan/{id}        | GET       |   |
-| /allDistricts         | GET       | Retrieves all districts known to the system
-| /getFilledTrashcans   | POST      | Retriev all district where an trashcan exists that needs to be emptied. | `{"districsts": \[id_1, id_2, ...\]}`
-| /trashcan             | POST      | Add a trashcan to the system | `{"fill_weight": number, "latitude": number, "longitude": number, "trashtype": number, "districts": number}`
-| /fillTrashcan         | POST      | Update the current fill state of trashcan | `{"id": <bin_id>, "fill_state": number}`
-| /updateTrashcan       | POST      | Update the curent values of a trashcan    | `{"id": <bin_id>, "district": <district_id>}`
-
 
 ## Known Issues
 
-Issues are only occuring in Windows Environments, in Linux everything works fine.
-
-Current Issues:
+### Windows related
 
 - exec "diesel" not found. Currently no applicable solution. (Win10 Pro)
+
+### Docker
+
+1. Docker can't create socket for given port.
+- Check if the container was already created with `docker ps -a` and execute it manually with `docker start <container_id>`. Or try to run `docker-compose up -d` again.
+- To prevent this issue of occuring you need to give docker more memory.
