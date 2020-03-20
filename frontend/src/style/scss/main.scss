@@ -32,6 +32,48 @@ body {
     align-items: flex-start;
 
     width: 100vw;
+    height: 100vh;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+
+    .welcome {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        width: 100vw;
+        height: 100vh;
+
+
+        svg {
+            height: 150px;
+            width: 150px;
+
+            animation: jump 0.5s infinite;
+            animation-timing-function: cubic-bezier(.08,.87,.23,1.02);
+            animation-direction: alternate-reverse;
+        }
+
+        @keyframes jump {
+            from {
+                transform: translate(0px, 0px);
+            }
+
+            100% {
+                transform: translate(0px, -10px);
+            }
+        }
+    
+        h3 {
+            margin-top: 25px;
+            user-select: none;
+        }
+        
+    }
 }
 
 
@@ -75,8 +117,38 @@ body {
         filter: blur(4px);
     }
 
-    // -webkit-backgrop-filter: blur(0.8);
-    // backdrop-filter: blur(0.8);
+    &.active {
+        width: 100vw;
+
+        .leaflet-container {
+            width: 100%;
+        }
+    }
+
+    &.active + .interactive-elements {
+        position: absolute;
+        display: flex;
+        z-index: 100;
+
+        padding: 0;
+
+        height: auto;
+        width: auto;
+
+        bottom: 20px;
+        left: 20px;
+
+        .button {
+            background-color: lighten($ceil, 10);
+            border-color: lighten($ceil, 10);
+            color: white;
+
+            &:hover {
+                background-color: $ceil;
+                border-color: $ceil;
+            }
+        }
+    }
 }
 
 
@@ -233,6 +305,11 @@ body {
         border-color: lighten($ceil, 7);
         background-color: lighten($ceil, 7);
     }
+
+    &.disable {
+        background-color: lighten($ceil, 20);
+        border-color: lighten($ceil, 20);
+    }
 }
 
 
@@ -241,7 +318,8 @@ body {
 // Customize-Leaflet alt-text
 
 .leaflet-routing-container {
-
+    // display: none;
+    
     padding: 15px 15px;
     
     h3 {

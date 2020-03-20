@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ButtonText } from '../components/button';
-import { endRouting } from '../state/actions/collect';
+import { endRouting, loadBins } from '../state/actions/collect';
 
 
 /**
@@ -35,7 +35,7 @@ let BinCollectionState = ({fillState}) => {
  * @param {number} fillState - The amount of trash inside the bin in percent [0, 100]
  * 
  */
-let Bin = ({position, fillState}) => {
+let Bin = ({id, position, fillState}) => {
     return (
         <div className="bin">
             <BinCollectionState/>
@@ -49,8 +49,15 @@ let Bin = ({position, fillState}) => {
  * 
  * @param {Object} bins - Array of objects, each representing a bin. With {position: [lat, long], fillState: number} 
  */
-let BinList = ({bins}) => {
+let BinList = ({children}) => {
+
+    let bins = children.map(bin => <Bin key={bin.id}/>)
     
+    return (
+        <ul className="bin-list">
+            
+        </ul>
+    );
 }
 
 
@@ -64,18 +71,16 @@ export class BinView extends Component {
         return routeLocations? null : <Redirect to="/collect/districts"/>;
     }
 
+    componentWillMount() {
+        this.props.loadBins(this.props.districts);
+    }
+
 
     render() {
         return (
             <React.Fragment>
                 {this.renderRedirect(this.props.route)}
-
-                <div className="header">
-
-                </div>
-
                 <ButtonText onClick={() => this.props.endRouting()}>Tour Beenden</ButtonText>
-
             </React.Fragment>
         )
     }
@@ -84,13 +89,16 @@ export class BinView extends Component {
 
 const mapStateToProps = state => {
     return {
-        route: state.collect.route
+        route: state.collect.route,
+        districts: state.collect.districts,
+        bins: state.collect.bins,
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        endRouting: () => dispatch(endRouting())
+        endRouting: () => dispatch(endRouting()),
+        loadBins: (districtIds) => dispatch(loadBins(districtIds))
     };
 }
 

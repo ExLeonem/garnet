@@ -8,20 +8,32 @@ import {
     REMOVE_DISTRICT,
     LOAD_BINS_SUCCESS,
     LOAD_BINS_ERROR,
-    REMOVE_BIN, 
+    REMOVE_BIN,
+    SET_POSITION, 
+    SET_LOCATION_ID,
     START_ROUTING,
-    END_ROUTING
+    END_ROUTING,
+    RESET_MAP
 } from '../types/collect';
 
 import { getItem, setItem } from './local_storage';
 
-// let storage = window.localStorage;
 
 let initialState = {
     districts: getItem("selectedDistricts", []), // selected districts to use for collection
     bins: getItem("bins", []), // array of {id: id, position: [lat, long], fillState: fillState}
     position: getItem("position", []), // current position
-    route: getItem("route", false) // wether or not to start routing
+    locationId: getItem("locationId", null), // Id of geolocation
+    route: getItem("route", false), // wether or not to start routing
+    mapKey: getItem("mapKey", Math.random()),
+    tileKey: getItem("tileKey", Math.random()),
+}
+
+// Fallback if no access to geo-coordinates
+const DEFAULT_POSITION = [47.672473, 9.173396];
+const DEFAULT_VIEWPORT = {
+    center: DEFAULT_POSITION,
+    zoom: 15,
 }
 
 
@@ -33,7 +45,7 @@ export default function(state = initialState, action) {
 
         case ADD_DISTRICT: {
 
-            console.log(state.districts);
+            // console.log(state.districts);
 
             // Add not already added district
             let currentDistricts = state.districts;
@@ -62,24 +74,61 @@ export default function(state = initialState, action) {
         }
 
         case LOAD_BINS_SUCCESS: {
-            // Successfully loaded bins
 
+            let route = state.route;
+            if (state.position !== []) {
+                route = true;
+            }
+
+            newState = {...state, bins: action.payload.body, route: route};
+
+            // to many garbage bins potentially not saveable in localStorage
+            setItem("bins", action.payload.body); 
+            setItem("route", true);
             break;
         }
 
         case LOAD_BINS_ERROR: {
-            // Error loading bins
 
             break;
         }
 
         case REMOVE_BIN: {
 
+            break;
+        }
 
+        case SET_POSITION: {
+            
+            let route = state.route;
+            if (state.bins !== []) {
+                route = true;
+            }
+
+            let position = action.payload;
+            setItem("position", position);
+            newState = {...state, position: position, route: route};
+            break;
+        }
+
+        case SET_LOCATION_ID: {
+
+            let id = action.payload;
+            setItem("locationId", id);
+            newState = {...state, locationId: id};
+            break;
+        }
+
+        case RESET_MAP: {
+
+            let newKey = Math.random();
+            newState = {...state, mapKey: newKey};
+            setItem("mapKey", newKey);
             break;
         }
 
         case START_ROUTING: {
+
             newState = {...state, route: true};
             setItem("route", true);
             break;
@@ -87,16 +136,19 @@ export default function(state = initialState, action) {
 
         case END_ROUTING: {
 
+            // Default values
             let districts = [];
             let bins = [];
             let position = [];
             let route = false;
+            let newKey = Math.random();
             
             newState = {
                 districts: districts,
                 bins: bins,
                 position: position,
-                route: route
+                route: route,
+                mapKey: newKey
             };
 
             // Reset local storage
@@ -104,6 +156,16 @@ export default function(state = initialState, action) {
             setItem("bins", bins);
             setItem("position", position);
             setItem("route", route);
+
+            // Clear geo-watcher
+            if ("geolocation" in navigator) {
+                navigator.geolocation.clearWatch(state.locationId);
+            }
+            setItem("locationId", null);
+
+            // Reset Map key
+            setItem("mapKey", newKey);
+
             break;
         }
 

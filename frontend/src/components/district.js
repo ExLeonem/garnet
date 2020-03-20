@@ -9,12 +9,11 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { addDistrict, removeDistrict, startRouting } from '../state/actions/collect';
+import { addDistrict, removeDistrict, startRouting, loadBins, setPosition } from '../state/actions/collect';
 import { loadDistricts } from '../state/actions/env';
 
 import { ButtonText, ButtonCircle } from './button';
 import { Add } from './icons';
-
 
 
 /**
@@ -87,7 +86,21 @@ export class DistrictSelection extends Component {
             selectables.push(toAdd);
         });
 
-        return selectables;
+        if (selectables.length >= 0) {
+            
+            return (
+                <ul className="districts">
+                    {selectables}   
+                </ul>
+            )
+        }
+
+        // No garbage bins/district from which to collect
+        return (
+            <div>
+                Aktuell sind müssen keine Mülltonnen abgeholt werden.
+            </div>
+        )
     }
 
 
@@ -99,6 +112,12 @@ export class DistrictSelection extends Component {
 
     
     render() {
+
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                this.props.setPosition(position.coords);            
+            });
+        }
 
         // Load districts if they are not already available
         let districts = this.props.districts;
@@ -116,12 +135,11 @@ export class DistrictSelection extends Component {
                         {this.state.countSelected > 0? "Ausgewählte Bezirke" : "Wähle ein oder mehrere Bezirke."}
                         <i className={"selected-districts" + (this.state.countSelected > 0? " active" : "")}>{this.state.countSelected}</i>
                     </p>
-                    <ButtonCircle onClick={this.props.startRouting}/>
+                    <ButtonCircle className={this.state.countSelected > 0? null : "disable"} onClick={this.state.countSelected > 0? () => this.props.loadBins(this.props.selectedDistricts) : () => {return null;}}/>
                 </div>
 
-                <ul className="districts">
-                    {this.renderDistricts(districts, this.props.selectedDistricts)}
-                </ul>
+
+                {this.renderDistricts(districts, this.props.selectedDistricts)}
             </React.Fragment>
         )
     }
@@ -139,9 +157,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         loadDistricts: () => dispatch(loadDistricts()),
+        loadBins: districtIds => dispatch(loadBins(districtIds)),
         addDistrict: id => dispatch(addDistrict(id)),
         removeDistrict: id => dispatch(removeDistrict(id)),
-        startRouting: () => dispatch(startRouting())
+        startRouting: () => dispatch(startRouting()),
+        setPosition: coords => dispatch(setPosition(coords))
     }
 }
 

@@ -5,14 +5,15 @@
 
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker} from 'react-leaflet';
+import { connect } from 'react-redux';
+
 import Routing from './routing';
-
-
+import { setPosition, setLocationId, resetMap } from '../state/actions/collect';
 
 // Fallback if no access to geo-coordinates
-const DEFAULT_POSITION = [47.672473, 9.173396];
+const DEFAULT_POSITION = {latitude: 47.672473, longitude: 9.173396};
 const DEFAULT_VIEWPORT = {
-    center: DEFAULT_POSITION,
+    center: [47.672473, 9.173396],
     zoom: 15,
 }
 
@@ -30,14 +31,6 @@ const MAP_PROVIDER = {
     }
 }
 
-// Example points used to test render of route
-const POS = [
-    [47.674682, 9.180758],
-    [47.673538, 9.184933],
-    [47.676096, 9.180624]
-]
-
-
 /**
  * 
  * Renders the map displaying the bin locations and the path to take for optimal time efficency.
@@ -52,10 +45,10 @@ class MapView extends Component {
         this.state = {
             viewport: DEFAULT_VIEWPORT,
             currentPosition: DEFAULT_POSITION,
-            isMapInit: false
+            isMapInit: false,
+            bins: []
         }
     }
-
 
     onClickReset = () => {
         this.setState({ viewport: DEFAULT_VIEWPORT })
@@ -72,30 +65,46 @@ class MapView extends Component {
         })
     }
 
-    
     render() {
 
-        // Set the current position
         if ("geolocation" in navigator) {
-                
-            navigator.geolocation.getCurrentPosition((position) => {
-                let newViewport = {
-                    center: [position.coords.latitude, position.coords.longitude],
-                    zoom: 15
+            let locationId = navigator.geolocation.watchPosition((position) => {
+
+                // Set current position in state
+                this.props.setPosition(position.coords);
+
+                if (this.state.viewport == null) {
+
+                    let newViewport = {
+                        center: [position.coords.latitude, position.coords.longitude],
+                        zoom: 15
+                    }
+    
+                    // Set Viewport & Position 
+                    this.setState({viewport: newViewport});
+                    this.setState({currentPosition: position.coords});
                 }
-
-                // Set Viewport & Position 
-                this.setState({viewport: newViewport});
-                this.setState({currentPosition: [position.coords.latitude, position.coords.longitude]})
+            }, err => {
+                // User declined
+                console.log("error");
+                
             });
-
-            // TODO: Add watch
+            this.props.setLocationId(locationId);
         }
 
+
+        // console.log("current Position:");
+        // console.log(this.state.currentPosition);
+
+        let router = null;
+        if (this.props.route) {
+            router = <Routing map={this.map} bins={this.props.bins} position={this.state.currentPosition}/>;
+        }
 
         return (
             <React.Fragment>
                 <Map
+                    key={this.props.mapKey}
                     onClick={this.onClickReset}
                     onViewportChanged={this.onViewportChanged}
                     viewport={this.state.viewport}
@@ -106,11 +115,29 @@ class MapView extends Component {
                     <TileLayer
                         attribution={MAP_PROVIDER.openStreetmap.attribution}
                         url={MAP_PROVIDER.openStreetmap.url}/>
-                    {this.state.isMapInit && <Routing map={this.map} positions={POS} />}
+                    {this.state.isMapInit && router}
                 </Map>
             </React.Fragment>
         )
     }
 }
 
-export default MapView
+const mapStateToProps = state => {
+    return {
+        position: state.collect.position,
+        bins: state.collect.bins,
+        route: state.collect.route,
+        mapKey: state.collect.mapKey,
+        tileKey: state.collect.tileKey
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setPosition: position => dispatch(setPosition(position)),
+        setLocationId: id => dispatch(setLocationId(id)),
+        resetMap: () => dispatch(resetMap())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapView)

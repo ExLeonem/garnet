@@ -4,8 +4,7 @@
  * 
  */
 
-// import axios from 'axios';
-import axios from 'axios';
+import superagent from 'superagent';
 
 import {
     ADD_DISTRICT,
@@ -15,8 +14,12 @@ import {
     LOAD_BINS_ERROR,
     REMOVE_BIN,
 
+    SET_POSITION,
+    SET_LOCATION_ID,
+
     START_ROUTING,
-    END_ROUTING
+    END_ROUTING,
+    RESET_MAP
 } from '../types/collect';
 
 
@@ -37,26 +40,28 @@ const removeDistrict = (districtID) => {
 }
 
 
-const loadBins = (districtID) => {
+const loadBins = (districIds) => {
 
-    let apiUrl = process.env.REACT_APP_GARNET_BACKEND;
-    
+
+    let endpoint = process.env.REACT_APP_GARNET_BACKEND + 'getFilledTrashcans';
     return dispatch => {
 
-        axios.get(apiUrl, {
-            headers: {"Content-Type": "application/json"},
-            completed: false
-        }).then(res => {
-            // success
-            dispatch(loadBinsSuccess(res));
-        }).catch(err => {
-            // error
-            dispatch(loadBinsError(err));
-        });
+        superagent.post(endpoint)
+            .set('content-type', 'application/json')
+            .send({'districts': districIds})
+            .then(res => {
+                console.log(res);
+                dispatch(loadBinsSuccess(res));
+
+            }).catch(err => {
+                console.log(err);
+                dispatch(loadBinsError(err));
+
+            });
     }
 }
 
-const loadBinsSuccess = (bins) => ({
+const loadBinsSuccess = bins => ({
     type: LOAD_BINS_SUCCESS,
     payload: {
         ...bins
@@ -70,10 +75,30 @@ const loadBinsError = error => ({
     }
 });
 
-const removeBin = (binID) => {
+const removeBin = binID => {
     return {
         type: REMOVE_BIN,
         payload: binID
+    }
+}
+
+const setPosition = position => {
+    return {
+        type: SET_POSITION,
+        payload: position
+    }
+}
+
+const setLocationId = id => {
+    return {
+        type: SET_LOCATION_ID,
+        payload: id 
+    }
+}
+
+const resetMap = () => {
+    return {
+        type: RESET_MAP
     }
 }
 
@@ -96,6 +121,9 @@ export {
     removeDistrict,
     loadBins,
     removeBin,
+    setPosition,
+    setLocationId,
+    resetMap,
     startRouting,
     endRouting
 }

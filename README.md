@@ -1,6 +1,6 @@
 
 
-# Garbage Netowrk (Garnet)
+# Garbage Network (Garnet)
 A proof of concept for an intelligent waste-management-system. Trashcans sending the current fill state over LoRa to an api-server. The optimal route to collect the trashcans filled to a certain degree is calculated via a separate routing engine. The route and trashcans to empty is displayed in a frontend application.
 
 
@@ -94,14 +94,34 @@ After everything worked out you should be able to use the osrm api. For referenc
 ### Win 10 Home
 
 Benötigt wird Docker Toolbox, npm, mysql
+
 Docker muss gestartet werden
+
 Umgebungsariable setzten: MYSQLCLIENT_LIB_DIR = C:\Program Files\MySQL\MySQL Connector C 6.1\lib\vs14
+
 docker-compose up im Projekt-Verzeichnis
+
 Nachdem die Container laufen (docker ps -a)
+
 docker exec [Container ID des Servers] diesel migration run
+
 IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
+
 Über DockerIP:3000 kann über auf das Frontend zugegriffen werden
-Über DockerIP:3001 kann über bspw. Postman das Backend manipuliert werden
+
+Über DockerIP:3001 kann über bspw. Postman das Backend manipuliert werden. Es müssen folgende Parameter im
+Header gesetzt werden:
+
+KEY: Content-Type
+
+VALUE: application/json
+
+Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
+
+{
+    "districts": [1, 2]
+}
+
 Über DockerIP:1234 PhpMyAdmin
 
 ## Architecture
@@ -113,7 +133,55 @@ IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
 
 ## API
 
+### Endpoints
 
+/allTrashcans
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+/trashCan/{id}
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+/allDistricts
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: 
+
+
+/getFilledTrashcans
+- Request-Type: GET
+- Headers: content-Type:application/json
+- Body: {"districts": [id_1, id_2, (...)] }
+
+/trashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: { 
+    "fill_weight": 2.0,
+    "latitude": 1.0,
+    "longitude": 1.0,
+    "trashtype": 1,
+    "district": 1
+}
+
+/fillTrashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: {
+"id": 5,
+"fill_weight": 101.2384
+}
+
+/updateTrashcan
+- Request-Type: POST
+- Headers: content-Type:application/json
+- Body: {
+"id": 1,
+"district": 1
+}
 
 ## Issues
 

@@ -7,6 +7,8 @@
 import { MapLayer, withLeaflet } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import binIcon from '../icons/alt_bin_icon.png';
+import { connect } from 'react-redux';
 
 
 // TODO: Add track of current position + remove waypoints.
@@ -23,7 +25,7 @@ const createWaypoints = (positions) => {
         return [];
     }
 
-    console.log(positions);
+    // console.log(positions);
 
     let waypoints = [];
     positions.forEach(pos => {
@@ -44,13 +46,48 @@ export class Routing extends MapLayer {
 
     createLeafletElement() {
 
-        const {map, positions} = this.props;
+        const {map, bins} = this.props;
+
+        console.log("Bins: ");
+        console.log(bins);
+
+        console.log("Inner position: ");
+        console.log(this.props.position);
+
+        let mappedBinPositions = [];
+        bins.forEach(bin => {
+            mappedBinPositions.push([bin.latitude, bin.longitude])
+        })
+
+        mappedBinPositions.push([this.props.position.latitude, this.props.position.longitude]);
+        mappedBinPositions = mappedBinPositions.reverse();
         let leafletElement = L.Routing.control({
 
-            waypoints: createWaypoints(positions),
+            waypoints: createWaypoints(mappedBinPositions),
             router: new L.Routing.OSRMv1({
                 serviceUrl: process.env.REACT_APP_ROUTING_BACKEND
             }),
+            createMarker: (i, waypoint, n) => {
+
+
+                // Default icon for positio
+                if (i == 0) {
+                    return L.marker(waypoint.latLng);
+                }
+
+                
+                // Bin icon for garbage bins
+                let binIndicator = L.icon({
+                    iconUrl: binIcon,
+                    iconSize: [20, 30],
+                    shadowSize: [68, 95],
+                    shadowAnchor: [22, 94]
+                });
+
+                return L.marker(waypoint.latLng, {
+                    icon: binIndicator
+                });
+            },
             lineOptions: {
                 styles: [{
                     color: "blue",

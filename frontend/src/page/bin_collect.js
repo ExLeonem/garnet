@@ -7,9 +7,9 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux';
+import { loadBins, setPosition } from '../state/actions/collect';
 import { Switch, Route } from 'react-router-dom';
 
-// import Button from '../components/button';
 import MapView from '../components/map'
 import DistrictSelection from '../components/district';
 import BinView from '../components/bin';
@@ -56,9 +56,6 @@ export class BinCollectPage extends Component {
 
 const mapStateToProps = state => {
     return {
-        districts: state.collect.districts,
-        bins: state.collect.bins,
-        position: state.collect.position,
         route: state.collect.route
     }
 }

@@ -15,6 +15,7 @@ chrono = { version = "0.4.6", features = ["serde"] }
 diesel = { version = "1.4.2", features = ["mysql", "numeric"] }
 dotenv = "0.15.0"
 fast_paths = "0.1.0"
+rocket_cors = "0.5.0"
 
 # TSP Crates
 darwin-rs = "0.4"

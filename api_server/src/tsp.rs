@@ -12,7 +12,7 @@ pub fn compute_tsp(trashcans: Vec<Trashcan>) -> Vec<(f64, f64)> {
     let mut coordinates = Vec::new();
     for i in 0..trashcans.len() {
         coordinates.push((trashcans[i].latitude, trashcans[i].longitude))
-    } 
+    }
     run_tsp(&coordinates)
 }
 
@@ -62,9 +62,9 @@ fn make_population(count: u32, cities: &Vec<(f64, f64)>) -> Vec<CityItem> {
 
     for _ in 0..count {
         result.push( CityItem {
-                path: path.clone(),
-                cities: shared.clone()
-            }
+            path: path.clone(),
+            cities: shared.clone()
+        }
         );
     }
     result
