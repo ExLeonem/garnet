@@ -53,7 +53,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 
 ### Communication
 
-<img src="./assets/images/connection_schema.png" alt="Communication schema" style="max-height:200px;"/>
+<img src="./assets/images/connection_schema.png" alt="Communication schema" height="250px"/>
 
 
 
