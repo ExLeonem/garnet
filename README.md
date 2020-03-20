@@ -4,25 +4,51 @@
 A proof of concept for an intelligent waste-management-system. Trashcans sending the current fill state over LoRa to an api-server. The optimal route to collect the trashcans filled to a certain degree is calculated via a separate routing engine. The route and trashcans to empty is displayed in a frontend application.
 
 
-![GarNet Demo](./assets/images/garnet_demo.gif)
+![GarNet Demo](./assets/images/garnet_showcase.gif)
 
+## Built with
+- [Rust-Web-Starter](https://github.com/ghotiphud/rust-web-starter)
+- [Docker](https://www.docker.com/)
+- [OSRM Routing Machine](https://github.com/Project-OSRM/osrm-backend)
+- [MySQL](https://www.mysql.com/de/)
 
 ## Index
 
-1. [Setup](#Setup)
-    1. [General](#General)
+1. [About](#About)
+    1. [Roadmap](#Roadmap)
+    2. [Communication](#Communication)
+    3. [Hardware Prototype](#Hardware-Prototype)
+2. [Gettings Started](#Getting-Started)
+    1. [Setup](#Setup)
     2. [Windows](#Windows)
-2. [Frontend](./frontend/README.md)
-    1. Visual Concept
-    2. Project Structure
-    3. Avaible Script
-3. [Backend](./api_server/README.md)
-    1. Endpoints
-    2. Architecture
-4. [Known Issues](#Known-Issues)
+3. [Frontend](./frontend/)
+    1. [Visual Concept](https://www.figma.com/file/RKXHEMSCQr9gEqnpWOKq6cpQ/Teamprojekt?node-id=208%3A1450)
+    2. [Project Structure](./frontend/README.md#Project-Structure)
+    3. [Available Scripts](./frontend/README.md#Available-Scripts)
+4. [Backend](./api_server/README.md)
+    1. [Endpoints](./api_server/README.md#Endpoints)
+    2. [Architecture](./api_server/README.md#Architecture)
+5. [Known Issues](#Known-Issues)
 
 
-## Setup
+
+## About
+
+### Roadmap
+
+- [ ] API/Backend
+    - [x] Endpoint for retrieval of districts containing filled trashcans  
+    - [x] Endpoint for retrieval of filled trashcans
+    - [ ]
+- [ ] Frontend
+    - [ ] Display district in which to collect 
+
+### Communication
+
+### Hardware Prototype
+
+
+## Getting Started
 
 For the initial setup we used [Rust-Web-Start](#https://github.com/ghotiphud/rust-web-starter). 
 Additional Changes we made:
@@ -30,8 +56,16 @@ Additional Changes we made:
 - Switch from Postgres to MySQL
 - OSRM-engine for routing
 
+| Functionality | Port
+| ---           | ---
+| Frontend      | 3000
+| Backend       | 3001
+| PhpMyAdmin    | 1234
+| MySQL         | 3306
+| OSRM Backend  | 5000 
 
-### General
+
+### Setup
 To setup the project localy follow these steps.
 
 1. Setup the project. Execute `npm install` in `/frontend` For more information read [Frontend setup](#Frontend-setup)

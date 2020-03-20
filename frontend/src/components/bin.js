@@ -80,7 +80,7 @@ export class BinView extends Component {
         return (
             <React.Fragment>
                 {this.renderRedirect(this.props.route)}
-                <ButtonText onClick={() => this.props.endRouting()}>Tour Beenden</ButtonText>
+                <ButtonText onClick={() => this.props.endRouting()}>Finish tour</ButtonText>
             </React.Fragment>
         )
     }

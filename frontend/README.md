@@ -1,20 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-
 
 # Index
 
-1. [Visual concept](#Visual-concept)
-2. [Project structure](#Project-structure)
-3. [Available Scripts](#Available-Scripts)
+1. [Project Ptructure](#Project-Structure)
+2. [Available Scripts](#Available-Scripts)
 
-
-
-## Visual concept
-
-<iframe style="border: none;" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FRKXHEMSCQr9gEqnpWOKq6cpQ%2FTeamprojekt%3Fnode-id%3D208%253A1450" allowfullscreen></iframe>
-
-## Project structure
+## Project Structure
 
 
 
