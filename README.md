@@ -19,7 +19,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     2. [Communication](#Communication)
     3. [Trashcan Prototype](#Trashcan-Prototype)
 2. [Gettings Started](#Getting-Started)
-    1. [Setup](#Setup)
+    1. [General setup](#Setup)
     2. [Windows](#Windows)
 3. [Frontend](./frontend/)
     1. [Visual Concept](https://www.figma.com/file/RKXHEMSCQr9gEqnpWOKq6cpQ/Teamprojekt?node-id=208%3A1450)
@@ -40,10 +40,11 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     - [x] Endpoint for retrieval of districts containing filled trashcans  
     - [x] Endpoint for retrieval of filled trashcans
     - [ ] TSP Calculation using airline distance
+    - [ ] Maturity level 3 REST API
 - [ ] Frontend
     - [x] Display district in which to collect 
     - [x] Display the a route to collect the filled trashcans 
-- [ ] Prototype
+- [ ] Prototype 
     - [x] Create 3D-Models
     - [x] Print&Assemble the model
     - [x] Read ultrasonic sensor values
@@ -58,8 +59,6 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 
 
 ### Trashcan Prototype
-
-
 | Component 
 | ---
 | Arduino MKR 1300 WAN
@@ -85,21 +84,20 @@ Additional Changes we made:
 | MySQL                     | 3306
 | OSRM Backend              | 5000 
 
-
 ### Setup
 To setup the project localy follow these steps.
 
 1. Setup the project. Execute `npm install` in `/frontend` For more information read [Frontend setup](#Frontend-setup)
 2. Setup the Map data for routing. Check out [Map setup](#Map-setup) for more information.
-3. Migrate the Schema to the database. Se
+3. Migrate the Schema to the database.
 
-After you've made the below setups you can simply spin up the containers. Afterwards you simply need to migrate the database include you'r bins.
+After you've made the above setup you can simply spin up the containers. Afterwards you simply need to migrate the database include you'r bins.
 
 To migrate the model execute (In general all commands to work with the api container are also listed in the [Rust-Web starter](https://github.com/ghotiphud/rust-web-starter) Readme):
 `docker exec <container-name> diesel migration run`
 
 
-### Frontend setup
+#### Frontend setup
 
 Make sure that NPM/Node is installed. We used for the frontend setup.
 Following version of Node/NPM were used.
@@ -114,7 +112,7 @@ First of install NPM modules of the frontend. (Reason is the current dockerfile 
 - cd into the frontend folder `./frontend`
 - execute `npm install`
 
-### Backend Setup
+#### Backend Setup
 Start following containers: rocket_api, MySQL and phpmyadmin. Phpmyadmin should now be accessable at localhost:1234.
 Login with following credentials:
 
@@ -131,7 +129,7 @@ In the last step you should add information about trashcan positions and optiona
 As this project resembles a proof of concept for the town of constance a .csv file with bin positions is included which could be 
 
 
-### Map setup
+#### Map setup
 
 Download the needed data from [Geofabrik](#Geofabrik).
 
@@ -149,38 +147,16 @@ After everything worked out you should be able to use the osrm api. For referenc
 
 
 
-### Win 10 Home
+### Windows
 
-Benötigt wird Docker Toolbox, npm, mysql
+If you are using windows as a host operating system you need to consider two things in addition to the above guide for the setup.
 
-Docker muss gestartet werden
+1. You need to set an environment variable for `MYSQLCLIENT_LIB_DIR = C:\Program Files\MySQL\MySQL Connector C 6.1\lib\vs14`, pointing to the mysql connector.  
 
-Umgebungsariable setzten: MYSQLCLIENT_LIB_DIR = C:\Program Files\MySQL\MySQL Connector C 6.1\lib\vs14
+2. To access the frontend and the containers you need to know which IP docker uses. You can check with ``docker-machine ip``. (usually 192.168.99.100)
 
-docker-compose up im Projekt-Verzeichnis
+You then are abel to access the running containers with `<docker-ip>:<container-port>`
 
-Nachdem die Container laufen (docker ps -a)
-
-docker exec [Container ID des Servers] diesel migration run
-
-IP des Docker-Containers mit: docker-machine ip (normalerweise 192.168.99.100)
-
-Über DockerIP:3000 kann über auf das Frontend zugegriffen werden
-
-Über DockerIP:3001 kann über bspw. Postman das Backend manipuliert werden. Es müssen folgende Parameter im
-Header gesetzt werden:
-
-KEY: Content-Type
-
-VALUE: application/json
-
-Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
-
-{
-    "districts": [1, 2]
-}
-
-Über DockerIP:1234 PhpMyAdmin
 
 
 ## Known Issues
@@ -188,9 +164,10 @@ Wird Postman verwendet, kann man als Body z.B. folgenden Dummy verwenden:
 ### Windows related
 
 - exec "diesel" not found. Currently no applicable solution. (Win10 Pro)
+- Opening some specific script files on windows may cause docker-compose up to break (namely wait-for-it.sh) seemingly because of the character encoding.
 
 ### Docker
 
 1. Docker can't create socket for given port.
 - Check if the container was already created with `docker ps -a` and execute it manually with `docker start <container_id>`. Or try to run `docker-compose up -d` again.
-- To prevent this issue of occuring you need to give docker more memory.
+- To prevent this issue of occuring you need to give docker more memory space.
