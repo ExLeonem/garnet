@@ -81,18 +81,6 @@ pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
     json_object
 }
 
-// // Replace with above endpoint
-// #[post("/getFilledTrashcans", data="<d_input>", format="json")]
-// pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
-//     let mut vec = Vec::new();
-//     for i in 0..d_input.districts.len() {
-//         vec.push(d_input.districts[i])
-//     }
-//     let result = db::select_filled_trashcans_from_districts(vec);
-//     let trashcans_json = json!(result);
-//     trashcans_json
-// }
-
 // Create a new trashcan via endpoint
 #[post("/v1/bin", data="<trashcan>", format="json")]
 pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
@@ -107,13 +95,6 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     db::insert_trashcan(tc);
 }
 
-// Update a trashcan values
- #[patch("/v1/bin/<id>", data = "<input>", format="json")]
- pub fn update_trashcan(id: i32, input: Json<Input>) -> () {
-    println!("fill can: {:?} with value: {:?}", input.id, input.fill_weight);
-    db::update_trashcan_fill_weight(input.id, input.fill_weight);
-}
-
 // Specific information about a single trashcan
 #[get("/v1/bin/<id>", format="json")]
 pub fn get_trashcan_single(id: i32) -> JsonValue {
@@ -122,15 +103,40 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
     json_object
 }
 
+ #[patch("/v1/bin/<id>", data = "<trashcan>", format="json")]
+ pub fn update_trashcan(id: i32, trashcan: Json<NewTrashcan>) -> () {
+    println!("fill can: {:?} with value: {:?}", id, trashcan.fill_weight);
+
+
+    let tc: NewTrashcan = NewTrashcan {
+        fill_weight: trashcan.fill_weight,
+        longitude: trashcan.longitude,
+        latitude: trashcan.latitude,
+        district: trashcan.district,
+        trashtype: trashcan.trashtype
+    };
+
+    db::update_trashcan(id, tc);
+}
+
 // Districts known to the system filled or not filled
 #[get("/v1/district?<filled>", format="json")]
-pub fn get_district_all(filled: Option<String>) -> JsonValue {
-    let disctricts = db::select_all_districts();
-    let disctricts_json = json!(disctricts);
+pub fn get_district_all(filled: bool) -> JsonValue {
+    
+    let result;
+    if (filled) {
+        result = db::select_filled_districts();
+
+    } else {
+        result = db::select_all_districts();
+
+    }
+    
+    let disctricts_json = json!(result);
     disctricts_json
 } 
 
-
+// Path to calculate new value
 // #[get("/optimalPath", data="<d_input>", format="json")]
 // pub fn get_optimal_path(d_input: Json<DistrictsInput>) -> JsonValue {
 //     let mut vec = Vec::new();

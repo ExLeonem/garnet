@@ -1,3 +1,4 @@
+use diesel::query_builder::AsChangeset;
 use std::fmt::Display;
 use serde::export::Formatter;
 use serde::export::fmt::Error;
@@ -99,12 +100,12 @@ pub struct NewDistrict {
     pub district_flag: Option<String>,
 }
 
-#[derive(Insertable, Deserialize)]
+#[derive(Insertable, Deserialize, AsChangeset)]
 #[table_name="trashcan"]
 pub struct NewTrashcan {
     pub fill_weight: Option<f64>,
-    pub latitude: f64,
-    pub longitude: f64,
-    pub trashtype: i32,
+    pub latitude: Option<f64>,
+    pub longitude: Option<f64>,
+    pub trashtype: Option<i32>,
     pub district: Option<i32>,
 }

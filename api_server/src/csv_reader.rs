@@ -5,6 +5,8 @@ use csv::StringRecord;
 use crate::models::{NewTrashcan, NewTrashType};
 
 
+// Needs to be tested and outsourced may be broken because struct NewTrashcan changed
+
 pub fn run() -> Result<(Vec<NewTrashType>, Vec<NewTrashcan>), Box<dyn Error>> {
 
     let mut rdr = csv::ReaderBuilder::new()
@@ -39,9 +41,9 @@ fn convert_record_to_struct(record: StringRecord) -> Result<(NewTrashType, NewTr
     };
 
     let trashcan = NewTrashcan { fill_weight: None,
-                                 latitude,
-                                 longitude,
-                                 trashtype: art,
+                                 latitude: Some(latitude),
+                                 longitude: Some(longitude),
+                                 trashtype: Some(art),
                                  district: None};
 
     Ok((trash_type, trashcan))
