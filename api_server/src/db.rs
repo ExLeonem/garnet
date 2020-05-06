@@ -60,7 +60,7 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
  }
 
  pub fn select_filled_districts() -> Vec<District> {
-    use schema::trashcan::dsl::{trashcan, fill_weight, id as trashcanId, trashcan::district as trashcanDistrict};
+    use schema::trashcan::dsl::{trashcan, fill_weight, id as trashcanId, trashcan::table as trashcanDistrict};
     use schema::district::dsl::{district, id as districtId};
 
     let connection = establish_connection();
