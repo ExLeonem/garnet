@@ -39,40 +39,39 @@ pub fn index() -> Html<&'static str> {
 
 // All trashcans
 #[get("/bin?<filled>&<districtIds>", format="json")]
-pub fn get_all_trashcans(filled: Option<String>, districtIds: Option<String>) -> JsonValue {
+pub fn get_trashcan_all(filled: Option<String>, districtIds: Option<String>) -> JsonValue {
     
-    if (filled != "" && districtIds != "") {
-        let mut vec = Vec::new();
-        for i in 0..d_input.districts.len() {
-            vec.push(d_input.districts[i])
-        }
-        let result = db::select_filled_trashcans_from_districts(vec);
-        let trashcans_json = json!(result);
-        trashcans_json
+    // if (filled != "" && districtIds != "") {
+    //     let mut vec = Vec::new();
+    //     for i in 0..d_input.districts.len() {
+    //         vec.push(d_input.districts[i])
+    //     }
+    //     let result = db::select_filled_trashcans_from_districts(vec);
+    //     let trashcans_json = json!(result);
+    //     trashcans_json
 
-    } else {
-        let trash_cans = db::select_all_trashcans();
-        let json_object = json!(trash_cans);
-        json_object
+    // }
 
-    }
+     let trash_cans = db::select_all_trashcans();
+    let json_object = json!(trash_cans);
+    json_object
 }
 
-// Replace with above endpoint
-#[post("/getFilledTrashcans", data="<d_input>", format="json")]
-pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
-    let mut vec = Vec::new();
-    for i in 0..d_input.districts.len() {
-        vec.push(d_input.districts[i])
-    }
-    let result = db::select_filled_trashcans_from_districts(vec);
-    let trashcans_json = json!(result);
-    trashcans_json
-}
+// // Replace with above endpoint
+// #[post("/getFilledTrashcans", data="<d_input>", format="json")]
+// pub fn get_filled_trashcans(d_input: Json<DistrictsInput>) -> JsonValue {
+//     let mut vec = Vec::new();
+//     for i in 0..d_input.districts.len() {
+//         vec.push(d_input.districts[i])
+//     }
+//     let result = db::select_filled_trashcans_from_districts(vec);
+//     let trashcans_json = json!(result);
+//     trashcans_json
+// }
 
 // Create a new trashcan via endpoint
 #[post("/bin", data="<trashcan>", format="json")]
-pub fn add_trashcan(trashcan: Json<NewTrashcan>) -> () {
+pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
     let tc : NewTrashcan = NewTrashcan {
         district: trashcan.district,
@@ -86,14 +85,14 @@ pub fn add_trashcan(trashcan: Json<NewTrashcan>) -> () {
 
 // Update a trashcan values
  #[patch("/bin/<id>", data = "<input>", format="json")]
- pub fn fill_trashcan(id: i32, input: Json<Input>) -> () {
+ pub fn update_trashcan(id: i32, input: Json<Input>) -> () {
     println!("fill can: {:?} with value: {:?}", input.id, input.fill_weight);
     db::update_trashcan_fill_weight(input.id, input.fill_weight);
 }
 
 // Specific information about a single trashcan
 #[get("/bin/<id>", format="json")]
-pub fn trashcan(id: i32) -> JsonValue {
+pub fn get_trashcan_single(id: i32) -> JsonValue {
     let trashcan = db::select_trashcan(id);
     let json_object = json!(trashcan);
     json_object
@@ -101,32 +100,32 @@ pub fn trashcan(id: i32) -> JsonValue {
 
 // Districts known to the system filled or not filled
 #[get("/district?<filled>", format="json")]
-pub fn get_all_districts(filled: Option<String>) -> JsonValue {
+pub fn get_district_all(filled: Option<String>) -> JsonValue {
     let disctricts = db::select_all_districts();
     let disctricts_json = json!(disctricts);
     disctricts_json
 } 
 
 
-#[get("/optimalPath", data="<d_input>", format="json")]
-pub fn get_optimal_path(d_input: Json<DistrictsInput>) -> JsonValue {
-    let mut vec = Vec::new();
-    for i in 0..d_input.districts.len() {
-        vec.push(d_input.districts[i])
-    }
-    let trashcans = db::select_filled_trashcans_from_districts(vec);
-    println!("Computing TSP with trashcans: {:?}", trashcans);
-    let result_coordinates = tsp::compute_tsp(trashcans);
-    println!("result -> {:?}", result_coordinates);
-    let trashcans_json = json!(result_coordinates);
-    trashcans_json
-}
+// #[get("/optimalPath", data="<d_input>", format="json")]
+// pub fn get_optimal_path(d_input: Json<DistrictsInput>) -> JsonValue {
+//     let mut vec = Vec::new();
+//     for i in 0..d_input.districts.len() {
+//         vec.push(d_input.districts[i])
+//     }
+//     let trashcans = db::select_filled_trashcans_from_districts(vec);
+//     println!("Computing TSP with trashcans: {:?}", trashcans);
+//     let result_coordinates = tsp::compute_tsp(trashcans);
+//     println!("result -> {:?}", result_coordinates);
+//     let trashcans_json = json!(result_coordinates);
+//     trashcans_json
+// }
 
 
-#[post("/updateTrashcan", data = "<district_input>", format="json")]
-pub fn update_trashcan(district_input: Json<District>) -> () {
-   db::update_trashcan_district(district_input.id, district_input.district);
-} 
+// #[post("/updateTrashcan", data = "<district_input>", format="json")]
+// pub fn update_trashcan(district_input: Json<District>) -> () {
+//    db::update_trashcan_district(district_input.id, district_input.district);
+// } 
 
 #[catch(404)]
 pub fn not_found(req: &Request) -> String

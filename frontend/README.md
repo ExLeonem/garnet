@@ -1,8 +1,9 @@
 
 # Index
 
-1. [Project Ptructure](#Project-Structure)
-2. [Available Scripts](#Available-Scripts)
+1. [Development](#Development)
+2. [Project Ptructure](#Project-Structure)
+3. [Available Scripts](#Available-Scripts)
 
 ## Libraries used
 
@@ -13,6 +14,12 @@
 - [Leaflet](https://leafletjs.com)
 - [Superagent](https://www.npmjs.com/package/superagent)
 
+
+## Development
+
+To develop the frontend, containers for the routing engine as well as api-backend need to run.
+
+
 ## Project Structure
 
 All relevant source code is directed in the src directory (`./src`). Consider the following structure to understand the directories.
@@ -22,8 +29,6 @@ All relevant source code is directed in the src directory (`./src`). Consider th
 - `/page`(Top level pages)
 - `/state` (Application state management with redux)
 - `/style` (CSS/SCSS files)
-
-
 
 
 ## Available Scripts

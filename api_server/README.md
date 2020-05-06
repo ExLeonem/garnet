@@ -1,8 +1,8 @@
 
 # Index
-
 1. [API](#API)
 2. [Architecture](#Architecture)
+
 
 
 ## API
@@ -19,6 +19,19 @@ The endpoints can be reached below the basie url of the backend api. For example
 | /trashcan             | POST      | Add a trashcan to the system | `{"fill_weight": number, "latitude": number, "longitude": number, "trashtype": number, "districts": number}`
 | /fillTrashcan         | POST      | Update the current fill state of trashcan | `{"id": <bin_id>, "fill_state": number}`
 | /updateTrashcan       | POST      | Update the curent values of a trashcan    | `{"id": <bin_id>, "district": <district_id>}`
+
+
+The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
+**For more information about the API/Documentation check out:** `../assets/api.json`
+
+| Endpoint              | Method    |  Description  
+| ---                   | ---       |  ---          
+| /bin         | GET       | Retrieve all trashcans known to the system 
+| /bin             | POST      | Add a trashcan to the system 
+| /bin         | PATCH      | Update the current fill state of trashcan 
+| /bin/{id}        | GET       |  Get information on a specific trashcan
+| /district         | GET       | Retrieves all districts known to the system
+ 
 
 
 ## Architecture

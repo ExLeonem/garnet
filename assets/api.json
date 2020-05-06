@@ -4,6 +4,16 @@
         "title":"Garnet API",
         "version":"1.0"
     },
+    "tags": [
+        {
+            "name": "bin",
+            "description": "Endpoints to interact with trashcans."
+        },
+        {
+            "name": "district",
+            "description": "Endpoints to get demographic information about the area."
+        }
+    ],
     "servers": [
         {
             "url":"https://localhost:3001/v1"
@@ -80,8 +90,11 @@
         }
     },
     "paths": {
-        "/bins": {
+        "/bin": {
             "post": {
+                "tags": [
+                    "bin"
+                ],
                 "description":"Create a new trashcan in the system.",
                 "parameters": [],
                 "requestBody": {
@@ -132,9 +145,9 @@
                                     "trashtype": 1,
                                     "districts": 2,
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/bins",
+                                        "self": "http://localhost:3001/v1/bin",
                                         "parent": "http://localhost:3001/v1",
-                                        "changeFillWeight": "http://localhost:3001/v1/bins/2340234"
+                                        "updateBin": "http://localhost:3001/v1/bin/2340234"
                                     }
                                 }
                             }
@@ -143,10 +156,13 @@
                 }
             },
             "get": {
-                "description": "Retriev all all trashcans from the system, optionally only the filled trashcans.",
+                "tags": [
+                    "bin"
+                ],
+                "description": "Retriev all trashcans from the system, optionally only the filled trashcans.",
                 "parameters": [
                     {
-                        "name": "isFilled",
+                        "name": "filled",
                         "in": "query",
                         "description": "Wether only return trashcans that are filled.",
                         "required": false,
@@ -157,12 +173,13 @@
                     {
                         "name": "districts",
                         "in": "query",
-                        "description": "The districts within the trashbin should reside.",
+                        "description": "The districts within the trashcan should reside.",
                         "required": false,
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "string"
+                                "type": "integer",
+                                "format": "int64"
                             }
                         }
                     }
@@ -213,9 +230,9 @@
                                             "trashtype": 1,
                                             "districts": 2,
                                             "_links": {
-                                                "self": "http://localhost:3001/v1/bins",
+                                                "self": "http://localhost:3001/v1/bin",
                                                 "parent": "http://localhost:3001/v1",
-                                                "changeFillWeight": "http://localhost:3001/v1/bins/1"
+                                                "updateBin": "http://localhost:3001/v1/bin/1"
                                             }
                                         },
                                         {
@@ -226,9 +243,9 @@
                                             "trashtype": 1,
                                             "districts": 2,
                                             "_links": {
-                                                "self": "http://localhost:3001/v1/bins",
+                                                "self": "http://localhost:3001/v1/bin",
                                                 "parent": "http://localhost:3001/v1",
-                                                "changeFillWeight": "http://localhost:3001/v1/bins/2"
+                                                "updateBin": "http://localhost:3001/v1/bin/2"
                                             }
                                         }
                                     ],
@@ -240,8 +257,11 @@
                 }
             }
         },
-        "/bins/{binId}": {
+        "/bin/{binId}": {
             "patch": {
+                "tags": [
+                    "bin"
+                ],
                 "description":"Update a single trashcan",
                 "parameters": [
                     {
@@ -287,8 +307,8 @@
                                     "trashtype": 1,
                                     "districts": 2,
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/bins/2",
-                                        "parent": "http://localhost:3001/v1/bins"
+                                        "self": "http://localhost:3001/v1/bin/2",
+                                        "parent": "http://localhost:3001/v1/bin"
                                     }
                                 }
                             }
@@ -297,8 +317,11 @@
                 }
             }
         },
-        "/districts": {
+        "/district": {
             "post": {
+                "tags": [
+                    "district"
+                ],
                 "description":"Create a new district",
                 "parameters": [],
                 "requestBody": {
@@ -338,6 +361,9 @@
             },
 
             "get": {
+                "tags": [
+                    "district"
+                ],
                 "description": "Retriev all districts",
                 "parameters": [
                     {
@@ -389,8 +415,11 @@
                 }
             }
         },
-        "/districts/{districtId}": {
+        "/district/{districtId}": {
             "patch": {
+                "tags": [
+                    "district"
+                ],
                 "description": "Update a specific district.",
                 "parameters": [
                     {
@@ -426,8 +455,11 @@
                 }
             }
         },
-        "/districts/{districtId}/bins": {
+        "/district/{districtId}/bins": {
             "get": {
+                "tags": [
+                    "district"
+                ],
                 "description": "Get all trashcans of within a specific district",
                 "parameters": [
                     {
