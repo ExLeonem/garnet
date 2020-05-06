@@ -24,6 +24,7 @@ pub struct District {
     district: i32
 }
 
+
 #[get("/")]
 pub fn index() -> Html<&'static str> {
     Html(r#"
@@ -37,22 +38,45 @@ pub fn index() -> Html<&'static str> {
     "#)
 }
 
-// All trashcans
-#[get("/bin?<filled>&<districtIds>", format="json")]
-pub fn get_trashcan_all(filled: Option<String>, districtIds: Option<String>) -> JsonValue {
+#[get("/v1/bin?<filled>&<districts>", format="json")]
+pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
     
-    // if (filled != "" && districtIds != "") {
-    //     let mut vec = Vec::new();
-    //     for i in 0..d_input.districts.len() {
-    //         vec.push(d_input.districts[i])
-    //     }
-    //     let result = db::select_filled_trashcans_from_districts(vec);
-    //     let trashcans_json = json!(result);
-    //     trashcans_json
+    // Return only filled trashcans
+    if (filled) {
+    
+        // Select only trashcans of specific districts
+        let result;
+        if (!districts.is_none()) {
+            
+            let districtIdString: String = districts.unwrap();
+            let mut indices: Vec<&str> = districtIdString.split(",").collect();
 
-    // }
+            // Split and collect district ids into vec
+            let mut districtVec: Vec<i32> = vec![];
+            for i in 0..indices.len() {
 
-     let trash_cans = db::select_all_trashcans();
+                let indx: &str = indices.pop().unwrap();
+                let parsedValue = indx.parse::<i32>();
+
+                if (parsedValue.is_ok()) {
+
+                    let parsedDistrictId: i32 = parsedValue.unwrap();
+                    districtVec.push(parsedDistrictId);
+                }
+            }
+
+            result = db::select_filled_trashcans_from_districts(districtVec);
+
+        } else {
+
+            result = db::select_filled_trashcans();
+        }
+
+        let trashcans_json = json!(result);
+        return trashcans_json;
+    }
+
+    let trash_cans = db::select_all_trashcans();
     let json_object = json!(trash_cans);
     json_object
 }
@@ -70,7 +94,7 @@ pub fn get_trashcan_all(filled: Option<String>, districtIds: Option<String>) -> 
 // }
 
 // Create a new trashcan via endpoint
-#[post("/bin", data="<trashcan>", format="json")]
+#[post("/v1/bin", data="<trashcan>", format="json")]
 pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
     let tc : NewTrashcan = NewTrashcan {
@@ -84,14 +108,14 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
 }
 
 // Update a trashcan values
- #[patch("/bin/<id>", data = "<input>", format="json")]
+ #[patch("/v1/bin/<id>", data = "<input>", format="json")]
  pub fn update_trashcan(id: i32, input: Json<Input>) -> () {
     println!("fill can: {:?} with value: {:?}", input.id, input.fill_weight);
     db::update_trashcan_fill_weight(input.id, input.fill_weight);
 }
 
 // Specific information about a single trashcan
-#[get("/bin/<id>", format="json")]
+#[get("/v1/bin/<id>", format="json")]
 pub fn get_trashcan_single(id: i32) -> JsonValue {
     let trashcan = db::select_trashcan(id);
     let json_object = json!(trashcan);
@@ -99,7 +123,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
 }
 
 // Districts known to the system filled or not filled
-#[get("/district?<filled>", format="json")]
+#[get("/v1/district?<filled>", format="json")]
 pub fn get_district_all(filled: Option<String>) -> JsonValue {
     let disctricts = db::select_all_districts();
     let disctricts_json = json!(disctricts);

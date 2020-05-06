@@ -9,14 +9,12 @@ use crate::models::*;
 pub fn establish_connection() -> MysqlConnection {
     dotenv().ok();
 
+    // When used inside a docker-container should be: "mysql://garnet:garnet@db/garnet_db";
     let database_url = env::var("DATABASE_URL")
     .expect("DATABASE_URL must be set.");
-    // Meine SQL-DB URL hart-codiert. URL in Z.17 anpassen.
-    // let _database_url = "mysql://localhost:3306/garnet_db";
-    let _database_url = "mysql://garnet:garnet@db/garnet_db";
 
-    MysqlConnection::establish(&_database_url)
-        .expect(&format!("Error connecting to {}", _database_url))
+    MysqlConnection::establish(&database_url)
+        .expect(&format!("Error connecting to {}", database_url))
 }
 
 pub fn select_all_users() -> Vec<User> {
@@ -80,7 +78,7 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
     t_ids
 }
 
-pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan>{
+pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan> {
     use schema::trashcan::dsl::*;
     let connection = establish_connection();
     let mut result: Vec<Trashcan> = vec![];
@@ -95,6 +93,18 @@ pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashc
 
         result.append(&mut filled_trashcans);
     }
+    result
+}
+
+pub fn select_filled_trashcans() -> Vec<Trashcan> {
+    use schema::trashcan::dsl::*;
+    let connection = establish_connection();
+
+    let result = trashcan.filter(fill_weight.gt(Some(100.0)))
+        .order_by(id.asc())
+        .load::<Trashcan>(&connection)
+        .expect("Error loading filled Trashcans.");
+
     result
 }
 

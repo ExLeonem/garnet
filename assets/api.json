@@ -26,11 +26,11 @@
                 "properties": {
                     "self": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "url"
                     },
                     "parent": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "url"
                     }
                 }
             },
@@ -69,7 +69,7 @@
         "parameters": {
             "districtId": {
                 "name":"districtId",
-                "in": "query",
+                "in": "path",
                 "required": true,
                 "description": "A unique identifier for a single district",
                 "schema": {
@@ -79,7 +79,7 @@
             },
             "binId": {
             "name":"binId",
-            "in": "query",
+            "in": "path",
             "required": true,
             "description": "A unique identifier for a single trashcan.",
             "schema": {
@@ -90,6 +90,47 @@
         }
     },
     "paths": {
+        "/": {
+            "get": {
+                "description": "Retrieve basic links to navigate the api.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved information.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/hateoas"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "bin": {
+                                                    "type": "string",
+                                                    "format": "url"
+                                                },
+                                                "district": {
+                                                    "type": "string",
+                                                    "format": "url"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "self": "https://localhost:3001/v1",
+                                    "parent": "https://localhost:3001",
+                                    "bin": "https://localhost:3001/v1/bin",
+                                    "district": "https://localhost:3001/v1/district"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/bin": {
             "post": {
                 "tags": [
@@ -207,7 +248,20 @@
                                                                 "format": "int64"
                                                             },
                                                             "_links": {
-                                                                "$ref": "#/components/schemas/hateoas"
+                                                                "allOf": [
+                                                                    {
+                                                                        "$ref": "#/components/schemas/hateoas"
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "updateBin": {
+                                                                                "type": "string",
+                                                                                "format": "url"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
                                                             }
                                                         }
                                                     }
@@ -266,19 +320,20 @@
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/binId"
-                    },
-                    {
-                        "name": "fill_weight",
-                        "in": "query",
-                        "description": "The new fillweight of the trashcan.",
-                        "required": false,
-                        "example": 12.5,
-                        "schema": {
-                            "type": "number",
-                            "format": "float64"
-                        }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/bin"
+                            },
+                            "example": {
+                                "fill_weight": 0.0
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successfully updated the trashcan.",

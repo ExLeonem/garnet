@@ -60,6 +60,8 @@ services:
       MYSQL_USER: garnet
       MYSQL_PASSWORD: garnet
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
     volumes:
       - ./db_data:/var/lib/mysql
 
