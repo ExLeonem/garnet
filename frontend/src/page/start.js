@@ -47,7 +47,7 @@ export class StartPage extends Component {
                         <rect x="12" y="7" width="33" height="6" transform="rotate(90 12 7)" fill="white"/>
                     </svg>
 
-                    <h3>Wilkommen zu GarNet.</h3>
+                    <h3>Welcome to GarNet.</h3>
                 </div>
             </React.Fragment>
         )

@@ -84,7 +84,6 @@ export default function(state = initialState, action) {
 
             // to many garbage bins potentially not saveable in localStorage
             setItem("bins", action.payload.body); 
-            setItem("route", true);
             break;
         }
 
@@ -107,7 +106,7 @@ export default function(state = initialState, action) {
 
             let position = action.payload;
             setItem("position", position);
-            newState = {...state, position: position, route: route};
+            newState = {...state, position: position};
             break;
         }
 

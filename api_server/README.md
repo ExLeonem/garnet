@@ -1,8 +1,29 @@
-# API-Architecture
 
-The following is a description of classes implemented in this API and Database-Schema.
+# Index
+
+1. [API](#API)
+2. [Architecture](#Architecture)
+
 
 ## API
+
+The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
+**To receive responses from the backend, the content-type needs to be set to: `content-type: application/json`.**
+
+| Endpoint              | Method    |  Description  | Body
+| ---                   | ---       |  ---          | ---
+| /allTrashcans         | GET       | Retrieve all trashcans known to the system |
+| /trashCan/{id}        | GET       |   |
+| /allDistricts         | GET       | Retrieves all districts known to the system
+| /getFilledTrashcans   | POST      | Retriev all district where an trashcan exists that needs to be emptied. | `{"districsts": \[id_1, id_2, ...\]}`
+| /trashcan             | POST      | Add a trashcan to the system | `{"fill_weight": number, "latitude": number, "longitude": number, "trashtype": number, "districts": number}`
+| /fillTrashcan         | POST      | Update the current fill state of trashcan | `{"id": <bin_id>, "fill_state": number}`
+| /updateTrashcan       | POST      | Update the curent values of a trashcan    | `{"id": <bin_id>, "district": <district_id>}`
+
+
+## Architecture
+
+The following is a description of classes implemented in this API and Database-Schema.
 
 ### crud.rs
 

@@ -1,0 +1,484 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+        "title":"Garnet API",
+        "version":"1.0"
+    },
+    "servers": [
+        {
+            "url":"https://localhost:3001/v1"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "hateoas": {
+                "type": "object",
+                "properties": {
+                    "self": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "parent": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            },
+            "district": {
+                "type": "object",
+                "properties": {
+
+                }
+            },
+            "bin": {
+                "type":"object",
+                "properties": {
+                    "fill_weight": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "trashtype": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "districts": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "districtId": {
+                "name":"districtId",
+                "in": "query",
+                "required": true,
+                "description": "A unique identifier for a single district",
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "binId": {
+            "name":"binId",
+            "in": "query",
+            "required": true,
+            "description": "A unique identifier for a single trashcan.",
+            "schema": {
+                "type": "integer",
+                "format": "int64"
+            }
+        }
+        }
+    },
+    "paths": {
+        "/bins": {
+            "post": {
+                "description":"Create a new trashcan in the system.",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/bin"
+                            },
+                            "example": {
+                                "fill_weight": 0.0,
+                                "latitude": 0.0,
+                                "longitude": 0.0,
+                                "trashtype": 1,
+                                "districts": 2
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created a new trashcan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/bin"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                },
+                                                "_links": {
+                                                    "$ref": "#/components/schemas/hateoas" 
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "id": 2340234,
+                                    "fill_weight": 0.0,
+                                    "latitude": 0.0,
+                                    "longitude": 0.0,
+                                    "trashtype": 1,
+                                    "districts": 2,
+                                    "_links": {
+                                        "self": "http://localhost:3001/v1/bins",
+                                        "parent": "http://localhost:3001/v1",
+                                        "changeFillWeight": "http://localhost:3001/v1/bins/2340234"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "Retriev all all trashcans from the system, optionally only the filled trashcans.",
+                "parameters": [
+                    {
+                        "name": "isFilled",
+                        "in": "query",
+                        "description": "Wether only return trashcans that are filled.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "districts",
+                        "in": "query",
+                        "description": "The districts within the trashbin should reside.",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved trashcans",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/bin"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "format": "int64"
+                                                            },
+                                                            "_links": {
+                                                                "$ref": "#/components/schemas/hateoas"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trashtype": 1,
+                                            "districts": 2,
+                                            "_links": {
+                                                "self": "http://localhost:3001/v1/bins",
+                                                "parent": "http://localhost:3001/v1",
+                                                "changeFillWeight": "http://localhost:3001/v1/bins/1"
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trashtype": 1,
+                                            "districts": 2,
+                                            "_links": {
+                                                "self": "http://localhost:3001/v1/bins",
+                                                "parent": "http://localhost:3001/v1",
+                                                "changeFillWeight": "http://localhost:3001/v1/bins/2"
+                                            }
+                                        }
+                                    ],
+                                    "count": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bins/{binId}": {
+            "patch": {
+                "description":"Update a single trashcan",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/binId"
+                    },
+                    {
+                        "name": "fill_weight",
+                        "in": "query",
+                        "description": "The new fillweight of the trashcan.",
+                        "required": false,
+                        "example": 12.5,
+                        "schema": {
+                            "type": "number",
+                            "format": "float64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated the trashcan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/bin"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "_links": {
+                                                    "$ref": "#/components/schemas/hateoas"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "example": {
+                                    "id": 2,
+                                    "fill_weight": 12.5,
+                                    "latitude": 0.0,
+                                    "longitude": 0.0,
+                                    "trashtype": 1,
+                                    "districts": 2,
+                                    "_links": {
+                                        "self": "http://localhost:3001/v1/bins/2",
+                                        "parent": "http://localhost:3001/v1/bins"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/districts": {
+            "post": {
+                "description":"Create a new district",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/district"
+                            },
+                            "example": {
+
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created a new district.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/district"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/hateoas"
+                                        }
+                                    ]
+                                },
+                                "example": {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            "get": {
+                "description": "Retriev all districts",
+                "parameters": [
+                    {
+                        "name": "whereFilled",
+                        "in": "query",
+                        "description": "Wether to return only districts where filled trashcans are available.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"   
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved available districts.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/district"
+                                                    },
+                                                    {
+                                                        "$ref": "#/components/schemas/hateoas"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+
+                                    ],
+                                    "count": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/districts/{districtId}": {
+            "patch": {
+                "description": "Update a specific district.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/districtId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully update the district.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/district"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "_links": {
+                                                    "$ref": "#/components/schemas/hateoas"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "example": {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/districts/{districtId}/bins": {
+            "get": {
+                "description": "Get all trashcans of within a specific district",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/districtId"
+                    },
+                    {
+                        "name": "filled",
+                        "in": "query",
+                        "description": "Wether to return only filled trashcans.",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved values.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "allOf": [
+                                                    {
+                                                        "$ref": "#/components/schemas/bin"
+                                                    },
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "_links": {
+                                                                "$ref": "#/components/schemas/hateoas"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

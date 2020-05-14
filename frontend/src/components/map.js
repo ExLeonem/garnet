@@ -19,7 +19,6 @@ const DEFAULT_VIEWPORT = {
 
 
 // Map Provider
-// TODO: Check which ideally to use: https://leaflet-extras.github.io/leaflet-providers/preview/
 const MAP_PROVIDER = {
     openTopo: {
         url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',

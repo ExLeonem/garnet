@@ -86,7 +86,7 @@ export class DistrictSelection extends Component {
             selectables.push(toAdd);
         });
 
-        if (selectables.length >= 0) {
+        if (selectables.length > 0) {
             
             return (
                 <ul className="districts">
@@ -106,7 +106,10 @@ export class DistrictSelection extends Component {
 
     // Redirects to the routing view
     renderRedirect(routeLocations) {
-        
+
+
+        console.log(routeLocations);
+
         return routeLocations? <Redirect to="/collect/route"/> : null;
     }
 
@@ -132,7 +135,7 @@ export class DistrictSelection extends Component {
 
                 <div className="header">
                     <p>
-                        {this.state.countSelected > 0? "Ausgewählte Bezirke" : "Wähle ein oder mehrere Bezirke."}
+                        {this.state.countSelected > 0? "Selected districts" : "Select one or more districts."}
                         <i className={"selected-districts" + (this.state.countSelected > 0? " active" : "")}>{this.state.countSelected}</i>
                     </p>
                     <ButtonCircle className={this.state.countSelected > 0? null : "disable"} onClick={this.state.countSelected > 0? () => this.props.loadBins(this.props.selectedDistricts) : () => {return null;}}/>
