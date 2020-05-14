@@ -9,14 +9,12 @@ use crate::models::*;
 pub fn establish_connection() -> MysqlConnection {
     dotenv().ok();
 
+    // When used inside a docker-container should be: "mysql://garnet:garnet@db/garnet_db";
     let database_url = env::var("DATABASE_URL")
     .expect("DATABASE_URL must be set.");
-    // Meine SQL-DB URL hart-codiert. URL in Z.17 anpassen.
-    // let _database_url = "mysql://localhost:3306/garnet_db";
-    let _database_url = "mysql://garnet:garnet@db/garnet_db";
 
-    MysqlConnection::establish(&_database_url)
-        .expect(&format!("Error connecting to {}", _database_url))
+    MysqlConnection::establish(&database_url)
+        .expect(&format!("Error connecting to {}", database_url))
 }
 
 pub fn select_all_users() -> Vec<User> {
@@ -61,7 +59,35 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
      result.pop()
  }
 
- pub fn select_filled_district_ids() -> Vec<i32>{
+ pub fn select_filled_districts() -> Vec<District> {
+    use schema::trashcan::dsl::{trashcan, fill_weight, id as trashcanId, trashcan::table as trashcanDistrict};
+    use schema::district::dsl::{district, id as districtId};
+
+    let connection = establish_connection();
+    // let mut trashcans = trashcan
+    // .filter(fill_weight.gt(100.00))
+    // .order_by(id.asc())
+    // .load::<Trashcan>(&connection)
+    // .expect("Error loading filled Trashcans.");
+   
+   let districts: Vec<District> = vec![];
+   let threshold: f64 = 100.00;
+   let mut districtsResult = district
+        .inner_join(trashcanId)
+        .filter(fill_weight.gt(threshold))
+        .order_by(districtId);
+
+
+    println!("{}", districtsResult);
+        // .load(&connection)
+        // .expect("Error loading districts");
+
+
+
+    districts
+ }
+
+ pub fn select_filled_district_ids() -> Vec<i32> {
     use schema::trashcan::dsl::*;
     let connection = establish_connection();
     let mut t_ids: Vec<i32> = vec![];
@@ -80,7 +106,7 @@ pub fn select_all_trashcans() -> Vec<Trashcan> {
     t_ids
 }
 
-pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan>{
+pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashcan> {
     use schema::trashcan::dsl::*;
     let connection = establish_connection();
     let mut result: Vec<Trashcan> = vec![];
@@ -95,6 +121,18 @@ pub fn select_filled_trashcans_from_districts(districts: Vec<i32>) -> Vec<Trashc
 
         result.append(&mut filled_trashcans);
     }
+    result
+}
+
+pub fn select_filled_trashcans() -> Vec<Trashcan> {
+    use schema::trashcan::dsl::*;
+    let connection = establish_connection();
+
+    let result = trashcan.filter(fill_weight.gt(Some(100.0)))
+        .order_by(id.asc())
+        .load::<Trashcan>(&connection)
+        .expect("Error loading filled Trashcans.");
+
     result
 }
 
@@ -190,43 +228,11 @@ pub fn update_district_flag(district_id: i32, new_district_flag: String) -> Dist
     district.find(district_id).first(&connection).expect("Unable to find district")
 }
 
-pub fn update_trashcan_fill_weight(trashcan_id: i32, new_fill_weight: f64) -> Trashcan {
-    use schema::trashcan::dsl::{trashcan, fill_weight};
+pub fn update_trashcan(trashcan_id: i32, tc: NewTrashcan) -> Trashcan {
+    use schema::trashcan::dsl::{trashcan};
     let connection = establish_connection();
-    diesel::update(trashcan.find(trashcan_id)).set(fill_weight.eq(new_fill_weight))
-        .execute(&connection).unwrap();
-    trashcan.find(trashcan_id).first(&connection).expect("Unable to find trashcan")
-}
+    let updateStatement = diesel::update(trashcan.find(trashcan_id)).set(&tc).execute(&connection).unwrap();
 
-pub fn update_trashcan_latitude(trashcan_id: i32, new_latitude: f64) -> Trashcan {
-    use schema::trashcan::dsl::{trashcan, latitude};
-    let connection = establish_connection();
-    diesel::update(trashcan.find(trashcan_id)).set(latitude.eq(new_latitude))
-        .execute(&connection).unwrap();
-    trashcan.find(trashcan_id).first(&connection).expect("Unable to find trashcan")
-}
-
-pub fn update_trashcan_longitude(trashcan_id: i32, new_longitude: f64) -> Trashcan {
-    use schema::trashcan::dsl::{trashcan, longitude};
-    let connection = establish_connection();
-    diesel::update(trashcan.find(trashcan_id)).set(longitude.eq(new_longitude))
-        .execute(&connection).unwrap();
-    trashcan.find(trashcan_id).first(&connection).expect("Unable to find trashcan")
-}
-
-pub fn update_trashcan_trashtype(trashcan_id: i32, new_trashtype: i32) -> Trashcan {
-    use schema::trashcan::dsl::{trashcan, trashtype};
-    let connection = establish_connection();
-    diesel::update(trashcan.find(trashcan_id)).set(trashtype.eq(new_trashtype))
-        .execute(&connection).unwrap();
-    trashcan.find(trashcan_id).first(&connection).expect("Unable to find trashcan")
-}
-
-pub fn update_trashcan_district(trashcan_id: i32, new_district: i32) -> Trashcan {
-    use schema::trashcan::dsl::{trashcan, district};
-    let connection = establish_connection();
-    diesel::update(trashcan.find(trashcan_id)).set(district.eq(new_district))
-        .execute(&connection).unwrap();
     trashcan.find(trashcan_id).first(&connection).expect("Unable to find trashcan")
 }
 

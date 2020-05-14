@@ -19,7 +19,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     2. [Communication](#Communication)
     3. [Trashcan Prototype](#Trashcan-Prototype)
 2. [Gettings Started](#Getting-Started)
-    1. [General setup](#Setup)
+    1. [Setup](#Setup)
     2. [Windows](#Windows)
 3. [Frontend](./frontend/)
     1. [Visual Concept](https://www.figma.com/file/RKXHEMSCQr9gEqnpWOKq6cpQ/Teamprojekt?node-id=208%3A1450)
@@ -128,6 +128,12 @@ Now you need to migrate the current model, execute`docker exec <api_container_id
 In the last step you should add information about trashcan positions and optional allocation to trashcans.
 As this project resembles a proof of concept for the town of constance a .csv file with bin positions is included which could be 
 
+There's also the posibility to only run the mysql container and develop the backend separatly.
+For that you need to change the mysql address to `mysql://garnet:garnet@127.0.0.1:3306/garnet_db` in the following files:
+
+- `./api_server/Rocket.toml`
+- `./api_server/.env`
+
 
 #### Map setup
 
@@ -161,7 +167,7 @@ You then are abel to access the running containers with `<docker-ip>:<container-
 
 ## Known Issues
 
-### Windows related
+### Windows
 
 - exec "diesel" not found. Currently no applicable solution. (Win10 Pro)
 - Opening some specific script files on windows may cause docker-compose up to break (namely wait-for-it.sh) seemingly because of the character encoding.
@@ -171,3 +177,12 @@ You then are abel to access the running containers with `<docker-ip>:<container-
 1. Docker can't create socket for given port.
 - Check if the container was already created with `docker ps -a` and execute it manually with `docker start <container_id>`. Or try to run `docker-compose up -d` again.
 - To prevent this issue of occuring you need to give docker more memory space.
+
+
+### Rurst
+
+- linking with 'cc' failed while trying to run with `cargo run --bin crud`
+
+May be caused on linux system and/or because of newer nightly versions. Check [here](https://github.com/rust-lang/rust/issues/25289).
+
+Alternativly try to install the default mysql client on if not already installed. On ubuntu check available packages with `sudo apt-cache search mysqlclient` & install the default client with `sudo apt-get install default-libmysqlclient-dev`

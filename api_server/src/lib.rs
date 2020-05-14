@@ -25,10 +25,10 @@ pub mod tsp;
 
 pub fn start_api() {
     //read_csv();
+    // .mount("/", routes![routes::index, routes::get_all_trashcans,routes::trashcan, routes::add_trashcan, routes::get_all_filled_districts, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
     rocket::ignite()
     .register(catchers![routes::not_found])
-    .mount("/", routes![routes::index, routes::get_all_trashcans,
-    routes::trashcan, routes::add_trashcan, routes::get_all_filled_districts, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
+    .mount("/", routes![routes::index, routes::get_trashcan_all, routes::get_trashcan_single, routes::create_trashcan, routes::get_district_all, routes::update_trashcan])
     .attach(make_cors()).launch();
 }
 
