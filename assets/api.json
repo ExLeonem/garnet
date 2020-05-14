@@ -16,7 +16,7 @@
     ],
     "servers": [
         {
-            "url":"https://localhost:3001/v1"
+            "url":"https://localhost:3001/api"
         }
     ],
     "components": {
@@ -25,12 +25,13 @@
                 "type": "object",
                 "properties": {
                     "self": {
-                        "type": "string",
-                        "format": "url"
-                    },
-                    "parent": {
-                        "type": "string",
-                        "format": "url"
+                        "type": "object",
+                        "properties": {
+                            "url": {
+                                "type": "string",
+                                "format": "uri"
+                            }
+                        }
                     }
                 }
             },
@@ -66,9 +67,28 @@
                         "type": "integer",
                         "format": "int32"
                     },
-                    "districts": {
+                    "district": {
                         "type": "integer",
                         "format": "int32"
+                    }
+                }
+            },
+            "error": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "error": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "help": {
+                        "type": "string",
+                        "format": "url"
                     }
                 }
             }
@@ -107,30 +127,91 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
-                                        {
-                                            "$ref": "#/components/schemas/hateoas"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "bin": {
-                                                    "type": "string",
-                                                    "format": "url"
-                                                },
-                                                "district": {
-                                                    "type": "string",
-                                                    "format": "url"
+                                    "type": "object",
+                                        "properties": {
+                                            "_links": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "self":  {
+                                                        "type": "string",
+                                                        "format": "url"
+                                                    },
+                                                    "bin": {
+                                                        "type": "string",
+                                                        "format": "url"
+                                                    },
+                                                    "district": {
+                                                        "type": "string",
+                                                        "format": "url"
+                                                    }
                                                 }
+                                            },
+                                            "welcome": {
+                                                "type": "string"
                                             }
                                         }
-                                    ]
                                 },
                                 "example": {
-                                    "self": "https://localhost:3001/v1",
-                                    "parent": "https://localhost:3001",
-                                    "bin": "https://localhost:3001/v1/bin",
-                                    "district": "https://localhost:3001/v1/district"
+                                    "_links": {
+                                        "self": {
+                                            "href": "https://localhost:3001/api/"
+                                        },
+                                        "bin": {
+                                            "href": "https://localhost:3001/api/bin"
+                                        },
+                                        "district": {
+                                            "href": "https://localhost:3001/api/district"
+                                        }
+                                    },
+                                    "welcome": "Welcome to the GarNet REST API. To get more information read the docs at https://localhost:3001"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "status": 405,
+                                    "error": "Method not allowed",
+                                    "message": "Post method not allowed for this action. Only allowed method(s) are GET.",
+                                    "help": "https://localhost:3001/"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "status": 406,
+                                    "error": "Not Acceptable",
+                                    "message": "Response is only available as application/json.",
+                                    "help": "https://localhost:3001/"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "status": 415,
+                                    "error": "",
+                                    "message": "",
+                                    "help": "https://localhost:3001/"
                                 }
                             }
                         }
@@ -191,11 +272,17 @@
                                     "latitude": 0.0,
                                     "longitude": 0.0,
                                     "trashtype": 1,
-                                    "districts": 2,
+                                    "district": 2,
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/bin",
-                                        "parent": "http://localhost:3001/v1",
-                                        "updateBin": "http://localhost:3001/v1/bin/2340234"
+                                        "self": {
+                                            "href": "http://localhost:3001/v1/bin"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/v1"
+                                        },
+                                        "update": {
+                                            "href": "http://localhost:3001/v1/bin/2340234"
+                                        }
                                     }
                                 }
                             }
@@ -291,9 +378,18 @@
                                             "trashtype": 1,
                                             "districts": 2,
                                             "_links": {
-                                                "self": "http://localhost:3001/v1/bin",
-                                                "parent": "http://localhost:3001/v1",
-                                                "updateBin": "http://localhost:3001/v1/bin/1"
+                                                "self": {
+                                                    "href": "http://localhost:3001/v1/bin",
+                                                    "methods": ["GET", "POST"]
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/v1",
+                                                    "methods": ["GET"]
+                                                },
+                                                "bin": {
+                                                    "href": "http://localhost:3001/v1/bin/1",
+                                                    "method": ["PATCH"]
+                                                }
                                             }
                                         },
                                         {
@@ -304,8 +400,14 @@
                                             "trashtype": 1,
                                             "districts": 2,
                                             "_links": {
-                                                "self": "http://localhost:3001/v1/bin",
-                                                "parent": "http://localhost:3001/v1",
+                                                "self": {
+                                                    "href": "http://localhost:3001/v1/bin",
+                                                    "methods": ["GET", "POST"]
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/v1",
+                                                    "methods": ["GET"]
+                                                },
                                                 "updateBin": "http://localhost:3001/v1/bin/2"
                                             }
                                         }
@@ -540,6 +642,15 @@
                                 "schema": {
                                     "allOf": [
                                         {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "format": "int32"
+                                                }
+                                            }
+                                        },
+                                        {
                                             "$ref": "#/components/schemas/district"
                                         },
                                         {
@@ -553,7 +664,13 @@
                                     ]
                                 },
                                 "example": {
-
+                                    "id": 12,
+                                    "district_number": 12,
+                                    "district_flag": "Petershausen",
+                                    "_links": {
+                                        "self": "http://localhost:3001/v1/district/12",
+                                        "parent": "http://localhost:3001/v1/district"
+                                    }
                                 }
                             }
                         }
@@ -561,7 +678,7 @@
                 }
             }
         },
-        "/district/{districtId}/bins": {
+        "/district/{districtId}/bin": {
             "get": {
                 "tags": [
                     "district"
@@ -594,24 +711,78 @@
                                             "items": {
                                                 "allOf": [
                                                     {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string",
+                                                                "format": "int32"
+                                                            }
+                                                        }
+                                                    },
+                                                    {
                                                         "$ref": "#/components/schemas/bin"
                                                     },
                                                     {
                                                         "type": "object",
                                                         "properties": {
                                                             "_links": {
-                                                                "$ref": "#/components/schemas/hateoas"
+                                                                "allOf": [
+                                                                    {
+                                                                        "$ref": "#/components/schemas/hateoas"
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "updateBin": {
+                                                                                "type": "string",
+                                                                                "format": "url"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
                                                             }
                                                         }
                                                     }
                                                 ]
                                             }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "int64"
                                         }
                                     }
                                 },
                                 "example": {
-
-                                }
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "fill_weight": 12,
+                                            "latitude": 2.44,
+                                            "longitude": 1.43,
+                                            "trashtype": 4,
+                                            "districts": 5,
+                                            "_links": {
+                                                "self":  "http://localhost:3001/v1/district/12/bin",
+                                                "parent": "http://localhost:3001/v1/district/12",
+                                                "updateBin": "http://localhost:3001/v1/bin/1"
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "fill_weight": 12,
+                                            "latitude": 2.45,
+                                            "longitude": 1.45,
+                                            "trashtype": 4,
+                                            "districts": 5,
+                                            "_links": {
+                                                "self":  "http://localhost:3001/v1/district/12/bin",
+                                                "parent": "http://localhost:3001/v1/district/12",
+                                                "updateBin": "http://localhost:3001/v1/bin/2"
+                                            }
+                                        }
+                                    ],
+                                    "count": 2
+                                }  
                             }
                         }
                     }
