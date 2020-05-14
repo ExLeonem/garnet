@@ -1,11 +1,38 @@
 
 # Index
+1. [Setup](#Setup)
 1. [API](#API)
 2. [Architecture](#Architecture)
+3. [Issues](#Issues)
 
 
 
-## API
+# Setup
+
+
+1. Pull the images from the docker-compose file with `docker-compose pull`
+2. Run the docker database and phpmyadmin docker images with `docker-compose up -d db phpmyadmin`
+3. Setup a rust nightly version locally
+4. Install the diesel-cli locally with `cargo install diesel_cli --no-default-features --features mysql` (**\***If the installtion fails with cc-linkin error you need to install an mysql-client for Linux with `sudo apt-get install default-libmysqlclient-dev`)
+
+To check if the backend is working simply compile it with `cargo run --bin crud`. If everything works accordingly the api_server should by running at port 3001 on localhost.
+
+Finally you need to setup diesel and run the migration against the running database with:
+
+1. `diesel setup`
+2. `diesel migration run`
+
+If everything worked out you should see the created database in phpmyadmin. You can access phpmyadmin on localhost:1234, the login credentials are given below.
+
+| username | password
+| ---   | ---
+| garnet | garnet
+
+
+**\*** The DB is at this point empty and needs to be filled first. Check the setup guide in the main [README](./../README.md#Map-setup).
+
+
+# API
 
 The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
 **To receive responses from the backend, the content-type needs to be set to: `content-type: application/json`.**
@@ -30,8 +57,10 @@ The endpoints can be reached below the basie url of the backend api. For example
 | /bin             | POST      | Add a trashcan to the system 
 | /bin         | PATCH      | Update the current fill state of trashcan 
 | /bin/{id}        | GET       |  Get information on a specific trashcan
+| /district  | POST | Create a new district
 | /district         | GET       | Retrieves all districts known to the system
- 
+| /district/{id} | PATCH  | Update an existing district
+| /district/{id}/bin | GET | Get all bins for a specific district
 
 
 ## Architecture
@@ -104,3 +133,10 @@ password
 
 ## ORM
 As Orm we are using Diesel. See [http://diesel.rs/] for more info.
+
+
+
+# Issues
+
+- Error: no default toolchain configured after installing diesel_cli and executing `cargo run --bin crud`
+    - Run `rustup default nightly` to set the nightly toolchain

@@ -35,11 +35,8 @@ table! {
     }
 }
 
-
-
 joinable!(trashcan -> district (district));
 joinable!(trashcan -> trashtype (trashtype));
-
 
 allow_tables_to_appear_in_same_query!(
     district,
