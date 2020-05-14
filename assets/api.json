@@ -37,7 +37,14 @@
             "district": {
                 "type": "object",
                 "properties": {
-
+                    "district_number": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "district_flag": {
+                        "type": "number",
+                        "format": "int32"
+                    }
                 }
             },
             "bin": {
@@ -386,7 +393,8 @@
                                 "$ref": "#/components/schemas/district"
                             },
                             "example": {
-
+                                "district_number": 41,
+                                "district_flag": 22
                             }
                         }
                     }
@@ -399,15 +407,49 @@
                                 "schema": {
                                     "allOf": [
                                         {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number",
+                                                    "format": "int32"
+                                                }
+                                            }
+                                        },
+                                        {
                                             "$ref": "#/components/schemas/district"
                                         },
                                         {
-                                            "$ref": "#/components/schemas/hateoas"
+                                            "type": "object",
+                                            "properties": {
+                                                "_links": {
+                                                   "allOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/hateoas"
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "updateDistrict": {
+                                                                    "type": "string",
+                                                                    "format": "url"
+                                                                }
+                                                            }
+                                                        }
+                                                   ]
+                                                }
+                                            }
                                         }
                                     ]
                                 },
                                 "example": {
-
+                                    "id": 12,
+                                    "district_number": 12,
+                                    "district_flag": "Petershausen",
+                                    "_links": {
+                                        "self": "http://localhost:3001/v1/district",
+                                        "parent": "http://localhost:3001/v1",
+                                        "updateDistrict": "http://localhost:3001/v1/district/12"
+                                    }
                                 }
                             }
                         }
@@ -443,6 +485,15 @@
                                             "type": "array",
                                             "items": {
                                                 "allOf": [
+                                                    {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "number",
+                                                                "format": "int32"
+                                                            }
+                                                        }
+                                                    },
                                                     {
                                                         "$ref": "#/components/schemas/district"
                                                     },

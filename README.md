@@ -26,8 +26,9 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     2. [Project Structure](./frontend/README.md#Project-Structure)
     3. [Available Scripts](./frontend/README.md#Available-Scripts)
 4. [Backend](./api_server/README.md)
-    1. [Endpoints](./api_server/README.md#Endpoints)
-    2. [Architecture](./api_server/README.md#Architecture)
+    1. [Local Setup](./api_server/README.md#Setup)
+    2. [Endpoints](./api_server/README.md#Endpoints)
+    3. [Architecture](./api_server/README.md#Architecture)
 5. [Known Issues](#Known-Issues)
 
 
@@ -40,6 +41,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     - [x] Endpoint for retrieval of districts containing filled trashcans  
     - [x] Endpoint for retrieval of filled trashcans
     - [ ] TSP Calculation using airline distance
+    - [ ] Path optimization using a Neural Network(?)
     - [ ] Maturity level 3 REST API
 - [ ] Frontend
     - [x] Display district in which to collect 
@@ -48,7 +50,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     - [x] Create 3D-Models
     - [x] Print&Assemble the model
     - [x] Read ultrasonic sensor values
-    - [ ] Communicate with the TTN via LORA
+    - [ ] Communicate with the [TTN](https://www.thethingsnetwork.org/) via LORA/SigFox
     - [ ] Send data from prototype to the backend
 
 
@@ -61,7 +63,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 ### Trashcan Prototype
 | Component 
 | ---
-| Arduino MKR 1300 WAN
+| Arduino MKR 1300 WAN/Lopy4
 | Lora Antenna
 | US-015 Ultrasonic sensor
 | Li-on Battery
@@ -179,7 +181,7 @@ You then are abel to access the running containers with `<docker-ip>:<container-
 - To prevent this issue of occuring you need to give docker more memory space.
 
 
-### Rurst
+### Rust
 
 - linking with 'cc' failed while trying to run with `cargo run --bin crud`
 
