@@ -25,13 +25,19 @@
                 "type": "object",
                 "properties": {
                     "self": {
-                        "type": "object",
-                        "properties": {
-                            "url": {
-                                "type": "string",
-                                "format": "uri"
-                            }
-                        }
+                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                    },
+                    "parent": {
+                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                    }
+                }
+            },
+            "href": {
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "type": "string",
+                        "format": "url"
                     }
                 }
             },
@@ -112,8 +118,18 @@
             "schema": {
                 "type": "integer",
                 "format": "int64"
+                }
+            },
+            "filled": {
+                "name": "filled",
+                "in": "query",
+                "required": false,
+                "description": "Wether only return trashcans that are filled.",
+                "example": "true",
+                "schema": {
+                    "type": "boolean"
+                }
             }
-        }
         }
     },
     "paths": {
@@ -133,16 +149,13 @@
                                                 "type": "object",
                                                 "properties": {
                                                     "self":  {
-                                                        "type": "string",
-                                                        "format": "url"
+                                                        "allOf": [{"$ref": "#/components/schemas/href"}]
                                                     },
                                                     "bin": {
-                                                        "type": "string",
-                                                        "format": "url"
+                                                        "allOf": [{"$ref": "#/components/schemas/href"}]
                                                     },
                                                     "district": {
-                                                        "type": "string",
-                                                        "format": "url"
+                                                        "allOf": [{"$ref": "#/components/schemas/href"}]
                                                     }
                                                 }
                                             },
@@ -179,13 +192,13 @@
                                     "status": 405,
                                     "error": "Method not allowed",
                                     "message": "Post method not allowed for this action. Only allowed method(s) are GET.",
-                                    "help": "https://localhost:3001/"
+                                    "help": "https://localhost:3001/docs"
                                 }
                             }
                         }
                     },
                     "406": {
-                        "description": "Ressource is not available in required form.",
+                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -195,13 +208,13 @@
                                     "status": 406,
                                     "error": "Not Acceptable",
                                     "message": "Response is only available as application/json.",
-                                    "help": "https://localhost:3001/"
+                                    "help": "https://localhost:3001/docs"
                                 }
                             }
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Wrong media type used for the request.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -209,9 +222,9 @@
                                 },
                                 "example": {
                                     "status": 415,
-                                    "error": "",
-                                    "message": "",
-                                    "help": "https://localhost:3001/"
+                                    "error": "Unsupported Media Type",
+                                    "message": "The media format of the requested data is not supported.",
+                                    "help": "https://localhost:3001/docs"
                                 }
                             }
                         }
@@ -260,7 +273,19 @@
                                                     "format": "int64"
                                                 },
                                                 "_links": {
-                                                    "$ref": "#/components/schemas/hateoas" 
+                                                    "allOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/hateoas" 
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "bin:update": {
+                                                                    "allOf": [{"$ref": "#/components/schemas/href" }]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -280,10 +305,40 @@
                                         "parent": {
                                             "href": "http://localhost:3001/v1"
                                         },
-                                        "update": {
+                                        "bin:update": {
                                             "href": "http://localhost:3001/v1/bin/2340234"
                                         }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -297,13 +352,7 @@
                 "description": "Retriev all trashcans from the system, optionally only the filled trashcans.",
                 "parameters": [
                     {
-                        "name": "filled",
-                        "in": "query",
-                        "description": "Wether only return trashcans that are filled.",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
+                        "$ref": "#/components/parameters/filled"
                     },
                     {
                         "name": "districts",
@@ -316,7 +365,8 @@
                                 "type": "integer",
                                 "format": "int64"
                             }
-                        }
+                        },
+                        "example": [1,3,2]
                     }
                 ],
                 "responses": {
@@ -349,9 +399,8 @@
                                                                     {
                                                                         "type": "object",
                                                                         "properties": {
-                                                                            "updateBin": {
-                                                                                "type": "string",
-                                                                                "format": "url"
+                                                                            "bin:update": {
+                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
                                                                             }
                                                                         }
                                                                     }
@@ -379,16 +428,13 @@
                                             "districts": 2,
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/bin",
-                                                    "methods": ["GET", "POST"]
+                                                    "href": "http://localhost:3001/v1/bin"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1",
-                                                    "methods": ["GET"]
+                                                    "href": "http://localhost:3001/v1"
                                                 },
-                                                "bin": {
-                                                    "href": "http://localhost:3001/v1/bin/1",
-                                                    "method": ["PATCH"]
+                                                "bin:update": {
+                                                    "href": "http://localhost:3001/v1/bin/1"
                                                 }
                                             }
                                         },
@@ -401,18 +447,48 @@
                                             "districts": 2,
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/bin",
-                                                    "methods": ["GET", "POST"]
+                                                    "href": "http://localhost:3001/v1/bin"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1",
-                                                    "methods": ["GET"]
+                                                    "href": "http://localhost:3001/v1"
                                                 },
-                                                "updateBin": "http://localhost:3001/v1/bin/2"
+                                                "bin:update": {
+                                                    "href": "http://localhost:3001/v1/bin/2"
+                                                }
                                             }
                                         }
                                     ],
                                     "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -471,9 +547,43 @@
                                     "trashtype": 1,
                                     "districts": 2,
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/bin/2",
-                                        "parent": "http://localhost:3001/v1/bin"
+                                        "self": {
+                                            "href": "http://localhost:3001/v1/bin/2"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/v1/bin"
+                                        }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -531,9 +641,11 @@
                                                         {
                                                             "type": "object",
                                                             "properties": {
-                                                                "updateDistrict": {
-                                                                    "type": "string",
-                                                                    "format": "url"
+                                                                "district:update": {
+                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                                },
+                                                                "district:bin": {
+                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
                                                                 }
                                                             }
                                                         }
@@ -548,10 +660,49 @@
                                     "district_number": 12,
                                     "district_flag": "Petershausen",
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/district",
-                                        "parent": "http://localhost:3001/v1",
-                                        "updateDistrict": "http://localhost:3001/v1/district/12"
+                                        "self": {
+                                            "href": "http://localhost:3001/api/district"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/api"
+                                        },
+                                        "district:update": {
+                                            "href": "http://localhost:3001/api/district/12"
+                                        },
+                                        "district:bin": {
+                                            "href": "http://localhost:3001/api/district/12/bin"
+                                        }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -566,13 +717,7 @@
                 "description": "Retriev all districts",
                 "parameters": [
                     {
-                        "name": "whereFilled",
-                        "in": "query",
-                        "description": "Wether to return only districts where filled trashcans are available.",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"   
-                        }
+                        "$ref": "#/components/parameters/filled"
                     }
                 ],
                 "responses": {
@@ -600,7 +745,27 @@
                                                         "$ref": "#/components/schemas/district"
                                                     },
                                                     {
-                                                        "$ref": "#/components/schemas/hateoas"
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "_links": {
+                                                                "allOf": [
+                                                                    {
+                                                                        "$ref": "#/components/schemas/hateoas"
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "district:update": {
+                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                                            },
+                                                                            "district:bin": {
+                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
                                                     }
                                                 ]
                                             }
@@ -613,9 +778,76 @@
                                 },
                                 "example": {
                                     "data": [
-
+                                        {
+                                            "id": 1,
+                                            "district_number": 12,
+                                            "district_flag": "Petershausen",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/v1/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/v1"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:3001/v1/district/1"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:3001/v1/district/1/bin"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "district_number": 13,
+                                            "district_flag": "Paradies",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/v1/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/v1"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:3001/v1/district/2"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:3001/v1/district/2/bin"
+                                                }
+                                            }
+                                        }
                                     ],
                                     "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -657,7 +889,19 @@
                                             "type": "object",
                                             "properties": {
                                                 "_links": {
-                                                    "$ref": "#/components/schemas/hateoas"
+                                                    "allOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/hateoas"
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "district:bin": {
+                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         }
@@ -668,9 +912,46 @@
                                     "district_number": 12,
                                     "district_flag": "Petershausen",
                                     "_links": {
-                                        "self": "http://localhost:3001/v1/district/12",
-                                        "parent": "http://localhost:3001/v1/district"
+                                        "self": {
+                                            "href": "http://localhost:3001/v1/district/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/v1/district"
+                                        },
+                                        "district:bin": {
+                                            "href": "http://localhost:3001/v1/district/12/bin"
+                                        }
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
                                 }
                             }
                         }
@@ -689,13 +970,7 @@
                         "$ref": "#/components/parameters/districtId"
                     },
                     {
-                        "name": "filled",
-                        "in": "query",
-                        "description": "Wether to return only filled trashcans.",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
+                       "$ref": "#/components/parameters/filled"
                     }
                 ],
                 "responses": {
@@ -733,7 +1008,7 @@
                                                                     {
                                                                         "type": "object",
                                                                         "properties": {
-                                                                            "updateBin": {
+                                                                            "bin:update": {
                                                                                 "type": "string",
                                                                                 "format": "url"
                                                                             }
@@ -764,7 +1039,7 @@
                                             "_links": {
                                                 "self":  "http://localhost:3001/v1/district/12/bin",
                                                 "parent": "http://localhost:3001/v1/district/12",
-                                                "updateBin": "http://localhost:3001/v1/bin/1"
+                                                "bin:update": "http://localhost:3001/v1/bin/1"
                                             }
                                         },
                                         {
@@ -777,12 +1052,42 @@
                                             "_links": {
                                                 "self":  "http://localhost:3001/v1/district/12/bin",
                                                 "parent": "http://localhost:3001/v1/district/12",
-                                                "updateBin": "http://localhost:3001/v1/bin/2"
+                                                "bin:update": "http://localhost:3001/v1/bin/2"
                                             }
                                         }
                                     ],
                                     "count": 2
                                 }  
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
                             }
                         }
                     }
