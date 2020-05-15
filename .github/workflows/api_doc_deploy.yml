@@ -36,4 +36,4 @@ jobs:
         target_branch: api/doc
         build_dir: doc
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
