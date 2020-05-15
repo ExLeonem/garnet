@@ -58,20 +58,21 @@ fn make_cors() -> Cors {
     .expect("error while building CORS")
 }
 
-pub fn read_csv() {
-    let csv = csv_reader::run();
+// CSV reader, can be used later on in endpoint
+// pub fn read_csv() {
+//     let csv = csv_reader::run();
 
-    match csv {
-        Ok(trashtypes_and_trashcans) => {
-            let trashtypes = trashtypes_and_trashcans.0;
-            let trashcans = trashtypes_and_trashcans.1;
-            for trashtype in trashtypes {
-                db::insert_trashtype(trashtype);
-            }
-            for trashcan in trashcans {
-                db::insert_trashcan(trashcan);
-            }
-        }
-        Err(err) => println!("{:?}", err),
-    }
-}
+//     match csv {
+//         Ok(trashtypes_and_trashcans) => {
+//             let trashtypes = trashtypes_and_trashcans.0;
+//             let trashcans = trashtypes_and_trashcans.1;
+//             for trashtype in trashtypes {
+//                 db::insert_trashtype(trashtype);
+//             }
+//             for trashcan in trashcans {
+//                 db::insert_trashcan(trashcan);
+//             }
+//         }
+//         Err(err) => println!("{:?}", err),
+//     }
+// }

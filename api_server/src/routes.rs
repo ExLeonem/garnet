@@ -25,20 +25,16 @@ pub struct District {
 }
 
 
-#[get("/")]
+#[get("/api")]
 pub fn index() -> Html<&'static str> {
     Html(r#"
         <title>Welcome to Garnet</title>
         <h1>GARNET API</h1>
         <p> Welcome to Garnet API. Try one of the following urls: </p>
-        <ul>
-            <li> <a href="/allTrashcans">/allTrashcans</a> </li>
-            <li> <a href="/trashCan/1">/trashCan/id</a> </li>
-        </ul>
     "#)
 }
 
-#[get("/v1/bin?<filled>&<districts>", format="json")]
+#[get("/api/bin?<filled>&<districts>", format="json")]
 pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
     
     // Return only filled trashcans
@@ -82,7 +78,7 @@ pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
 }
 
 // Create a new trashcan via endpoint
-#[post("/v1/bin", data="<trashcan>", format="json")]
+#[post("/api/bin", data="<trashcan>", format="json")]
 pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
     let tc : NewTrashcan = NewTrashcan {
@@ -96,14 +92,14 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
 }
 
 // Specific information about a single trashcan
-#[get("/v1/bin/<id>", format="json")]
+#[get("/api/bin/<id>", format="json")]
 pub fn get_trashcan_single(id: i32) -> JsonValue {
     let trashcan = db::select_trashcan(id);
     let json_object = json!(trashcan);
     json_object
 }
 
- #[patch("/v1/bin/<id>", data = "<trashcan>", format="json")]
+ #[patch("/api/bin/<id>", data = "<trashcan>", format="json")]
  pub fn update_trashcan(id: i32, trashcan: Json<NewTrashcan>) -> () {
     println!("fill can: {:?} with value: {:?}", id, trashcan.fill_weight);
 
@@ -120,7 +116,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
 }
 
 // Districts known to the system filled or not filled
-#[get("/v1/district?<filled>", format="json")]
+#[get("/api/district?<filled>", format="json")]
 pub fn get_district_all(filled: bool) -> JsonValue {
     
     let result;
@@ -160,5 +156,10 @@ pub fn get_district_all(filled: bool) -> JsonValue {
 #[catch(404)]
 pub fn not_found(req: &Request) -> String
 {
-  format!("Could not find {}. Try the following: /", req.uri())
+  format!("Could not find {}. Check the documentation at https://exleonem.github.io/garnet/", req.uri())
 }
+
+
+// Catch 405 HTTP Method not allowed
+// Catch 406 Ressource is not available in required form
+// Catch 415 Wrong media type used for request
