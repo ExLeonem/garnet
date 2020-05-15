@@ -26,14 +26,14 @@ jobs:
     - name: redoc-cli test
       uses: seeebiii/redoc-cli-github-action@v9
       with:
-        args: 'bundle assets/api.json -o doc/index.html'
+        args: 'bundle docs/api.json -o docs/index.html'
         
     # Deploy documentation
     - name: Deploy to GitHub Pages
       if: success()
       uses: crazy-max/ghaction-github-pages@v2
       with:
-        target_branch: api/doc
-        build_dir: doc
+        target_branch: gh-pages
+        build_dir: docs
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
