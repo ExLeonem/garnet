@@ -97,6 +97,77 @@
                         "format": "url"
                     }
                 }
+            },
+            "bin-created": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/bin"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "_links": {
+                                "type": "object",
+                                "properties": {
+                                    "self": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    },
+                                    "parent": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    },
+                                    "bin:update": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    },
+                                    "bin:type": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "type": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type-created": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/type"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "_links": {
+                                "type": "object",
+                                "properties": {
+                                    "self": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    },
+                                    "parent": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    },
+                                    "type:update": {
+                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         },
         "parameters": {
@@ -237,20 +308,61 @@
                 "tags": [
                     "bin"
                 ],
-                "description":"Create a new trashcan in the system.",
+                "description":"Create a single or multiple new trashcans in the system.",
                 "parameters": [],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/bin"
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/bin"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "data": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/bin"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
                             },
-                            "example": {
-                                "fill_weight": 0.0,
-                                "latitude": 0.0,
-                                "longitude": 0.0,
-                                "trashtype": 1,
-                                "districts": 2
+                            "examples": {
+                                "single": {
+                                    "description": "Create a single new trashcan in the system.",
+                                    "value": {
+                                        "fill_weight": 0.0,
+                                        "latitude": 0.0,
+                                        "longitude": 0.0,
+                                        "trashtype": 1,
+                                        "disctrict": 2
+                                    }
+                                },
+                                "batch": {
+                                    "description": "Create a batch of new trashcans in the system.",
+                                    "value": {
+                                        "data": [
+                                            {
+                                                "fill_weight": 0.0,
+                                                "latitude": 0.0,
+                                                "longitude": 0.0,
+                                                "trashtype": 1,
+                                                "disctrict": 2
+                                            },
+                                            {
+                                                "fill_weight": 0.0,
+                                                "latitude": 0.09,
+                                                "longitude": 0.004,
+                                                "trashtype": 2,
+                                                "disctrict": 2
+                                            }
+                                        ]
+                                    }
+                                }
                             }
                         }
                     }
@@ -261,52 +373,103 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
+                                    "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/bin"
+                                          "$ref": "#/components/schemas/bin-created"
                                         },
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "format": "int64"
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/bin-created"
+                                                    }
                                                 },
-                                                "_links": {
-                                                    "allOf": [
-                                                        {
-                                                            "$ref": "#/components/schemas/hateoas" 
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "bin:update": {
-                                                                    "allOf": [{"$ref": "#/components/schemas/href" }]
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
+                                                "count": {
+                                                    "type": "number",
+                                                    "format": "int32"
                                                 }
                                             }
                                         }
                                     ]
                                 },
-                                "example": {
-                                    "id": 2340234,
-                                    "fill_weight": 0.0,
-                                    "latitude": 0.0,
-                                    "longitude": 0.0,
-                                    "trashtype": 1,
-                                    "district": 2,
-                                    "_links": {
-                                        "self": {
-                                            "href": "http://localhost:3001/v1/bin"
-                                        },
-                                        "parent": {
-                                            "href": "http://localhost:3001/v1"
-                                        },
-                                        "bin:update": {
-                                            "href": "http://localhost:3001/v1/bin/2340234"
+                                "examples": {
+                                    "single": {
+                                        "description": "Created a single trashcan.",
+                                        "value": {
+                                            "id": 1,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trashtype": 1,
+                                            "district": 2,
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/api/bin"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/api"
+                                                },
+                                                "bin:update": {
+                                                    "href": "http://localhost:3001/api/bin/1"
+                                                },
+                                                "bin:type": {
+                                                    "href": "http://localhost:3001/api/bin/type"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Created multiple trashcans.",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": 2,
+                                                    "fill_weight": 0.0,
+                                                    "latitude": 0.09,
+                                                    "longitude": 0.01,
+                                                    "trashtype": 2,
+                                                    "district": 2,
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api"
+                                                        },
+                                                        "bin:update": {
+                                                            "href": "http://localhost:3001/api/bin/2"
+                                                        },
+                                                        "bin:type": {
+                                                            "href": "http://localhost:3001/api/bin/type"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "fill_weight": 0.0,
+                                                    "latitude": 0.0,
+                                                    "longitude": 0.0,
+                                                    "trashtype": 1,
+                                                    "district": 2,
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api"
+                                                        },
+                                                        "bin:update": {
+                                                            "href": "http://localhost:3001/api/bin/2340234"
+                                                        },
+                                                        "bin:type": {
+                                                            "href": "http://localhost:3001/api/bin/type"
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "count": 2
                                         }
                                     }
                                 }
@@ -425,16 +588,19 @@
                                             "latitude": 0.0,
                                             "longitude": 0.0,
                                             "trashtype": 1,
-                                            "districts": 2,
+                                            "district": 2,
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/bin"
+                                                    "href": "http://localhost:3001/api/bin"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1"
+                                                    "href": "http://localhost:3001/api"
                                                 },
                                                 "bin:update": {
-                                                    "href": "http://localhost:3001/v1/bin/1"
+                                                    "href": "http://localhost:3001/api/bin/1"
+                                                },
+                                                "bin:type": {
+                                                    "href": "http://localhost:3001/api/bin/type"
                                                 }
                                             }
                                         },
@@ -444,16 +610,19 @@
                                             "latitude": 0.0,
                                             "longitude": 0.0,
                                             "trashtype": 1,
-                                            "districts": 2,
+                                            "district": 2,
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/bin"
+                                                    "href": "http://localhost:3001/api/bin"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1"
+                                                    "href": "http://localhost:3001/api"
                                                 },
                                                 "bin:update": {
-                                                    "href": "http://localhost:3001/v1/bin/2"
+                                                    "href": "http://localhost:3001/api/bin/2"
+                                                },
+                                                "bin:type": {
+                                                    "href": "http://localhost:3001/api/bin/type"
                                                 }
                                             }
                                         }
@@ -490,6 +659,158 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/error"
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bin/type": {
+            "post": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Create one or more trashcan type(s).",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/type"
+                                    },
+                                    {
+                                       "type": "object",
+                                       "properties": {
+                                           "data": {
+                                               "type": "array",
+                                               "items": {
+                                                    "$ref": "#/components/schemas/type"
+                                               }
+                                           }
+                                       }
+                                    }
+                                ]
+                            },
+                            "examples": {
+                                "single": {
+                                    "description": "",
+                                    "value": {
+                                        "id": 1,
+                                        "name": "Paper"
+                                    }
+                                },
+                                "batch": {
+                                    "description": "",
+                                    "value": {
+                                        "data": [
+                                            {
+                                                "id": 1,
+                                                "name": "Paper"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Organic"  
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created one or many trashcan types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/type-created"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/type-created"
+                                                },
+                                                "count": {
+                                                    "type": "number",
+                                                    "format": "int32"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "single": {
+                                        "description": "Created a single trashtype.",
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Paper",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/api/bin/type"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/api/bin"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Created a multiple of trashtypes.",
+                                        "value": {
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "name": "Paper",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/bin/type"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api/bin"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "name": "Organic",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/bin/type"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api/bin"
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "count": 2
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        },
+        "/bin/type/{typeId}": {
+            "patch": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                
                             }
                         }
                     }
@@ -545,13 +866,13 @@
                                     "latitude": 0.0,
                                     "longitude": 0.0,
                                     "trashtype": 1,
-                                    "districts": 2,
+                                    "district": 2,
                                     "_links": {
                                         "self": {
-                                            "href": "http://localhost:3001/v1/bin/2"
+                                            "href": "http://localhost:3001/api/bin/2"
                                         },
                                         "parent": {
-                                            "href": "http://localhost:3001/v1/bin"
+                                            "href": "http://localhost:3001/api/bin"
                                         }
                                     }
                                 }
@@ -784,16 +1105,16 @@
                                             "district_flag": "Petershausen",
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/district"
+                                                    "href": "http://localhost:3001/api/district"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1"
+                                                    "href": "http://localhost:3001/api"
                                                 },
                                                 "district:update": {
-                                                    "href": "http://localhost:3001/v1/district/1"
+                                                    "href": "http://localhost:3001/api/district/1"
                                                 },
                                                 "district:bin": {
-                                                    "href": "http://localhost:3001/v1/district/1/bin"
+                                                    "href": "http://localhost:3001/api/district/1/bin"
                                                 }
                                             }
                                         },
@@ -803,16 +1124,16 @@
                                             "district_flag": "Paradies",
                                             "_links": {
                                                 "self": {
-                                                    "href": "http://localhost:3001/v1/district"
+                                                    "href": "http://localhost:3001/api/district"
                                                 },
                                                 "parent": {
-                                                    "href": "http://localhost:3001/v1"
+                                                    "href": "http://localhost:3001/api"
                                                 },
                                                 "district:update": {
-                                                    "href": "http://localhost:3001/v1/district/2"
+                                                    "href": "http://localhost:3001/api/district/2"
                                                 },
                                                 "district:bin": {
-                                                    "href": "http://localhost:3001/v1/district/2/bin"
+                                                    "href": "http://localhost:3001/api/district/2/bin"
                                                 }
                                             }
                                         }
@@ -913,13 +1234,13 @@
                                     "district_flag": "Petershausen",
                                     "_links": {
                                         "self": {
-                                            "href": "http://localhost:3001/v1/district/12"
+                                            "href": "http://localhost:3001/api/district/12"
                                         },
                                         "parent": {
-                                            "href": "http://localhost:3001/v1/district"
+                                            "href": "http://localhost:3001/api/district"
                                         },
                                         "district:bin": {
-                                            "href": "http://localhost:3001/v1/district/12/bin"
+                                            "href": "http://localhost:3001/api/district/12/bin"
                                         }
                                     }
                                 }
@@ -1037,9 +1358,9 @@
                                             "trashtype": 4,
                                             "districts": 5,
                                             "_links": {
-                                                "self":  "http://localhost:3001/v1/district/12/bin",
-                                                "parent": "http://localhost:3001/v1/district/12",
-                                                "bin:update": "http://localhost:3001/v1/bin/1"
+                                                "self":  "http://localhost:3001/api/district/12/bin",
+                                                "parent": "http://localhost:3001/api/district/12",
+                                                "bin:update": "http://localhost:3001/api/bin/1"
                                             }
                                         },
                                         {
@@ -1050,9 +1371,9 @@
                                             "trashtype": 4,
                                             "districts": 5,
                                             "_links": {
-                                                "self":  "http://localhost:3001/v1/district/12/bin",
-                                                "parent": "http://localhost:3001/v1/district/12",
-                                                "bin:update": "http://localhost:3001/v1/bin/2"
+                                                "self":  "http://localhost:3001/api/district/12/bin",
+                                                "parent": "http://localhost:3001/api/district/12",
+                                                "bin:update": "http://localhost:3001/api/bin/2"
                                             }
                                         }
                                     ],

@@ -37,12 +37,15 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 
 ### Roadmap
 
+- [ ] Utilities
+    - [ ] Script to read data into the database 
 - [ ] API/Backend
     - [x] Endpoint for retrieval of districts containing filled trashcans  
     - [x] Endpoint for retrieval of filled trashcans
     - [ ] TSP Calculation using airline distance
     - [ ] Path optimization using a Neural Network(?)
-    - [ ] Maturity level 3 REST API
+    - [x] Maturity level 3 REST API
+    - [ ] Endpoint for batch import (models/each model)
 - [ ] Frontend
     - [x] Display district in which to collect 
     - [x] Display the a route to collect the filled trashcans 
