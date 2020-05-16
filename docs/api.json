@@ -10,6 +10,10 @@
             "description": "Endpoints to interact with trashcans and their properties."
         },
         {
+            "name": "bin-type",
+            "description": "Endpoints to do operations on trashcan types."
+        },
+        {
             "name": "district",
             "description": "Endpoints to get demographic information about the area."
         }
@@ -920,7 +924,7 @@
         "/bin/type": {
             "post": {
                 "tags": [
-                    "bin"
+                    "bin-type"
                 ],
                 "description": "Create one or more trashcan type(s).",
                 "parameters": [],
@@ -1090,12 +1094,92 @@
                     }
                 }
 
+            },
+            "get": {
+                "tags": [
+                    "bin-type"
+                ],
+                "description": "Retrieve the existing trashcan types.",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved trashcan types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/type-return"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [
+                                        {
+                                            "id": 1,
+                                            "name": "Paper",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/api/bin/type"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/api/bin"
+                                                },  
+                                                "type": {
+                                                    "href": "http://localhost:3001/api/bin/type/1"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "count": 1
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/bin/type/{typeId}": {
             "patch": {
                 "tags": [
-                    "bin"
+                    "bin-type"
                 ],
                 "description": "Update an trashcan type.",
                 "parameters": [
@@ -1187,7 +1271,7 @@
             },
             "delete": {
                 "tags": [
-                    "bin"
+                    "bin-type"
                 ],
                 "description": "Delete a trashcan type.",
                 "parameters": [

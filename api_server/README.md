@@ -34,31 +34,22 @@ If everything worked out you should see the created database in phpmyadmin. You 
 
 # API
 
-The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
-**To receive responses from the backend, the content-type needs to be set to: `content-type: application/json`.**
-
-| Endpoint              | Method    |  Description  | Body
-| ---                   | ---       |  ---          | ---
-| /allTrashcans         | GET       | Retrieve all trashcans known to the system |
-| /trashCan/{id}        | GET       |   |
-| /allDistricts         | GET       | Retrieves all districts known to the system
-| /getFilledTrashcans   | POST      | Retriev all district where an trashcan exists that needs to be emptied. | `{"districsts": \[id_1, id_2, ...\]}`
-| /trashcan             | POST      | Add a trashcan to the system | `{"fill_weight": number, "latitude": number, "longitude": number, "trashtype": number, "districts": number}`
-| /fillTrashcan         | POST      | Update the current fill state of trashcan | `{"id": <bin_id>, "fill_state": number}`
-| /updateTrashcan       | POST      | Update the curent values of a trashcan    | `{"id": <bin_id>, "district": <district_id>}`
-
-
-The endpoints can be reached below the basie url of the backend api. For example in case of the docker container : `localhost:3001/<endpoint>`.
-**For more information about the API/Documentation check out:** `../assets/api.json`
+The endpoints can be reached under following base-url: `localhost:3001/api`. You can find documentation [here](https://exleonem.github.io/garnet/).
+A summary for the available endpoints is displayed below.
 
 | Endpoint              | Method    |  Description  
 | ---                   | ---       |  ---          
-| /bin         | GET       | Retrieve all trashcans known to the system 
-| /bin             | POST      | Add a trashcan to the system 
-| /bin         | PATCH      | Update the current fill state of trashcan 
-| /bin/{id}        | GET       |  Get information on a specific trashcan
-| /district  | POST | Create a new district
-| /district         | GET       | Retrieves all districts known to the system
+| /bin          | GET       | Retrieve all trashcans known to the system 
+| /bin          | POST      | Add a trashcan to the system 
+| /bin/{id}          | PATCH      | Update the current fill state of trashcan 
+| /bin/{id}     | GET       |  Get information on a specific trashcan
+| /bin/{id}     | DELETE       |  Delete a existing trashcan
+| /bin/type     | POST       |  Create a trashcan type
+| /bin/type/{id}     | PATCH       |  Update a trashcan type
+| /bin/type/{id}     | DELETE       |  Delete a trashcan type
+| /district     | POST | Create a new district
+| /district     | GET       | Retrieves all districts known to the system
+| /district/{id} | PATCH  | Update an existing district
 | /district/{id} | PATCH  | Update an existing district
 | /district/{id}/bin | GET | Get all bins for a specific district
 
