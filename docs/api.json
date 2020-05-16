@@ -7,7 +7,7 @@
     "tags": [
         {
             "name": "bin",
-            "description": "Endpoints to interact with trashcans."
+            "description": "Endpoints to interact with trashcans and their properties."
         },
         {
             "name": "district",
@@ -21,17 +21,6 @@
     ],
     "components": {
         "schemas": {
-            "hateoas": {
-                "type": "object",
-                "properties": {
-                    "self": {
-                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                    },
-                    "parent": {
-                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                    }
-                }
-            },
             "href": {
                 "type": "object",
                 "properties": {
@@ -54,6 +43,63 @@
                     }
                 }
             },
+            "district-return": { 
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "format": "int64"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/district"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "_links": {
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "district": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "bin": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
             "bin": {
                 "type":"object",
                 "properties": {
@@ -70,14 +116,72 @@
                         "format": "float64"
                     },
                     "trashtype": {
-                        "type": "integer",
+                        "type": "number",
                         "format": "int32"
                     },
                     "district": {
-                        "type": "integer",
+                        "type": "number",
                         "format": "int32"
                     }
                 }
+            },
+            "bin-return": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "format": "int64"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/bin"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            
+                            "_links": {
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "bin": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             "error": {
                 "type": "object",
@@ -98,39 +202,6 @@
                     }
                 }
             },
-            "bin-created": {
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/bin"
-                    },
-                    {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "format": "int64"
-                            },
-                            "_links": {
-                                "type": "object",
-                                "properties": {
-                                    "self": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                                    },
-                                    "parent": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                                    },
-                                    "bin:update": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                                    },
-                                    "bin:type": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
-            },
             "type": {
                 "type": "object",
                 "properties": {
@@ -143,7 +214,7 @@
                     }
                 }
             },
-            "type-created": {
+            "type-return": {
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/type"
@@ -152,18 +223,32 @@
                         "type": "object",
                         "properties": {
                             "_links": {
-                                "type": "object",
-                                "properties": {
-                                    "self": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                "anyOf": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
                                     },
-                                    "parent": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
                                     },
-                                    "type:update": {
-                                        "allOf": [{"$ref": "#/components/schemas/href"}]
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                            }
+                                        }
                                     }
-                                }
+                                ]
                             }
                         }
                     }
@@ -177,18 +262,28 @@
                 "required": true,
                 "description": "A unique identifier for a single district",
                 "schema": {
-                    "type": "integer",
+                    "type": "number",
                     "format": "int64"
                 }
             },
             "binId": {
-            "name":"binId",
-            "in": "path",
-            "required": true,
-            "description": "A unique identifier for a single trashcan.",
-            "schema": {
-                "type": "integer",
-                "format": "int64"
+                "name":"binId",
+                "in": "path",
+                "required": true,
+                "description": "A unique identifier for a single trashcan.",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                    }
+            },
+            "binTypeId": {
+                "name": "typeId",
+                "in": "path",
+                "required": true,
+                "description": "A unique identifier for the trashtype.",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
                 }
             },
             "filled": {
@@ -375,7 +470,7 @@
                                 "schema": {
                                     "oneOf": [
                                         {
-                                          "$ref": "#/components/schemas/bin-created"
+                                          "$ref": "#/components/schemas/bin-return"
                                         },
                                         {
                                             "type": "object",
@@ -383,7 +478,7 @@
                                                 "data": {
                                                     "type": "array",
                                                     "items": {
-                                                        "$ref": "#/components/schemas/bin-created"
+                                                        "$ref": "#/components/schemas/bin-return"
                                                     }
                                                 },
                                                 "count": {
@@ -411,10 +506,10 @@
                                                 "parent": {
                                                     "href": "http://localhost:3001/api"
                                                 },
-                                                "bin:update": {
+                                                "bin": {
                                                     "href": "http://localhost:3001/api/bin/1"
                                                 },
-                                                "bin:type": {
+                                                "type": {
                                                     "href": "http://localhost:3001/api/bin/type"
                                                 }
                                             }
@@ -438,10 +533,10 @@
                                                         "parent": {
                                                             "href": "http://localhost:3001/api"
                                                         },
-                                                        "bin:update": {
+                                                        "bin": {
                                                             "href": "http://localhost:3001/api/bin/2"
                                                         },
-                                                        "bin:type": {
+                                                        "type": {
                                                             "href": "http://localhost:3001/api/bin/type"
                                                         }
                                                     }
@@ -460,10 +555,10 @@
                                                         "parent": {
                                                             "href": "http://localhost:3001/api"
                                                         },
-                                                        "bin:update": {
+                                                        "bin": {
                                                             "href": "http://localhost:3001/api/bin/2340234"
                                                         },
-                                                        "bin:type": {
+                                                        "type": {
                                                             "href": "http://localhost:3001/api/bin/type"
                                                         }
                                                     }
@@ -525,7 +620,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "integer",
+                                "type": "number",
                                 "format": "int64"
                             }
                         },
@@ -543,39 +638,11 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "allOf": [
-                                                    {
-                                                        "$ref": "#/components/schemas/bin"
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "format": "int64"
-                                                            },
-                                                            "_links": {
-                                                                "allOf": [
-                                                                    {
-                                                                        "$ref": "#/components/schemas/hateoas"
-                                                                    },
-                                                                    {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "bin:update": {
-                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }
-                                                        }
-                                                    }
-                                                ]
+                                                "$ref": "#/components/schemas/bin-return"
                                             }
                                         },
                                         "count": {
-                                            "type": "integer",
+                                            "type": "number",
                                             "format": "int64"
                                         }
                                     }
@@ -596,10 +663,10 @@
                                                 "parent": {
                                                     "href": "http://localhost:3001/api"
                                                 },
-                                                "bin:update": {
+                                                "bin": {
                                                     "href": "http://localhost:3001/api/bin/1"
                                                 },
-                                                "bin:type": {
+                                                "type": {
                                                     "href": "http://localhost:3001/api/bin/type"
                                                 }
                                             }
@@ -618,16 +685,171 @@
                                                 "parent": {
                                                     "href": "http://localhost:3001/api"
                                                 },
-                                                "bin:update": {
+                                                "update": {
                                                     "href": "http://localhost:3001/api/bin/2"
                                                 },
-                                                "bin:type": {
+                                                "type": {
                                                     "href": "http://localhost:3001/api/bin/type"
                                                 }
                                             }
                                         }
                                     ],
                                     "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bin/{binId}": {
+            "patch": {
+                "tags": [
+                    "bin"
+                ],
+                "description":"Update a single trashcan",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/binId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/bin"
+                            },
+                            "example": {
+                                "fill_weight": 0.0
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated the trashcan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bin-return"
+                                },
+                                "example": {
+                                    "id": 2,
+                                    "fill_weight": 12.5,
+                                    "latitude": 0.0,
+                                    "longitude": 0.0,
+                                    "trashtype": 1,
+                                    "district": 2,
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:3001/api/bin/2"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/api/bin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Delete a existing bin.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/binId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Bin deleted succesfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bin-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "fill_weight": 43.3,
+                                    "latitude": 343.34,
+                                    "longitude": 343.36,
+                                    "trashtype": 2,
+                                    "district": 2,
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:3001/api/bin/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/api/bin"
+                                        },
+                                        "type": {
+                                            "href": "http://localhost:3001/api/bin/type"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -728,13 +950,13 @@
                                 "schema": {
                                     "oneOf": [
                                         {
-                                            "$ref": "#/components/schemas/type-created"
+                                            "$ref": "#/components/schemas/type-return"
                                         },
                                         {
                                             "type": "object",
                                             "properties": {
                                                 "data": {
-                                                    "$ref": "#/components/schemas/type-created"
+                                                    "$ref": "#/components/schemas/type-return"
                                                 },
                                                 "count": {
                                                     "type": "number",
@@ -805,106 +1027,83 @@
                 "tags": [
                     "bin"
                 ],
-                "description": "",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/bin/{binId}": {
-            "patch": {
-                "tags": [
-                    "bin"
-                ],
-                "description":"Update a single trashcan",
+                "description": "Update an trashcan type.",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/binId"
+                        "$ref": "#/components/parameters/binTypeId"
                     }
                 ],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/bin"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
                             },
                             "example": {
-                                "fill_weight": 0.0
+                                "name": "Organic"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Successfully updated the trashcan.",
+                        "description": "Successfully updated a trashtype.",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
-                                        {
-                                            "$ref": "#/components/schemas/bin"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "_links": {
-                                                    "$ref": "#/components/schemas/hateoas"
-                                                }
-                                            }
-                                        }
-                                    ]
-                                },
+                                    "$ref": "#/components/schemas/type-return"
+                                },  
                                 "example": {
-                                    "id": 2,
-                                    "fill_weight": 12.5,
-                                    "latitude": 0.0,
-                                    "longitude": 0.0,
-                                    "trashtype": 1,
-                                    "district": 2,
+                                    "id": 12,
+                                    "name": "Paper",
                                     "_links": {
                                         "self": {
-                                            "href": "http://localhost:3001/api/bin/2"
+                                            "href": "http://localhost:3001/api/bin/type/12"
                                         },
                                         "parent": {
-                                            "href": "http://localhost:3001/api/bin"
+                                            "href": "http://localhost:3001/api/bin/type"
                                         }
                                     }
-                                }
+                                }    
                             }
                         }
-                    },
-                    "405": {
-                        "description": "Used HTTP method is not allowed.",
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Delete a trashcan type.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/binTypeId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted a trashcan type.",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "415": {
-                        "description": "Wrong media type used for the request.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "name": "Paper",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:3001/api/bin/type/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:3001/api/bin/type"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -938,60 +1137,94 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/district-return"
+                                        },
                                         {
                                             "type": "object",
                                             "properties": {
-                                                "id": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/district-return"
+                                                    }
+                                                },
+                                                "count": {
                                                     "type": "number",
-                                                    "format": "int32"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/district"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "_links": {
-                                                   "allOf": [
-                                                        {
-                                                            "$ref": "#/components/schemas/hateoas"
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "district:update": {
-                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                },
-                                                                "district:bin": {
-                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                }
-                                                            }
-                                                        }
-                                                   ]
+                                                    "format": "int64"
                                                 }
                                             }
                                         }
                                     ]
                                 },
-                                "example": {
-                                    "id": 12,
-                                    "district_number": 12,
-                                    "district_flag": "Petershausen",
-                                    "_links": {
-                                        "self": {
-                                            "href": "http://localhost:3001/api/district"
-                                        },
-                                        "parent": {
-                                            "href": "http://localhost:3001/api"
-                                        },
-                                        "district:update": {
-                                            "href": "http://localhost:3001/api/district/12"
-                                        },
-                                        "district:bin": {
-                                            "href": "http://localhost:3001/api/district/12/bin"
+                                "examples": {
+                                    "single": {
+                                        "description": "Create a single district",
+                                        "value": {
+                                            "id": 12,
+                                            "district_number": 12,
+                                            "district_flag": "Petershausen",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:3001/api/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:3001/api"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:3001/api/district/12"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:3001/api/district/12/bin"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Create a batch of districts.",
+                                        "value": {
+                                            "data": [
+                                                 {
+                                                    "id": 1,
+                                                    "district_number": 12,
+                                                    "district_flag": "Petershausen",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/district"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api"
+                                                        },
+                                                        "district:update": {
+                                                            "href": "http://localhost:3001/api/district/1"
+                                                        },
+                                                        "district:bin": {
+                                                            "href": "http://localhost:3001/api/district/1/bin"
+                                                        }
+                                                    }
+                                                 },
+                                                 {
+                                                    "id": 2,
+                                                    "district_number": 13,
+                                                    "district_flag": "Paradies",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:3001/api/district"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:3001/api"
+                                                        },
+                                                        "district:update": {
+                                                            "href": "http://localhost:3001/api/district/2"
+                                                        },
+                                                        "district:bin": {
+                                                            "href": "http://localhost:3001/api/district/2/bin"
+                                                        }
+                                                    }
+                                                 }
+                                            ],
+                                            "count": 2
                                         }
                                     }
                                 }
@@ -1052,47 +1285,11 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "allOf": [
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "number",
-                                                                "format": "int32"
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "$ref": "#/components/schemas/district"
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "_links": {
-                                                                "allOf": [
-                                                                    {
-                                                                        "$ref": "#/components/schemas/hateoas"
-                                                                    },
-                                                                    {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "district:update": {
-                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                            },
-                                                                            "district:bin": {
-                                                                                "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }
-                                                        }
-                                                    }
-                                                ]
+                                                "$ref": "#/components/schemas/district-return"
                                             }
                                         },
                                         "count": {
-                                            "type": "integer",
+                                            "type": "number",
                                             "format": "int64"
                                         }
                                     }
@@ -1193,40 +1390,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "allOf": [
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "number",
-                                                    "format": "int32"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "$ref": "#/components/schemas/district"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "_links": {
-                                                    "allOf": [
-                                                        {
-                                                            "$ref": "#/components/schemas/hateoas"
-                                                        },
-                                                        {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "district:bin": {
-                                                                    "allOf": [{"$ref": "#/components/schemas/href"}]
-                                                                }
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                    ]
+                                    "$ref": "#/components/schemas/district-return"
                                 },
                                 "example": {
                                     "id": 12,
@@ -1278,6 +1442,39 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "district"
+                ],
+                "description": "Delete a specific district",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/districtId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the ressource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/district-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "district_number": 12,
+                                    "district_flag": "Petershausen",
+                                    "_links": {
+                                        "parent": {
+                                            "href": "http://localhost:3001/api/district"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/district/{districtId}/bin": {
@@ -1285,13 +1482,10 @@
                 "tags": [
                     "district"
                 ],
-                "description": "Get all trashcans of within a specific district",
+                "description": "Get information about the bins in this district.",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/districtId"
-                    },
-                    {
-                       "$ref": "#/components/parameters/filled"
                     }
                 ],
                 "responses": {
@@ -1302,82 +1496,37 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
+                                        "filled": {
+                                            "description": "Number of filled bins.",
+                                            "type": "number",
+                                            "format": "int64"
+                                        },
+                                        "bin:types": {
                                             "type": "array",
                                             "items": {
-                                                "allOf": [
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "string",
-                                                                "format": "int32"
-                                                            }
-                                                        }
-                                                    },
-                                                    {
-                                                        "$ref": "#/components/schemas/bin"
-                                                    },
-                                                    {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "_links": {
-                                                                "allOf": [
-                                                                    {
-                                                                        "$ref": "#/components/schemas/hateoas"
-                                                                    },
-                                                                    {
-                                                                        "type": "object",
-                                                                        "properties": {
-                                                                            "bin:update": {
-                                                                                "type": "string",
-                                                                                "format": "url"
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }
-                                                        }
-                                                    }
-                                                ]
+                                                "$ref": "#/components/schemas/type"
                                             }
                                         },
                                         "count": {
+
                                             "type": "number",
                                             "format": "int64"
                                         }
                                     }
                                 },
                                 "example": {
-                                    "data": [
+                                    "filled": 12,
+                                    "bin:types": [
                                         {
                                             "id": 1,
-                                            "fill_weight": 12,
-                                            "latitude": 2.44,
-                                            "longitude": 1.43,
-                                            "trashtype": 4,
-                                            "districts": 5,
-                                            "_links": {
-                                                "self":  "http://localhost:3001/api/district/12/bin",
-                                                "parent": "http://localhost:3001/api/district/12",
-                                                "bin:update": "http://localhost:3001/api/bin/1"
-                                            }
+                                            "name": "Paper"
                                         },
                                         {
                                             "id": 2,
-                                            "fill_weight": 12,
-                                            "latitude": 2.45,
-                                            "longitude": 1.45,
-                                            "trashtype": 4,
-                                            "districts": 5,
-                                            "_links": {
-                                                "self":  "http://localhost:3001/api/district/12/bin",
-                                                "parent": "http://localhost:3001/api/district/12",
-                                                "bin:update": "http://localhost:3001/api/bin/2"
-                                            }
+                                            "name": "Organic"
                                         }
                                     ],
-                                    "count": 2
+                                    "count": 15
                                 }  
                             }
                         }

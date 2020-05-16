@@ -46,6 +46,7 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     - [ ] Path optimization using a Neural Network(?)
     - [x] Maturity level 3 REST API
     - [ ] Endpoint for batch import (models/each model)
+    - [ ] Additional endpoints for district (area => give the district area,...)?
 - [ ] Frontend
     - [x] Display district in which to collect 
     - [x] Display the a route to collect the filled trashcans 
