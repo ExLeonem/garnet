@@ -2,9 +2,10 @@ use rocket::Request;
 use rocket_contrib::json::JsonValue;
 use rocket_contrib::json::Json;
 use serde::{Deserialize};
+use serde_json::{Result, Value};
 use rocket::response::content::Html;
 use super::db;
-use super::models::{NewTrashcan};
+use super::models::{NewTrashcan, NewDistrict};
 use super::tsp;
 
 #[derive(Deserialize)]
@@ -26,12 +27,22 @@ pub struct District {
 
 
 #[get("/api")]
-pub fn index() -> Html<&'static str> {
-    Html(r#"
-        <title>Welcome to Garnet</title>
-        <h1>GARNET API</h1>
-        <p> Welcome to Garnet API. Try one of the following urls: </p>
-    "#)
+pub fn index() -> JsonValue {
+    
+    json!({
+        "_links": {
+            "self": {
+                "href": "localhost:3001/api" 
+            },
+            "bin": {
+                "href": "localhost:3001/api/bin"
+            },
+            "district": {
+                "href": "localhost:3001/api/district"
+            }
+        },
+        "welcome": "Welcome to the garnet API. you can lookup the documentation at 'https://exleonem.github.io/garnet/'"
+    })
 }
 
 #[get("/api/bin?<filled>&<districts>", format="json")]
@@ -91,6 +102,21 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     db::insert_trashcan(tc);
 }
 
+
+// #[post("/api/bin", data="<trashcan>", format="json")]
+// pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
+//     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
+//     let tc : NewTrashcan = NewTrashcan {
+//         district: trashcan.district,
+//         longitude: trashcan.longitude,
+//         latitude: trashcan.latitude,
+//         fill_weight : trashcan.fill_weight,
+//         trashtype: trashcan.trashtype
+//     };
+//     db::insert_trashcan(tc);
+// }
+
+
 // Specific information about a single trashcan
 #[get("/api/bin/<id>", format="json")]
 pub fn get_trashcan_single(id: i32) -> JsonValue {
@@ -99,7 +125,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
     json_object
 }
 
- #[patch("/api/bin/<id>", data = "<trashcan>", format="json")]
+ #[patch("/api/bin/<id>", data="<trashcan>", format="json")]
  pub fn update_trashcan(id: i32, trashcan: Json<NewTrashcan>) -> () {
     println!("fill can: {:?} with value: {:?}", id, trashcan.fill_weight);
 
@@ -114,6 +140,47 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
 
     db::update_trashcan(id, tc);
 }
+
+#[post("/api/district", data="<data>", format="json")]
+pub fn create_district(data: String) -> () {
+
+
+    // Parse the string of data into serde_json::Value.
+    let parsedJson: Value = serde_json::from_str(&data).unwrap();
+
+    // Single or batch insert 
+    let mut isBatch: bool = false;
+    if (parsedJson["data"].is_null()) {
+        isBatch = true;
+    }
+
+
+    // Create single json object and return
+    if (!isBatch) {
+
+    
+    }
+
+
+    // Access parts of the data by indexing with square brackets.
+    println!("{}", parsedJson["district_number"]);
+
+}
+
+    // json!({
+    //     "id": 12,
+    //     "district_number": 12,
+    //     "district_flag": 14,
+    //     "_links": {
+    //         "self": {
+    //             "href": "/api/district"
+    //         },
+    //         "parent": {
+    //             "href": "/api"
+    //         }
+    //     }
+    // })
+// }
 
 // Districts known to the system filled or not filled
 #[get("/api/district?<filled>", format="json")]
@@ -131,6 +198,7 @@ pub fn get_district_all(filled: bool) -> JsonValue {
     let disctricts_json = json!(result);
     disctricts_json
 } 
+
 
 // Path to calculate new value
 // #[get("/optimalPath", data="<d_input>", format="json")]
@@ -156,7 +224,8 @@ pub fn get_district_all(filled: bool) -> JsonValue {
 #[catch(404)]
 pub fn not_found(req: &Request) -> String
 {
-  format!("Could not find {}. Check the documentation at https://exleonem.github.io/garnet/", req.uri())
+//   format!("Could not find {}. Check the documentation at https://exleonem.github.io/garnet/", req.uri())
+  format!("Could not find {}. Check the documentation at", req.uri())
 }
 
 

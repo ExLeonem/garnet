@@ -44,6 +44,7 @@ A summary for the available endpoints is displayed below.
 | /bin/{id}          | PATCH      | Update the current fill state of trashcan 
 | /bin/{id}     | GET       |  Get information on a specific trashcan
 | /bin/{id}     | DELETE       |  Delete a existing trashcan
+| /bin/type     | GET       |  Get the existing trashcan types
 | /bin/type     | POST       |  Create a trashcan type
 | /bin/type/{id}     | PATCH       |  Update a trashcan type
 | /bin/type/{id}     | DELETE       |  Delete a trashcan type

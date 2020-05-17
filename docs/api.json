@@ -70,7 +70,7 @@
                                         "type": "object",
                                         "properties": {
                                             "self": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -78,7 +78,7 @@
                                         "type": "object",
                                         "properties": {
                                             "parent": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -153,7 +153,7 @@
                                         "type": "object",
                                         "properties": {
                                             "self": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -161,7 +161,7 @@
                                         "type": "object",
                                         "properties": {
                                             "parent": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -169,7 +169,7 @@
                                         "type": "object",
                                         "properties": {
                                             "bin": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -177,7 +177,7 @@
                                         "type": "object",
                                         "properties": {
                                             "type": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     }
@@ -232,7 +232,7 @@
                                         "type": "object",
                                         "properties": {
                                             "self": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -240,7 +240,7 @@
                                         "type": "object",
                                         "properties": {
                                             "parent": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     },
@@ -248,7 +248,7 @@
                                         "type": "object",
                                         "properties": {
                                             "type": {
-                                                "allOf": [{"$ref": "#/components/schemas/href"}]
+                                                "$ref": "#/components/schemas/href"
                                             }
                                         }
                                     }
@@ -299,6 +299,15 @@
                 "schema": {
                     "type": "boolean"
                 }
+            },
+            "content-type": {
+                "name": "Content-Type",
+                "in": "header",
+                "required": true,
+                "example": "application/json",
+                "schema": {
+                    "type": "string"
+                }
             }
         }
     },
@@ -306,7 +315,11 @@
         "/": {
             "get": {
                 "description": "Retrieve basic links to navigate the api.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved information.",
@@ -408,7 +421,11 @@
                     "bin"
                 ],
                 "description":"Create a single or multiple new trashcans in the system.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -624,6 +641,9 @@
                 "description": "Retriev all trashcans from the system, optionally only the filled trashcans.",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/filled"
                     },
                     {
@@ -754,6 +774,9 @@
                 "description":"Update a single trashcan",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/binId"
                     }
                 ],
@@ -845,6 +868,9 @@
                 "description": "Delete a existing bin.",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/binId"
                     }
                 ],
@@ -927,7 +953,11 @@
                     "bin-type"
                 ],
                 "description": "Create one or more trashcan type(s).",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1100,6 +1130,11 @@
                     "bin-type"
                 ],
                 "description": "Retrieve the existing trashcan types.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved trashcan types.",
@@ -1183,6 +1218,9 @@
                 ],
                 "description": "Update an trashcan type.",
                 "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    },
                     {
                         "$ref": "#/components/parameters/binTypeId"
                     }
@@ -1276,6 +1314,9 @@
                 "description": "Delete a trashcan type.",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/binTypeId"
                     }
                 ],
@@ -1351,7 +1392,11 @@
                     "district"
                 ],
                 "description":"Create a new district",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1515,6 +1560,9 @@
                 "description": "Retriev all districts",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/filled"
                     }
                 ],
@@ -1625,6 +1673,9 @@
                 "description": "Update a specific district.",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/districtId"
                     }
                 ],
@@ -1704,6 +1755,9 @@
                 "description": "Delete a specific district",
                 "parameters": [
                     {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
                         "$ref": "#/components/parameters/districtId"
                     }
                 ],
@@ -1778,6 +1832,9 @@
                 ],
                 "description": "Get information about the bins in this district.",
                 "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    },
                     {
                         "$ref": "#/components/parameters/districtId"
                     }

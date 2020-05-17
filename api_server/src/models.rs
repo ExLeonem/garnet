@@ -93,10 +93,10 @@ pub struct NewTrashType {
     pub trashtype_name: String,
 }
 
-#[derive(Insertable, Serialize)]
+#[derive(Insertable, Deserialize, Serialize)]
 #[table_name="district"]
 pub struct NewDistrict {
-    pub district_number: i32,
+    pub district_number: Option<i32>,
     pub district_flag: Option<String>,
 }
 
