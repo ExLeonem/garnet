@@ -6,6 +6,7 @@ table! {
     }
 }
 
+
 table! {
     trashcan (id) {
         id -> Integer,
@@ -17,12 +18,14 @@ table! {
     }
 }
 
+
 table! {
     trashtype (id) {
         id -> Integer,
         trashtype_name -> Varchar,
     }
 }
+
 
 table! {
     user (id) {
@@ -34,6 +37,7 @@ table! {
         password -> Varchar,
     }
 }
+
 
 joinable!(trashcan -> district (district));
 joinable!(trashcan -> trashtype (trashtype));

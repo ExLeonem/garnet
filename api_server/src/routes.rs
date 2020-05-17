@@ -1,12 +1,19 @@
 use rocket::Request;
+use rocket::response::content::Html;
 use rocket_contrib::json::JsonValue;
 use rocket_contrib::json::Json;
 use serde::{Deserialize};
 use serde_json::{Result, Value};
-use rocket::response::content::Html;
 use super::db;
-use super::models::{NewTrashcan, NewDistrict};
-use super::tsp;
+use super::models::{NewTrashcan, TrashcanBatch, NewDistrict, DistrictBatch};
+// use self::responder::BatchCreated;
+
+use super::com::responder;
+
+
+// use super::tsp;
+
+
 
 #[derive(Deserialize)]
 pub struct Input {
@@ -14,10 +21,12 @@ pub struct Input {
     fill_weight: f64
 }
 
+
 #[derive(Deserialize)]
 pub struct DistrictsInput {
     districts: Vec<i32>
 }
+
 
 #[derive(Deserialize)]
 pub struct District {
@@ -44,6 +53,7 @@ pub fn index() -> JsonValue {
         "welcome": "Welcome to the garnet API. you can lookup the documentation at 'https://exleonem.github.io/garnet/'"
     })
 }
+
 
 #[get("/api/bin?<filled>&<districts>", format="json")]
 pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
@@ -88,6 +98,7 @@ pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
     json_object
 }
 
+
 // Create a new trashcan via endpoint
 #[post("/api/bin", data="<trashcan>", format="json")]
 pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
@@ -125,6 +136,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
     json_object
 }
 
+
  #[patch("/api/bin/<id>", data="<trashcan>", format="json")]
  pub fn update_trashcan(id: i32, trashcan: Json<NewTrashcan>) -> () {
     println!("fill can: {:?} with value: {:?}", id, trashcan.fill_weight);
@@ -141,29 +153,47 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
     db::update_trashcan(id, tc);
 }
 
+
+// Create single and batches of districts
 #[post("/api/district", data="<data>", format="json")]
-pub fn create_district(data: String) -> () {
+pub fn create_district(data: String) ->  () {
+
+    let districtBatch: DistrictBatch =serde_json::from_str(&data).unwrap();
+
+    if (!districtBatch.data.is_none()) {
+        println!("Got a batch");
+
+
+    } 
+
+
 
 
     // Parse the string of data into serde_json::Value.
-    let parsedJson: Value = serde_json::from_str(&data).unwrap();
+    // let parsedJson: Value = serde_json::from_str(&data).unwrap();
 
-    // Single or batch insert 
-    let mut isBatch: bool = false;
-    if (parsedJson["data"].is_null()) {
-        isBatch = true;
-    }
+    // // Single or batch insert 
+    // let mut isBatch: bool = false;
+    // if (!parsedJson["data"].is_null() && parsedJson["data"].is_array()) {
+    //     isBatch = true;
+    // }
 
 
     // Create single json object and return
-    if (!isBatch) {
+    // if (!isBatch) {
 
-    
-    }
+    //     let districtArray = parsedJson["data"].as_array().unwrap();
+    //     for i in 0..districtArray.len() {
+
+    //         let district: NewDistrict = districtArray[i].as_object().unwrap();
+    //         println!("{}", district.district_number);
+    //     }
+
+    // }
 
 
     // Access parts of the data by indexing with square brackets.
-    println!("{}", parsedJson["district_number"]);
+    // println!("{}", parsedJson["district_number"]);
 
 }
 
@@ -181,6 +211,7 @@ pub fn create_district(data: String) -> () {
     //     }
     // })
 // }
+
 
 // Districts known to the system filled or not filled
 #[get("/api/district?<filled>", format="json")]
@@ -220,6 +251,7 @@ pub fn get_district_all(filled: bool) -> JsonValue {
 // pub fn update_trashcan(district_input: Json<District>) -> () {
 //    db::update_trashcan_district(district_input.id, district_input.district);
 // } 
+
 
 #[catch(404)]
 pub fn not_found(req: &Request) -> String

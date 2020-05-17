@@ -8,10 +8,13 @@
 use rocket::http::Method;
 use std::str::FromStr;
 
+
+
 use rocket_cors::{
     AllowedHeaders, AllowedOrigins, Error,
     Cors, CorsOptions
 };
+
 
 pub mod routes;
 pub mod models;
@@ -19,9 +22,11 @@ pub mod csv_reader;
 pub mod schema;
 pub mod db;
 pub mod tsp;
+pub mod com;
 
 // Alle db zugriffe ausgelagert in db.rs
 // Hier nur API Aufruf als Einstiegspunkt.
+
 
 pub fn start_api() {
     //read_csv();
@@ -31,6 +36,7 @@ pub fn start_api() {
     .mount("/", routes![routes::index, routes::get_trashcan_all, routes::get_trashcan_single, routes::create_trashcan, routes::get_district_all, routes::update_trashcan, routes::create_district])
     .attach(make_cors()).launch();
 }
+
 
 fn make_cors() -> Cors {
     let allowed_origins = AllowedOrigins::some_exact(&[
@@ -57,6 +63,7 @@ fn make_cors() -> Cors {
     .to_cors()
     .expect("error while building CORS")
 }
+
 
 // CSV reader, can be used later on in endpoint
 // pub fn read_csv() {

@@ -1,9 +1,10 @@
 use diesel::query_builder::AsChangeset;
-use std::fmt::Display;
 use serde::export::Formatter;
 use serde::export::fmt::Error;
 use serde::{Serialize, Deserialize};
 use super::schema::{user, trashtype, district, trashcan};
+use std::fmt::Display;
+
 
 #[derive(Queryable, Debug, PartialEq)]
 pub struct User {
@@ -15,11 +16,13 @@ pub struct User {
     pub password: String,
 }
 
+
 impl Display for User {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
         write!(f, "id: {}, forename: {}, surname: {}, username: {}, email: {}, password: {}", self.id, self.forename, self.surname, self.username, self.email, self.password)
     }
 }
+
 
 #[derive(Queryable, Debug, PartialEq)]
 pub struct TrashType {
@@ -27,11 +30,13 @@ pub struct TrashType {
     pub trashtype_name: String,
 }
 
+
 impl Display for TrashType {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
         writeln!(f, "id: {}, trashtype: {}", self.id, self.trashtype_name)
     }
 }
+
 
 #[derive(Serialize, Queryable, Debug, PartialEq)]
 pub struct District {
@@ -39,6 +44,7 @@ pub struct District {
     pub district_number: i32,
     pub district_flag: Option<String>,
 }
+
 
 impl Display for District {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
@@ -50,6 +56,7 @@ impl Display for District {
     }
 }
 
+
 #[derive(Serialize, Deserialize, Queryable, Debug, PartialEq)]
 pub struct Trashcan {
     pub id: i32,
@@ -59,6 +66,7 @@ pub struct Trashcan {
     pub trash_type: i32,
     pub district: Option<i32>,
 }
+
 
 impl Display for Trashcan {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error> {
@@ -86,6 +94,7 @@ pub struct NewUser {
     pub password: String,
 }
 
+
 #[derive(Insertable, Debug, PartialEq)]
 #[table_name="trashtype"]
 pub struct NewTrashType {
@@ -93,14 +102,22 @@ pub struct NewTrashType {
     pub trashtype_name: String,
 }
 
-#[derive(Insertable, Deserialize, Serialize)]
+
+#[derive(Insertable, Serialize, Deserialize)]
 #[table_name="district"]
 pub struct NewDistrict {
     pub district_number: Option<i32>,
     pub district_flag: Option<String>,
 }
 
-#[derive(Insertable, Deserialize, AsChangeset)]
+
+#[derive(Serialize, Deserialize)]
+pub struct DistrictBatch {
+    pub data: Option<Vec<NewDistrict>>
+}
+
+
+#[derive(Insertable, Serialize, Deserialize, AsChangeset)]
 #[table_name="trashcan"]
 pub struct NewTrashcan {
     pub fill_weight: Option<f64>,
@@ -108,4 +125,10 @@ pub struct NewTrashcan {
     pub longitude: Option<f64>,
     pub trashtype: Option<i32>,
     pub district: Option<i32>,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct TrashcanBatch {
+    pub data: Vec<NewTrashcan>
 }

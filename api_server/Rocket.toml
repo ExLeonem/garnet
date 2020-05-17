@@ -2,5 +2,17 @@
 address = "0.0.0.0"
 port = 3001
 
+[development]
+address = "localhost"
+port = 3001
+
+# [production]
+# address = ""
+# port = ""
+# worker = [number_of_cpus * 2]
+# log = "critical"
+# secret_key = [randomly generate at launch]
+# limits = {forms = 32768}
+
 [global.databases]
 rustydb = { url = "mysql://garnet:garnet@127.0.0.1:3306/garnet_db" }
