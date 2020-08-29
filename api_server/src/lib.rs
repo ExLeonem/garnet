@@ -22,18 +22,13 @@ pub mod csv_reader;
 pub mod schema;
 pub mod db;
 pub mod tsp;
-pub mod com;
+// pub mod com;
 
-// Alle db zugriffe ausgelagert in db.rs
-// Hier nur API Aufruf als Einstiegspunkt.
-
-
+// Register routes and start theapi
 pub fn start_api() {
-    //read_csv();
-    // .mount("/", routes![routes::index, routes::get_all_trashcans,routes::trashcan, routes::add_trashcan, routes::get_all_filled_districts, routes::get_all_districts, routes::get_filled_trashcans, routes::fill_trashcan, routes::get_optimal_path, routes::update_trashcan])
     rocket::ignite()
     .register(catchers![routes::not_found])
-    .mount("/", routes![routes::index, routes::get_trashcan_all, routes::get_trashcan_single, routes::create_trashcan, routes::get_district_all, routes::update_trashcan, routes::create_district])
+    .mount("/api", routes![routes::index, routes::get_trashcan_all, routes::get_trashcan_single, routes::create_trashcan, routes::get_district_all, routes::update_trashcan, routes::create_district])
     .attach(make_cors()).launch();
 }
 

@@ -8,7 +8,7 @@ use super::db;
 use super::models::{NewTrashcan, TrashcanBatch, NewDistrict, DistrictBatch};
 // use self::responder::BatchCreated;
 
-use super::com::responder;
+// use super::com::responder;
 
 
 // use super::tsp;
@@ -35,7 +35,7 @@ pub struct District {
 }
 
 
-#[get("/api")]
+#[get("/")]
 pub fn index() -> JsonValue {
     
     json!({
@@ -44,10 +44,10 @@ pub fn index() -> JsonValue {
                 "href": "localhost:3001/api" 
             },
             "bin": {
-                "href": "localhost:3001/api/bin"
+                "href": "localhost:3001/bin"
             },
             "district": {
-                "href": "localhost:3001/api/district"
+                "href": "localhost:3001/district"
             }
         },
         "welcome": "Welcome to the garnet API. you can lookup the documentation at 'https://exleonem.github.io/garnet/'"
@@ -55,7 +55,7 @@ pub fn index() -> JsonValue {
 }
 
 
-#[get("/api/bin?<filled>&<districts>", format="json")]
+#[get("/bin?<filled>&<districts>", format="json")]
 pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
     
     // Return only filled trashcans
@@ -100,7 +100,7 @@ pub fn get_trashcan_all(filled: bool, districts: Option<String>) -> JsonValue {
 
 
 // Create a new trashcan via endpoint
-#[post("/api/bin", data="<trashcan>", format="json")]
+#[post("/bin", data="<trashcan>", format="json")]
 pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
     let tc : NewTrashcan = NewTrashcan {
@@ -114,7 +114,7 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
 }
 
 
-// #[post("/api/bin", data="<trashcan>", format="json")]
+// #[post("/bin", data="<trashcan>", format="json")]
 // pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
 //     println!("trashcan fillweight: {:?}", trashcan.fill_weight);
 //     let tc : NewTrashcan = NewTrashcan {
@@ -129,7 +129,7 @@ pub fn create_trashcan(trashcan: Json<NewTrashcan>) -> () {
 
 
 // Specific information about a single trashcan
-#[get("/api/bin/<id>", format="json")]
+#[get("/bin/<id>", format="json")]
 pub fn get_trashcan_single(id: i32) -> JsonValue {
     let trashcan = db::select_trashcan(id);
     let json_object = json!(trashcan);
@@ -137,7 +137,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
 }
 
 
- #[patch("/api/bin/<id>", data="<trashcan>", format="json")]
+ #[patch("/bin/<id>", data="<trashcan>", format="json")]
  pub fn update_trashcan(id: i32, trashcan: Json<NewTrashcan>) -> () {
     println!("fill can: {:?} with value: {:?}", id, trashcan.fill_weight);
 
@@ -155,7 +155,7 @@ pub fn get_trashcan_single(id: i32) -> JsonValue {
 
 
 // Create single and batches of districts
-#[post("/api/district", data="<data>", format="json")]
+#[post("/district", data="<data>", format="json")]
 pub fn create_district(data: String) ->  () {
 
     let districtBatch: DistrictBatch =serde_json::from_str(&data).unwrap();
@@ -203,10 +203,10 @@ pub fn create_district(data: String) ->  () {
     //     "district_flag": 14,
     //     "_links": {
     //         "self": {
-    //             "href": "/api/district"
+    //             "href": "/district"
     //         },
     //         "parent": {
-    //             "href": "/api"
+    //             "href": ""
     //         }
     //     }
     // })
@@ -214,7 +214,7 @@ pub fn create_district(data: String) ->  () {
 
 
 // Districts known to the system filled or not filled
-#[get("/api/district?<filled>", format="json")]
+#[get("/district?<filled>", format="json")]
 pub fn get_district_all(filled: bool) -> JsonValue {
     
     let result;
