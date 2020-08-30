@@ -1,0 +1,3 @@
+djangorestframework-jwt==1.11.0
+djangorestframework==3.11.1
+django-cors-middleware==1.5.0

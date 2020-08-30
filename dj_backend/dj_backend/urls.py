@@ -14,8 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from rest_framework_jwt.views import obtain_jwt_token
+from django.urls import path, include, re_path
+from litter_collection.views import BinList, Bin
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    re_path(r'^auth/', obtain_jwt_token),
+    re_path(r'api/bin', BinList),
+    re_path(r'api/bin/<int:bin_id>',Bin)
 ]

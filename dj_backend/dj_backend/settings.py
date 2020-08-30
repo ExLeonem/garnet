@@ -25,8 +25,6 @@ SECRET_KEY = 'bber@7(k-vtwh)c0ac71as_vu+23_5di-t%pr28jfmnf2^q-+q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -37,16 +35,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'dj_backend.urls'
@@ -79,8 +80,7 @@ DATABASES = {
         'NAME': 'garnet_db',
         'USER': 'garnet',
         'PASSWORD': 'garnet',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'HOST': '127.0.0.1',
     }
 }
 
@@ -122,3 +122,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': {
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    },
+    'DEFAULT_PERMISSION_CLASSES': {
+        'rest_framework.permissions.IsAuthenticated'
+    }
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backend.ModelBackend',
+    'oauth2_provider.backends.OAuth2Backend'
+)
+
+
+ALLOWED_HOSTS = []

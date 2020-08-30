@@ -1,6 +1,6 @@
 from django.db import models
 
-
+# Create your models here.
 class Bin(models.Model):
 
     fill_state = models.FloatField()

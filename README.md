@@ -140,6 +140,32 @@ For that you need to change the mysql address to `mysql://garnet:garnet@127.0.0.
 - `./api_server/Rocket.toml`
 - `./api_server/.env`
 
+### Django backend
+
+`Django version: 3.1`
+
+Create a [virtual environment](https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/), and install the requirements.txt.
+
+#### Create a virtal environment
+
+1. `$ pip install virtualenv`
+2. `$ python -m venv <environment_name>`
+
+Linux/Mac 
+`$ source ./<env_name>/bin/activate`
+
+Window
+`$ source ./<env_name>/scripts/activate`
+
+
+You can always deactivate the environment by typing: `deactivate`
+
+
+#### Following packages are needed to execute
+- [mysqlclient](#https://pypi.org/project/mysqlclient/)
+- [django-oauth-toolkit](#https://github.com/lepture/authlib)
+
+
 
 #### Map setup
 

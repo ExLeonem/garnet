@@ -260,6 +260,16 @@
             }
         },
         "parameters": {
+            "userId": {
+                "name":"userId",
+                "in": "query",
+                "required": true,
+                "description": "",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                }
+            },
             "districtId": {
                 "name":"districtId",
                 "in": "path",
@@ -411,6 +421,44 @@
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "description": "Create a user.",
+                "tags": ["user"],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/userId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "username": "litterKN",
+                                "password": "02834023lsdo234"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
