@@ -165,6 +165,11 @@ You can always deactivate the environment by typing: `deactivate`
 - [mysqlclient](#https://pypi.org/project/mysqlclient/)
 - [django-oauth-toolkit](#https://github.com/lepture/authlib)
 
+#### Superuser
+
+- username: exleonem
+- email: maksim.sandybekov@live.de
+- password: rocktock22
 
 
 #### Map setup

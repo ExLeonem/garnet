@@ -429,6 +429,87 @@
             "post": {
                 "description": "Create a user.",
                 "tags": ["user"],
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "": {
+
+                                    }
+                                }
+                            },
+                            "example": {
+                                "username": "litterKN",
+                                "password": "02834023lsdo234"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json":  {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "string"
+                                        },
+                                        "password": {
+                                            "type": "string",
+                                            "format": "password"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "format": "jwt"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "username": "litterServiceKN",
+                                    "password": "j023840234ds",
+                                    "token": "2038sldfau203"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}": {
+            "get": {
+                "description": "",
+                "tags": ["user"],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/userId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description":"",
+                "tags": ["user"],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/userId"
@@ -450,8 +531,8 @@
                                 }
                             },
                             "example": {
-                                "username": "litterKN",
-                                "password": "02834023lsdo234"
+                                "username": "newLitterKN",
+                                "password": "asdflasdj"
                             }
                         }
                     }

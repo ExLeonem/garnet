@@ -23,22 +23,25 @@ class BinListSerializer(serializers.Serializer):
         return instance;
 
 
-class BinTypeListSerializer(serializers.Serializer):
+class BinTypeListSerializer(serializers.ModelSerializer):
 
-    name = serializers.CharField()
+    class Meta:
+        model = BinType
+        fields = ["name"]
 
-    def create(self, validate_data):
-        """
+    # name = serializers.CharField()
+    # def create(self, validate_data):
+    #     """
 
-        """
-        return BinType.objects.create(**validate_data)
+    #     """
+    #     return BinType.objects.create(**validate_data)
 
 
-    def update(self, instance, validate_data):
-        """
+    # def update(self, instance, validate_data):
+    #     """
 
-        """
-        return instance
+    #     """
+    #     return instance
 
 
 

@@ -21,7 +21,7 @@ class BinList(APIView):
 
     # Open for testing purposes
     # https://www.django-rest-framework.org/api-guide/permissions/
-    # permission_classes = []
+    permission_classes = []
 
 
 
@@ -40,7 +40,7 @@ class BinList(APIView):
             Create a new bin in the system.
 
         """
-        
+
         bins = models.Bin.objects.all()
         serializer = serializers.BinListSerializer(bins, many = True)
         return Response(serializer.data)
@@ -104,6 +104,9 @@ class BinTypeList(APIView):
         """
             Create a new bin type in the system.
         """
+
+        json_data = request.data
+
         
         bin_types = models.BinType.objects.all()
         serializer = serializers.BinTypeListSerializer(bin_types, many = True)
