@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -40,7 +40,7 @@ class BinList(APIView):
             Create a new bin in the system.
 
         """
-
+        
         bins = models.Bin.objects.all()
         serializer = serializers.BinListSerializer(bins, many = True)
         return Response(serializer.data)
@@ -89,6 +89,18 @@ class BinTypeList(APIView):
 
     # Enable in productive env
     permission_classes = []
+
+    def __init__(self):
+        self.hateos_links = {
+            "_links": {
+                "self":  {
+                    "href": "api/bin/type"
+                },
+                "parent": {
+                    "href": "api/bin"
+                }
+            }
+        }
     
     def get(self, request, format = None):
         """
@@ -105,33 +117,41 @@ class BinTypeList(APIView):
             Create a new bin type in the system.
         """
 
-        json_data = request.data
+        serializer = serializers.BinTypeListSerializer(data = request.data)
 
+        if serializer.is_valid():
+            serializer.save()
+            data = serializer.data
+            data.update(self.hateos_links)
+            return Response(data, status=status.HTTP_201_CREATED)
+
+        # TODO: Add custom error messages for 405, 406,409, 415
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def patch(self, request, format = None):
+        """
+            Update a specific bin type.
+        """
+        serializer = serializers.BinTypeListSerializer(data = request.data)
         
-        bin_types = models.BinType.objects.all()
-        serializer = serializers.BinTypeListSerializer(bin_types, many = True)
-        return Response(serializer.data)
+        if serializer.is_valid():
+
+            # serializer.update()
+            data = serializer.data
+            data.update(self.hateos_links)
+            return Response(data, status = status.HTTP_200_OK)
+
+        # TODO: Add custom error messages for 405, 406,409, 415
+        return Response(serializer.data, status = status.HTTP_400_BAD_REQUEST)
 
 
 
-# class BinType(APIView):
-#     """ 
-#         Handle access to single bin types.
-#     """
-
-#     def patch(self, request, format = None):
-#         """
-#             Update a specific bin type.
-#         """
-#         pass
-
-
-#     def delete(self, request, format = None):
-#         """
-#             Delete a specific bin type.
-#         """
-#         pass
-
+    def delete(self, request, format = None):
+        """
+            Delete a specific bin type.
+        """
+        pass
 
 
 class DistrictList(APIView):
@@ -162,28 +182,28 @@ class DistrictList(APIView):
 
     
 
-# class District(APIView):
-#     """
-#         Access and modify single districts.
+class District(APIView):
+    """
+        Access and modify single districts.
 
-#     """
+    """
 
-#     def get(self, request, format = None):
-#         """
-#             Get a single district.
-#         """
-#         pass
+    def get(self, request, format = None):
+        """
+            Get a single district.
+        """
+        pass
 
 
-#     def patch(self, request, format = None):
-#         """
-#             Update a single district.
-#         """
-#         pass
+    def patch(self, request, format = None):
+        """
+            Update a single district.
+        """
+        pass
 
     
-#     def delete(self, request, format = None):
-#         """
-#             Delte a single district.
-#         """
-#         pass
+    def delete(self, request, format = None):
+        """
+            Delte a single district.
+        """
+        pass

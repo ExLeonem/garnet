@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from litter_collection.models import Bin, District, BinType
+from litter_collection.models import Bin, District, BinType, TrashType
+
+
 
 class BinListSerializer(serializers.Serializer):
     
@@ -27,22 +29,14 @@ class BinTypeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BinType
-        fields = ["name"]
-
-    # name = serializers.CharField()
-    # def create(self, validate_data):
-    #     """
-
-    #     """
-    #     return BinType.objects.create(**validate_data)
+        fields = ["id", "name"]
 
 
-    # def update(self, instance, validate_data):
-    #     """
+class TrashTypeListSerializer(serializers.ModelSerializer):
 
-    #     """
-    #     return instance
-
+    class Meta:
+        model: TrashType
+        fields = ["id", "name"]
 
 
 class DistrictListSerializer(serializers.Serializer):
