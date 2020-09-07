@@ -7,10 +7,11 @@ from django.contrib.auth.models import User
 
 from . import models
 from . import serializers
+from .utils.urls import get_hateoas, get_hateoas_template
+
+
 
 # Create your views here.
-
-
 
 class BinList(APIView):
     """
@@ -101,12 +102,16 @@ class BinTypeList(APIView):
                 }
             }
         }
-    
+
     def get(self, request, format = None):
         """
             Return a list of all available bin types.
         """
-        
+
+        hateoas = get_hateoas(request)
+        print(hateoas)
+
+
         bin_types = models.BinType.objects.all()
         serializer = serializers.BinTypeListSerializer(bin_types, many = True)
         return Response(serializer.data)
@@ -122,19 +127,48 @@ class BinTypeList(APIView):
         if serializer.is_valid():
             serializer.save()
             data = serializer.data
-            data.update(self.hateos_links)
+            links = get_hateoas(request)
+            data.update(links)
             return Response(data, status=status.HTTP_201_CREATED)
 
         # TODO: Add custom error messages for 405, 406,409, 415
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
-    
-    def patch(self, request, format = None):
+
+
+
+class BinType(APIView):
+    """
+        Modify/delete specific bin types.
+
+    """
+    permission_classes = []
+
+
+    def __init__(self):
+        self.hateos_links = {
+            "_links": {
+                "self":  {
+                    "href": "api/bin/type"
+                },
+                "parent": {
+                    "href": "api/bin"
+                }
+            }
+        }
+
+    def patch(self, request, *args, **kwargs):
         """
             Update a specific bin type.
         """
         serializer = serializers.BinTypeListSerializer(data = request.data)
         
+        # print(self.kwargs.get("bin_id"))
+        # print(self.kwargs)
+
+        hateoas = get_hateoas(request)
+        print(hateoas)
+
         if serializer.is_valid():
 
             # serializer.update()
@@ -152,6 +186,7 @@ class BinTypeList(APIView):
             Delete a specific bin type.
         """
         pass
+
 
 
 class DistrictList(APIView):
@@ -180,7 +215,7 @@ class DistrictList(APIView):
         serializer = serializers.DistrictListSerializer(districts, many = True)
         return Response(serializer.data)
 
-    
+
 
 class District(APIView):
     """
