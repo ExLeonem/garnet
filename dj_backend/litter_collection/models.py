@@ -4,7 +4,7 @@ from django.db import models
 class Bin(models.Model):
 
     fill_state = models.FloatField()
-    latitutde = models.FloatField()
+    latitude = models.FloatField()
     longitude = models.FloatField()
 
     class TrashType(models.IntegerChoices):

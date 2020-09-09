@@ -30,7 +30,7 @@ class BinList(APIView):
         """
     
         bins = models.Bin.objects.all()
-        serializer = serializers.BinListSerializer(bins, many = True)
+        serializer = serializers.BinSerializer(bins, many = True)
         return Response(serializer.data)
     
 
@@ -40,42 +40,100 @@ class BinList(APIView):
 
         """
         
-        bins = models.Bin.objects.all()
-        serializer = serializers.BinListSerializer(bins, many = True)
-        return Response(serializer.data)
+        serializer = serializers.BinSerializer(data = request.data)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            data = serializer.data
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 
-# class Bin(APIView):
-#     """
-#         Access and modify single bins of the system.
+class BinDetail(APIView):
+    """
+        Access and modify single bins of the system.
 
-#         * Require token authentication
-#     """
+        * Require token authentication
+    """
 
-#     # authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = []
+    # authentication_classes = [authentication.TokenAuthentication]
+
+    def get_object(self, pk):
+        return models.Bin.objects.get(pk=pk)
+
+
     
-#     def get(self, request, format = None):
-#         """
-#             Return a specific bin.
-#         """
+    def get(self, request, bin_id, format = None):
+        """
+            Return a specific bin.
+        """
 
-#         print(request.data)
-#         return Response(request.data)
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(bin_id)
+            serializer = serializers.BinSerializer(instance, partial=False)
+        
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
         
-#     def patch(self, request, format = None):
-#         """
-#             Update an existing bin.
-#         """
-#         pass
+    def patch(self, request, bin_id, format = None):
+        """
+            Update an existing bin.
+        """
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(bin_id)
+            serializer = serializers.BinSerializer(instance, data=request.data, partial=True)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
-#     def delete(self, request, format = None):
-#         """
-#             Delete an existing bin.
-#         """
-#         pass
+        if serializer.is_valid():
+            serializer.save()
+            data = serializer.data
+
+            return Response(data, status=status.HTTP_200_OK)
+
+
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, bin_id, format = None):
+        """
+            Delete an existing bin.
+        """
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(bin_id)
+            serializer = serializers.BinSerializer(instance, partial=False)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        data = serializer.data
+        instance.delete()
+
+        return Response(data, status=status.HTTP_200_OK)
+
 
 
 
@@ -161,6 +219,29 @@ class BinTypeDetail(APIView):
         return models.BinType.objects.get(pk=pk)
 
 
+    def get(self, request, pk, format = None):
+        """
+            Get specific bin type by id
+        """
+
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.BinTypeSerializer(instance, data=request.data, partial=True)
+        
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        
+        return Response({}, status=status.HTTP_200_OK)
+
+
     def patch(self, request, pk, format = None):
         """
             Update a specific bin type.
@@ -171,7 +252,7 @@ class BinTypeDetail(APIView):
 
         try:
             instance = self.get_object(pk)
-            serializer = serializers.BinTypeSerializer(instance, data=request.data, partial=False)
+            serializer = serializers.BinTypeSerializer(instance, data=request.data, partial=True)
             
         except ObjectDoesNotExist:
             return Response({}, status = status.HTTP_404_NOT_FOUND)
@@ -200,14 +281,106 @@ class BinTypeDetail(APIView):
 
         try:
             instance = self.get_object(pk)
-            serializer = serializers.BinTypeSerializer(instance, partial = False)
+            serializer = serializers.BinTypeSerializer(instance, partial=False)
         
         except ObjectDoesNotExist:
-            return Response({}, status = status.HTTP_404_NOT_FOUND)
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
         data = serializer.data
         instance.delete()
-        return Response(data, status = status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)
+
+
+
+class TrashTypeList(APIView):
+    """
+        Access to trash types.
+    """
+
+    permission_classes = []
+
+    def get(self, request, format = None):
+
+        objects = models.TrashType.objects.all()
+        serializer = serializers.TrashTypeSerializer(objects, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def post(self, request, format=None):
+
+        serializer = serializers.TrashTypeSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class TrashTypeDetail(APIView):
+
+    permission_classes = []
+
+    def get_object(self, pk):
+        return models.TrashType.objects.get(pk=pk)
+
+
+    def get(self, request, pk, format=None):
+
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.TrashTypeSerializer(instance, partial=True)        
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    
+    def patch(self, request, pk, format=None):
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.TrashTypeSerializer(instance, data=request.data, partial=True)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        if serializer.is_valid():
+            serializer.save()
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
+        
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def delete(self, request, pk, format=None):
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.TrashTypeSerializer(instance, partial=False)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+        data = serializer.data
+        instance.delete()
+        return Response(data, status=status.HTTP_200_OK)
 
 
 
@@ -267,7 +440,7 @@ class DistrictDetail(APIView):
 
         try:
             instance = self.get_object(pk)
-            serializer = serializers.DistrictSerializer(instance, data = request.data, partial = True)
+            serializer = serializers.DistrictSerializer(instance, data=request.data, partial=True)
 
         except ObjectDoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
@@ -291,7 +464,7 @@ class DistrictDetail(APIView):
 
         try:
             instance = self.get_object(pk)
-            serializer = serializers.DistrictSerializer(instance, data = request.data, partial=False)
+            serializer = serializers.DistrictSerializer(instance, data = request.data, partial=True)
 
         except ObjectDoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
@@ -304,7 +477,7 @@ class DistrictDetail(APIView):
             return Response(data, status=status.HTTP_200_OK)
 
         
-        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
         
 
     
