@@ -15,19 +15,19 @@ services:
     environment:
       - NODE_ENV=development
 
-  api_server:
-    container_name: rocket_api
-    build: ./api_server
-    ports: 
-      - 3001:3001
-    volumes:
-      - ./api_server:/usr/src/app
-    links:
-      - db
-    # diesel infer_schema macro gives warnings with this flag.
-    # environment:
-    #   - CARGO_INCREMENTAL=1
-    command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x 'run --bin crud'"
+  # api_server:
+  #   container_name: rocket_api
+  #   build: ./api_server
+  #   ports: 
+  #     - 3001:3001
+  #   volumes:
+  #     - ./api_server:/usr/src/app
+  #   links:
+  #     - db
+  #   # diesel infer_schema macro gives warnings with this flag.
+  #   # environment:
+  #   #   - CARGO_INCREMENTAL=1
+  #   command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x 'run --bin crud'"
 
   routing:
     container_name: osrm_router

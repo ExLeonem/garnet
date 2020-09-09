@@ -38,7 +38,7 @@ class TrashTypeListSerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
-class DistrictListSerializer(serializers.ModelSerializer):
+class DistrictSerializer(serializers.ModelSerializer):
 
     class Meta:
         model =  District

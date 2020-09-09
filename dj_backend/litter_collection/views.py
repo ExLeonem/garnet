@@ -225,7 +225,7 @@ class DistrictList(APIView):
             Return a list of all available districts.
         """
         districts = models.District.objects.all()
-        serializer = serializers.DistrictListSerializer(districts, many = True)
+        serializer = serializers.DistrictSerializer(districts, many = True)
         return Response(serializer.data)
 
     
@@ -234,7 +234,7 @@ class DistrictList(APIView):
             Create a new district.
         """
 
-        serializer = serializers.DistrictListSerializer(data = request.data)
+        serializer = serializers.DistrictSerializer(data = request.data)
 
         if serializer.is_valid():
 
@@ -251,22 +251,79 @@ class DistrictDetail(APIView):
 
     """
 
-    def get(self, request, format = None):
+    permission_classes = []
+
+    def get_object(self, pk):
+        return models.District.objects.get(pk=pk)
+
+
+    def get(self, request, pk, format = None):
         """
             Get a single district.
         """
-        pass
+
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.DistrictSerializer(instance, data = request.data, partial = True)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
-    def patch(self, request, format = None):
+    def patch(self, request, pk, format = None):
         """
             Update a single district.
         """
-        pass
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.DistrictSerializer(instance, data = request.data, partial=False)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+        if serializer.is_valid():
+
+            serializer.save()
+            data = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+
+        
+        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        
 
     
-    def delete(self, request, format = None):
+    def delete(self, request, pk, format = None):
         """
             Delte a single district.
         """
-        pass
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.DistrictSerializer(instance, partial=False)
+
+        except ObjectDoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        
+        data = serializer.data
+        instance.delete()
+        return Response(data, status=status.HTTP_200_OK)

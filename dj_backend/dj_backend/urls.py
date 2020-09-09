@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token
 from django.urls import path, include, re_path
-from litter_collection.views import BinList, DistrictList, BinTypeList, BinTypeDetail
+from litter_collection.views import BinList, DistrictList, DistrictDetail, BinTypeList, BinTypeDetail
 
 
 
@@ -29,6 +29,6 @@ urlpatterns = [
     # re_path(r'api/bin/<int:bin_id>',Bin.as_view()),
     re_path(r'^api/bin', BinList.as_view()),
 
-    # re_path(r'api/district/<int:district_id>, District.as_view())
+    re_path(r'api/district/(?P<pk>.+)', DistrictDetail.as_view()),
     re_path(r'^api/district', DistrictList.as_view()),
 ]
