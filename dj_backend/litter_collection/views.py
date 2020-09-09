@@ -29,6 +29,19 @@ class BinList(APIView):
             Return a list of bins known to the system.
         """
     
+        # Query only those who are filled
+        filled = False
+        if "filled" in request.GET:
+            filled = bool(request.GET['filled'])
+
+        
+        # Query only for specific districts
+        districts = []
+        if "districts" in request.GET:
+            district_values =request.GET["districts"].split(",") 
+            districts = district_values
+
+
         bins = models.Bin.objects.all()
         serializer = serializers.BinSerializer(bins, many = True)
         return Response(serializer.data)
