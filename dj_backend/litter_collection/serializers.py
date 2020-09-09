@@ -21,11 +21,10 @@ class BinListSerializer(serializers.Serializer):
         """
 
         """
-
         return instance;
 
 
-class BinTypeListSerializer(serializers.ModelSerializer):
+class BinTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BinType
@@ -35,27 +34,12 @@ class BinTypeListSerializer(serializers.ModelSerializer):
 class TrashTypeListSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model: TrashType
+        model = TrashType
         fields = ["id", "name"]
 
 
-class DistrictListSerializer(serializers.Serializer):
+class DistrictListSerializer(serializers.ModelSerializer):
 
-    name = serializers.CharField()
-    plz = serializers.CharField()
-
-
-    def create(self, validated_data):
-        """
-
-        """
-        return District.objects.create(**validated_data)
-
-
-    
-    def update(self, instance, validated_data):
-        """
-            
-        """
-
-        return instance
+    class Meta:
+        model =  District
+        fields =  ["id", "name", "plz"]

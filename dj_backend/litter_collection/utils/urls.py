@@ -1,7 +1,7 @@
 from urllib.parse import urljoin, urlsplit
 import os
 from django.conf import settings
-from django.urls import URLPattern, URLResolver
+from django.urls import URLPattern, URLResolver, ResolverMatch
 
 
 urlconf = __import__(settings.ROOT_URLCONF, {}, {}, [''])

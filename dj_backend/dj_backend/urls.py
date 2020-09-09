@@ -16,15 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from rest_framework_jwt.views import obtain_jwt_token
 from django.urls import path, include, re_path
-# from litter_collection.views import BinList, Bin, BinTypeList, BinType, DistrictList, District
-from litter_collection.views import BinList, DistrictList, BinTypeList, BinType
+from litter_collection.views import BinList, DistrictList, BinTypeList, BinTypeDetail
 
 
 
 urlpatterns = [
     re_path(r'^auth/', obtain_jwt_token),
 
-    re_path(r'^api/bin/type/(?P<bin_type>.+)', BinType.as_view()),
+    re_path(r'^api/bin/type/(?P<pk>.+)', BinTypeDetail.as_view()),
     re_path(r'^api/bin/type', BinTypeList.as_view()),
 
     # re_path(r'api/bin/<int:bin_id>',Bin.as_view()),

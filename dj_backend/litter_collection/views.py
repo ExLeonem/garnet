@@ -2,6 +2,7 @@ from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework.decorators import authentication_classes, permission_classes
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
@@ -9,9 +10,6 @@ from . import models
 from . import serializers
 from .utils.urls import get_hateoas, get_hateoas_template
 
-
-
-# Create your views here.
 
 class BinList(APIView):
     """
@@ -91,6 +89,7 @@ class BinTypeList(APIView):
     # Enable in productive env
     permission_classes = []
 
+
     def __init__(self):
         self.hateos_links = {
             "_links": {
@@ -103,6 +102,7 @@ class BinTypeList(APIView):
             }
         }
 
+
     def get(self, request, format = None):
         """
             Return a list of all available bin types.
@@ -113,7 +113,7 @@ class BinTypeList(APIView):
 
 
         bin_types = models.BinType.objects.all()
-        serializer = serializers.BinTypeListSerializer(bin_types, many = True)
+        serializer = serializers.BinTypeSerializer(bin_types, many = True)
         return Response(serializer.data)
 
     
@@ -122,7 +122,7 @@ class BinTypeList(APIView):
             Create a new bin type in the system.
         """
 
-        serializer = serializers.BinTypeListSerializer(data = request.data)
+        serializer = serializers.BinTypeSerializer(data = request.data)
 
         if serializer.is_valid():
             serializer.save()
@@ -136,8 +136,7 @@ class BinTypeList(APIView):
 
 
 
-
-class BinType(APIView):
+class BinTypeDetail(APIView):
     """
         Modify/delete specific bin types.
 
@@ -157,21 +156,32 @@ class BinType(APIView):
             }
         }
 
-    def patch(self, request, *args, **kwargs):
+
+    def get_object(self, pk):
+        return models.BinType.objects.get(pk=pk)
+
+
+    def patch(self, request, pk, format = None):
         """
             Update a specific bin type.
         """
-        serializer = serializers.BinTypeListSerializer(data = request.data)
-        
-        # print(self.kwargs.get("bin_id"))
-        # print(self.kwargs)
+
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.BinTypeSerializer(instance, data=request.data, partial=False)
+            
+        except ObjectDoesNotExist:
+            return Response({}, status = status.HTTP_404_NOT_FOUND)
+
 
         hateoas = get_hateoas(request)
         print(hateoas)
 
         if serializer.is_valid():
-
-            # serializer.update()
+            serializer.save()
             data = serializer.data
             data.update(self.hateos_links)
             return Response(data, status = status.HTTP_200_OK)
@@ -180,12 +190,24 @@ class BinType(APIView):
         return Response(serializer.data, status = status.HTTP_400_BAD_REQUEST)
 
 
-
-    def delete(self, request, format = None):
+    def delete(self, request, pk, format = None):
         """
             Delete a specific bin type.
         """
-        pass
+        
+        instance = None
+        serializer = None
+
+        try:
+            instance = self.get_object(pk)
+            serializer = serializers.BinTypeSerializer(instance, partial = False)
+        
+        except ObjectDoesNotExist:
+            return Response({}, status = status.HTTP_404_NOT_FOUND)
+
+        data = serializer.data
+        instance.delete()
+        return Response(data, status = status.HTTP_200_OK)
 
 
 
@@ -211,13 +233,19 @@ class DistrictList(APIView):
         """
             Create a new district.
         """
-        districts = models.District.objects.all()
-        serializer = serializers.DistrictListSerializer(districts, many = True)
-        return Response(serializer.data)
+
+        serializer = serializers.DistrictListSerializer(data = request.data)
+
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+
+        return Response(serializer.data, status = status.HTTP_400_BAD_REQUEST)
 
 
 
-class District(APIView):
+class DistrictDetail(APIView):
     """
         Access and modify single districts.
 
