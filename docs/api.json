@@ -437,127 +437,6 @@
                 }
             }
         },
-        "/user": {
-            "post": {
-                "description": "Create a new user.",
-                "tags": ["user"],
-                "parameters": [{
-                    "$ref": "#/components/parameters/content-type"
-                }],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    },
-                                    "": {
-
-                                    }
-                                }
-                            },
-                            "example": {
-                                "username": "litterKN",
-                                "password": "02834023lsdo234"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "username": {
-                                            "type": "string"
-                                        },
-                                        "password": {
-                                            "type": "string",
-                                            "format": "password"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "format": "jwt"
-                                        }
-                                    }
-                                },
-                                "example": {
-                                    "username": "litterServiceKN",
-                                    "password": "j023840234ds",
-                                    "token": "2038sldfau203"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/user/{userId}": {
-            "get": {
-                "description": "",
-                "tags": ["user"],
-                "parameters": [{
-                    "$ref": "#/components/parameters/userId"
-                }],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "description": "",
-                "tags": ["user"],
-                "parameters": [{
-                        "$ref": "#/components/parameters/userId"
-                    },
-                    {
-                        "$ref": "#/components/parameters/content-type"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password"
-                                    }
-                                }
-                            },
-                            "example": {
-                                "username": "newLitterKN",
-                                "password": "asdflasdj"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/bin": {
             "get": {
                 "tags": [
@@ -1124,11 +1003,9 @@
             "get": {
                 "description": "Get all available trash types in the system.",
                 "tags": ["types-trash"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/auth-token"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved trash types.",
@@ -1233,7 +1110,7 @@
                 "tags": ["types-trash"],
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -1324,7 +1201,7 @@
                 "tags": ["types-trash"],
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1396,8 +1273,8 @@
                 "description": "Update a specific trash type.",
                 "tags": ["types-trash"],
                 "parameters": [{
-                    "$ref": "#/components/parameters/auth-token"
-                },{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -1474,7 +1351,7 @@
                 "tags": ["types-trash"],
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1549,11 +1426,9 @@
                     "types-bin"
                 ],
                 "description": "Retrieve the existing trashcan types.",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/auth-token"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved trashcan types.",
@@ -1634,7 +1509,7 @@
                 "description": "Create one or more trashcan type(s).",
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -1806,7 +1681,7 @@
                 "tags": ["types-bin"],
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1840,8 +1715,8 @@
                 ],
                 "description": "Update an trashcan type.",
                 "parameters": [{
-                    "$ref": "#/components/parameters/auth-token"
-                },{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -1933,7 +1808,7 @@
                 "description": "Delete a trashcan type.",
                 "parameters": [{
                     "$ref": "#/components/parameters/auth-token"
-                },{
+                }, {
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -2412,6 +2287,333 @@
                     },
                     "406": {
                         "description": "Ressource is not available in the required form.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/create": {
+            "post": {
+                "description": "Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.",
+                "tags": ["auth"],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "username": "admin",
+                                "password": "admin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully created an JWT token.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "refresh": {
+                                            "type": "string"
+                                        },
+                                        "verify": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU5OTg2NTE3NSwianRpIjoiMDUxYjQzZjE1MGEyNDZlMzg2N2FhOTFhNjg4NDdiMjMiLCJ1c2VyX2lkIjoxfQ.nr6vc2qNwU-7gyYiO3n75Qhn5TDD3HVnV91oO5oXdus",
+                                    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "password": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "username": [
+                                        "This field is required."
+                                    ],
+                                    "password": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "No active account found with the given credentials."
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/refresh": {
+            "post": {
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.",
+                "tags": ["auth"],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5OTY3LCJqdGkiOiI4NjgwNDZlOTRkZTc0MDhjYTZjNWZlZjMzZmQ1ZjFiZCIsInVzZXJfaWQiOjF9.x0ohz8UB0FObKlJKf7YhTOtNVBzHwSRm9guM24aHbYQ"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "refresh": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "refresh": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. Token is not valid or expired.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "Token is invalid or expired",
+                                    "code": "token_not_valid"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/verify": {
+            "post": {
+                "description": "Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.",
+                "tags": ["auth"],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/content-type"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "token":  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token is valid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "token": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. Token not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "Token is invalid or expired",
+                                    "code": "token_not_valid"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
                         "content": {
                             "application/json": {
                                 "schema": {

@@ -13,25 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from rest_framework_jwt.views import obtain_jwt_token
 from django.urls import path, include, re_path
 from litter_collection.views import BinList, BinDetail, DistrictList, DistrictDetail, BinTypeList, BinTypeDetail, TrashTypeList, TrashTypeDetail
 
 
 
 urlpatterns = [
-    re_path(r'^auth/', obtain_jwt_token),
+    path(r'admin/', admin.site.urls),
+    re_path(r'api/auth/', include('djoser.urls')),
+    re_path(r'api/auth/', include('djoser.urls.jwt')),
 
     re_path(r'api/bin/(?P<bin_id>.+)', BinDetail.as_view()),
-    re_path(r'^api/bin', BinList.as_view()),
+    re_path(r'api/bin', BinList.as_view()),
 
-    re_path(r'^api/types/bin/(?P<pk>.+)', BinTypeDetail.as_view()),
-    re_path(r'^api/types/bin', BinTypeList.as_view()),
+    re_path(r'api/types/bin/(?P<pk>.+)', BinTypeDetail.as_view()),
+    re_path(r'api/types/bin', BinTypeList.as_view()),
 
-    re_path(r'^api/types/trash/(?P<pk>.+)', TrashTypeDetail.as_view()),
-    re_path(r'^api/types/trash', TrashTypeList.as_view()),
+    re_path(r'api/types/trash/(?P<pk>.+)', TrashTypeDetail.as_view()),
+    re_path(r'api/types/trash', TrashTypeList.as_view()),
 
     re_path(r'api/district/(?P<pk>.+)', DistrictDetail.as_view()),
-    re_path(r'^api/district', DistrictList.as_view()),
+    re_path(r'api/district', DistrictList.as_view()),
 ]

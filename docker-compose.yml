@@ -9,8 +9,8 @@ services:
       - '/app/node_modules'
     ports:
       - 3000:3000
-    links:
-      - api_server
+    # links:
+      # - api_server
       # - routing
     environment:
       - NODE_ENV=development

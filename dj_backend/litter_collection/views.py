@@ -158,7 +158,7 @@ class BinTypeList(APIView):
     """
 
     # Enable in productive env
-    permission_classes = []
+    # permission_classes = []
 
 
     def __init__(self):
