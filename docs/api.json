@@ -313,7 +313,16 @@
                 "name": "Content-Type",
                 "in": "header",
                 "required": true,
-                "example": "application/json",
+                "example": "Content-Type: application/json",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "auth-token": {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "example": "Authorization: JWT <your_token>",
                 "schema": {
                     "type": "string"
                 }
@@ -556,6 +565,9 @@
                 ],
                 "description": "Retriev all trashcans from the system, optionally only the filled trashcans.",
                 "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    },
+                    {
                         "$ref": "#/components/parameters/filled"
                     },
                     {
@@ -682,6 +694,8 @@
                 ],
                 "description": "Create a single or multiple new trashcans in the system.",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -900,6 +914,8 @@
                 "description": "",
                 "tags": ["bin"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/binId"
                 }],
                 "responses": {
@@ -930,6 +946,8 @@
                 ],
                 "description": "Update a single trashcan",
                 "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -1024,6 +1042,8 @@
                 ],
                 "description": "Delete a existing bin.",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/binId"
                 }],
                 "responses": {
@@ -1104,7 +1124,11 @@
             "get": {
                 "description": "Get all available trash types in the system.",
                 "tags": ["types-trash"],
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/auth-token"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved trash types.",
@@ -1208,6 +1232,8 @@
                 "description": "Create a new trash type.",
                 "tags": ["types-trash"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -1297,6 +1323,8 @@
                 "description": "Get a specific trash type.",
                 "tags": ["types-trash"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1368,6 +1396,8 @@
                 "description": "Update a specific trash type.",
                 "tags": ["types-trash"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -1443,6 +1473,8 @@
                 "description": "Delete a trash type.",
                 "tags": ["types-trash"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1517,7 +1549,11 @@
                     "types-bin"
                 ],
                 "description": "Retrieve the existing trashcan types.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/auth-token"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successfully retrieved trashcan types.",
@@ -1597,6 +1633,8 @@
                 ],
                 "description": "Create one or more trashcan type(s).",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -1767,6 +1805,8 @@
                 "description": "Get all bin types.",
                 "tags": ["types-bin"],
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1800,6 +1840,8 @@
                 ],
                 "description": "Update an trashcan type.",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -1890,6 +1932,8 @@
                 ],
                 "description": "Delete a trashcan type.",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                },{
                     "$ref": "#/components/parameters/typeId"
                 }],
                 "responses": {
@@ -1965,6 +2009,8 @@
                 ],
                 "description": "Create a new district",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/content-type"
                 }],
                 "requestBody": {
@@ -2127,6 +2173,8 @@
                 ],
                 "description": "Retriev all districts",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/filled"
                 }],
                 "responses": {
@@ -2234,6 +2282,8 @@
                 ],
                 "description": "Update a specific district.",
                 "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
                         "$ref": "#/components/parameters/content-type"
                     },
                     {
@@ -2315,6 +2365,8 @@
                 ],
                 "description": "Delete a specific district",
                 "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
                     "$ref": "#/components/parameters/districtId"
                 }],
                 "responses": {
