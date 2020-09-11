@@ -16,24 +16,29 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include, re_path
-from litter_collection.views import BinList, BinDetail, DistrictList, DistrictDetail, BinTypeList, BinTypeDetail, TrashTypeList, TrashTypeDetail
+from litter_collection.views import BinList, BinDetail, DistrictList, DistrictDetail, BinTypeList, BinTypeDetail, TrashTypeList, TrashTypeDetail, Base, BaseTypes
 
 
 
 urlpatterns = [
+        
     path(r'admin/', admin.site.urls),
+
     re_path(r'api/auth/', include('djoser.urls')),
     re_path(r'api/auth/', include('djoser.urls.jwt')),
 
-    re_path(r'api/bin/(?P<bin_id>.+)', BinDetail.as_view()),
-    re_path(r'api/bin', BinList.as_view()),
+    re_path(r'api/bin/(?P<bin_id>.+)/$', BinDetail.as_view()),
+    re_path(r'api/bin/$', BinList.as_view()),
 
-    re_path(r'api/types/bin/(?P<pk>.+)', BinTypeDetail.as_view()),
-    re_path(r'api/types/bin', BinTypeList.as_view()),
+    re_path(r'api/types/bin/(?P<pk>.+)/$', BinTypeDetail.as_view()),
+    re_path(r'api/types/bin/$', BinTypeList.as_view()),
 
-    re_path(r'api/types/trash/(?P<pk>.+)', TrashTypeDetail.as_view()),
-    re_path(r'api/types/trash', TrashTypeList.as_view()),
+    re_path(r'api/types/trash/(?P<pk>.+)/$', TrashTypeDetail.as_view()),
+    re_path(r'api/types/trash/$', TrashTypeList.as_view()),
 
-    re_path(r'api/district/(?P<pk>.+)', DistrictDetail.as_view()),
-    re_path(r'api/district', DistrictList.as_view()),
+    re_path(r'api/district/(?P<pk>.+)/$', DistrictDetail.as_view()),
+    re_path(r'api/district/$', DistrictList.as_view()),
+
+    re_path(r'api/types/$', BaseTypes.as_view()),
+    re_path(r'api/$', Base.as_view()),
 ]

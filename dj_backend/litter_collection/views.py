@@ -1,6 +1,6 @@
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
-from rest_framework import authentication, permissions
+from rest_framework import authentication, permissions, generics
 from rest_framework.decorators import authentication_classes, permission_classes
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
@@ -20,7 +20,7 @@ class BinList(APIView):
 
     # Open for testing purposes
     # https://www.django-rest-framework.org/api-guide/permissions/
-    permission_classes = []
+    permission_classes = (permissions.AllowAny,)
 
 
 
@@ -54,11 +54,11 @@ class BinList(APIView):
         """
         
         serializer = serializers.BinSerializer(data = request.data)
-
         if serializer.is_valid():
-
             serializer.save()
+            _links = get_hateoas(request)
             data = serializer.data
+            data.update(_links)
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -73,7 +73,7 @@ class BinDetail(APIView):
         * Require token authentication
     """
 
-    permission_classes = []
+    
     # authentication_classes = [authentication.TokenAuthentication]
 
     def get_object(self, pk):
@@ -97,7 +97,10 @@ class BinDetail(APIView):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        _links = get_hateoas(request)
+        data = serializer.data
+        data.update(_links)
+        return Response(data, status=status.HTTP_200_OK)
 
         
     def patch(self, request, bin_id, format = None):
@@ -118,7 +121,9 @@ class BinDetail(APIView):
 
         if serializer.is_valid():
             serializer.save()
+            _links = get_hateoas(request)
             data = serializer.data
+            data.update(_links)
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -142,11 +147,12 @@ class BinDetail(APIView):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
         
+        _links = get_hateoas(request)
         data = serializer.data
+        data.update(_links)
         instance.delete()
 
         return Response(data, status=status.HTTP_200_OK)
-
 
 
 
@@ -158,20 +164,7 @@ class BinTypeList(APIView):
     """
 
     # Enable in productive env
-    # permission_classes = []
-
-
-    def __init__(self):
-        self.hateos_links = {
-            "_links": {
-                "self":  {
-                    "href": "api/bin/type"
-                },
-                "parent": {
-                    "href": "api/bin"
-                }
-            }
-        }
+    permission_classes = []
 
 
     def get(self, request, format = None):
@@ -179,9 +172,7 @@ class BinTypeList(APIView):
             Return a list of all available bin types.
         """
 
-        hateoas = get_hateoas(request)
-        print(hateoas)
-
+        _links = get_hateoas(request, template = True)
 
         bin_types = models.BinType.objects.all()
         serializer = serializers.BinTypeSerializer(bin_types, many = True)
@@ -198,8 +189,8 @@ class BinTypeList(APIView):
         if serializer.is_valid():
             serializer.save()
             data = serializer.data
-            links = get_hateoas(request)
-            data.update(links)
+            _links = get_hateoas(request)
+            data.update(_links)
             return Response(data, status=status.HTTP_201_CREATED)
 
         # TODO: Add custom error messages for 405, 406,409, 415
@@ -213,19 +204,6 @@ class BinTypeDetail(APIView):
 
     """
     permission_classes = []
-
-
-    def __init__(self):
-        self.hateos_links = {
-            "_links": {
-                "self":  {
-                    "href": "api/bin/type"
-                },
-                "parent": {
-                    "href": "api/bin"
-                }
-            }
-        }
 
 
     def get_object(self, pk):
@@ -249,7 +227,10 @@ class BinTypeDetail(APIView):
 
         
         if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            data = serializer.data
+            _links = get_hateoas(request)
+            data.update(_links)
+            return Response(data, status=status.HTTP_200_OK)
 
         
         return Response({}, status=status.HTTP_200_OK)
@@ -271,13 +252,12 @@ class BinTypeDetail(APIView):
             return Response({}, status = status.HTTP_404_NOT_FOUND)
 
 
-        hateoas = get_hateoas(request)
-        print(hateoas)
 
         if serializer.is_valid():
             serializer.save()
+            _links = get_hateoas(request)
             data = serializer.data
-            data.update(self.hateos_links)
+            data.update(_links)
             return Response(data, status = status.HTTP_200_OK)
 
         # TODO: Add custom error messages for 405, 406,409, 415
@@ -299,7 +279,9 @@ class BinTypeDetail(APIView):
         except ObjectDoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
+        _links = get_hateoas(request)
         data = serializer.data
+        data.update(_links)
         instance.delete()
         return Response(data, status=status.HTTP_200_OK)
 
@@ -325,7 +307,10 @@ class TrashTypeList(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            _links = get_hateoas(request)
+            data = serializer.data
+            data.update(_links)
+            return Response(data, status=status.HTTP_200_OK)
 
         
         return Response({}, status=status.HTTP_400_BAD_REQUEST)
@@ -371,7 +356,9 @@ class TrashTypeDetail(APIView):
         
         if serializer.is_valid():
             serializer.save()
+            _links = get_hateoas(request)
             data = serializer.data
+            data.update(_links)
             return Response(data, status=status.HTTP_200_OK)
 
         
@@ -391,7 +378,9 @@ class TrashTypeDetail(APIView):
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
+        _links = get_hateoas(request)
         data = serializer.data
+        data.update(_links)
         instance.delete()
         return Response(data, status=status.HTTP_200_OK)
 
@@ -423,9 +412,11 @@ class DistrictList(APIView):
         serializer = serializers.DistrictSerializer(data = request.data)
 
         if serializer.is_valid():
-
             serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
+            _links = get_hateoas(request)
+            data = serializer.data
+            data.update(_links)
+            return Response(data, status = status.HTTP_201_CREATED)
 
         return Response(serializer.data, status = status.HTTP_400_BAD_REQUEST)
 
@@ -484,9 +475,10 @@ class DistrictDetail(APIView):
 
 
         if serializer.is_valid():
-
             serializer.save()
+            _links = get_hateoas(request)
             data = serializer.data
+            data.update(_links)
             return Response(data, status=status.HTTP_200_OK)
 
         
@@ -509,7 +501,37 @@ class DistrictDetail(APIView):
         except ObjectDoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-        
+        _links = get_hateoas(request)
         data = serializer.data
+        data.update(_links)
         instance.delete()
         return Response(data, status=status.HTTP_200_OK)
+
+
+
+class Base(APIView):
+
+    def get(self, request, format=None):
+        """
+            Return the base links.
+        """
+
+        _links = get_hateoas(request)
+        return Response(_links, status=status.HTTP_200_OK)
+
+
+
+
+class BaseTypes(APIView):
+    """
+        Return links for current types.
+
+        * Requires authentication
+    """
+
+    def get(self, request, format=None):
+        
+        _links = get_hateoas(request)
+        return Response(_links, status=status.HTTP_200_OK)
+
+

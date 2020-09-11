@@ -402,22 +402,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                },
-                                "example": {
-                                    "status": 406,
-                                    "error": "Not Acceptable",
-                                    "message": "Response is only available as application/json.",
-                                    "help": "https://localhost:8000/docs"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -537,16 +521,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -745,6 +719,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "The ressource already exists.",
                         "content": {
@@ -757,16 +741,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -893,16 +867,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -976,8 +940,71 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types": {
+            "get": {
+                "tags": [
+                    "types-bin", "types-trash"
+                ],
+                "description": "List existing links for each type.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved links for types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                  "type": "object",
+                                  "properties": {
+                                      "self": {
+                                          "$ref": "#/components/schemas/href"
+                                      },
+                                      "parent": {
+                                        "$ref": "#/components/schemas/href"
+                                      },
+                                      "bin": {
+                                        "$ref": "#/components/schemas/href"
+                                      },
+                                      "trash": {
+                                        "$ref": "#/components/schemas/href"
+                                      }
+                                  }
+                                },
+                                "example": {
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api"
+                                        },
+                                        "bin": {
+                                            "href": "http://localhost:8000/api/types/bin"
+                                        },
+                                        "trash": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1083,16 +1110,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -1152,6 +1169,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "The ressource already exists.",
                         "content": {
@@ -1164,16 +1191,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1239,16 +1256,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1324,16 +1331,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -1389,16 +1386,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1472,16 +1459,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1632,6 +1609,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "The ressource already exists.",
                         "content": {
@@ -1644,16 +1631,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1779,16 +1756,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -1846,16 +1813,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1999,6 +1956,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
                     "409": {
                         "description": "The ressource already exists.",
                         "content": {
@@ -2011,16 +1978,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2127,16 +2084,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -2212,16 +2159,6 @@
                             }
                         }
                     },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
                     "415": {
                         "description": "Wrong media type used for the request.",
                         "content": {
@@ -2277,16 +2214,6 @@
                     },
                     "405": {
                         "description": "Used HTTP method is not allowed.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/error"
-                                }
-                            }
-                        }
-                    },
-                    "406": {
-                        "description": "Ressource is not available in the required form.",
                         "content": {
                             "application/json": {
                                 "schema": {

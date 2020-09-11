@@ -4,9 +4,15 @@
     @date 2.09.2020
 """
 
-import os, csv, requests
+import os, csv, requests, json
 from urllib.parse import urljoin
 import shapefile
+
+
+# Base URL & credentials for access
+API_BASE_URL = "localhost:8000/api"
+USER_NAME = "admin"
+PASSWORD = "admin"
 
 
 
@@ -68,9 +74,28 @@ class DataLoader:
 
 
 
+def get_token(username, password):
+    """
+        Create an initial JWT token.
+    """
+    
+    resp = requests.post(urljoin(API_BASE_URL, "auth/jwt/create"), headers = {"Content-Type": "application/json"}, data = json.dumps({"username": username, "password": password}))
+    return json.loads(resp.content)
+
+
+def refresh_token(refresh):
+    """
+        Refresh the given token.
+
+        Returns:
+            jwt token
+    """
+    resp = requests.post(urljoin(API_BASE_URL, "auth/jwt/refresh"), headers = {"Content-Type": "application/json"}, data = json.dumps({"refresh": refresh}))
+    return json.loads(resp.content)
 
 
 if __name__ == '__main__':
 
+    jwt_token = get_token(USER_NAME, PASSWORD)
     data = DataLoader()
     data.load()

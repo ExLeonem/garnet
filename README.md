@@ -145,8 +145,10 @@ For that you need to change the mysql address to `mysql://garnet:garnet@127.0.0.
 `Django version: 3.1`
 
 Create a [virtual environment](https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/), and install the requirements.txt.
+After the backend is successfully setup you can get an JWT Token by using the `/api/auth/jwt/create` endpoint. Execute a POST request against it with 
+super-user credentials or alternativly create a new user in the database via the admin pannel. 
 
-#### Create a virtal environment
+#### Create a virtual environment
 
 1. `$ pip install virtualenv`
 2. `$ python -m venv <environment_name>`
@@ -157,19 +159,20 @@ Linux/Mac
 Window
 `$ source ./<env_name>/scripts/activate`
 
-
 You can always deactivate the environment by typing: `deactivate`
-
 
 #### Following packages are needed to execute
 - [mysqlclient](#https://pypi.org/project/mysqlclient/)
 - [django-oauth-toolkit](#https://github.com/lepture/authlib)
 
-#### Superuser
 
-- username: exleonem
-- email: maksim.sandybekov@live.de
-- password: rocktock22
+#### Creating a super user to acess the admin
+
+Execute following command in `./dj_backend` to create a super user.
+
+`$ python manage.py createsuperuser`
+
+After answering all questions you should be able to access the admin panel via `http://localhost:8000/admin/`
 
 
 #### Map setup
