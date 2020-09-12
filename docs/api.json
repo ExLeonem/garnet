@@ -38,13 +38,11 @@
             "district": {
                 "type": "object",
                 "properties": {
-                    "district_number": {
-                        "type": "number",
-                        "format": "int32"
+                    "name": {
+                        "type": "string"
                     },
-                    "district_flag": {
-                        "type": "number",
-                        "format": "int32"
+                    "plz": {
+                        "type": "string"
                     }
                 }
             },
@@ -968,21 +966,21 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                  "type": "object",
-                                  "properties": {
-                                      "self": {
-                                          "$ref": "#/components/schemas/href"
-                                      },
-                                      "parent": {
-                                        "$ref": "#/components/schemas/href"
-                                      },
-                                      "bin": {
-                                        "$ref": "#/components/schemas/href"
-                                      },
-                                      "trash": {
-                                        "$ref": "#/components/schemas/href"
-                                      }
-                                  }
+                                    "type": "object",
+                                    "properties": {
+                                        "self": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "parent": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "bin": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "trash": {
+                                            "$ref": "#/components/schemas/href"
+                                        }
+                                    }
                                 },
                                 "example": {
                                     "_links": {
@@ -2239,11 +2237,9 @@
             "post": {
                 "description": "Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.",
                 "tags": ["auth"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/content-type"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2366,11 +2362,9 @@
             "post": {
                 "description": "Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.",
                 "tags": ["auth"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/content-type"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2462,11 +2456,9 @@
             "post": {
                 "description": "Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.",
                 "tags": ["auth"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/content-type"
-                    }
-                ],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2479,7 +2471,7 @@
                                 }
                             },
                             "example": {
-                                "token":  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
+                                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
                             }
                         }
                     }

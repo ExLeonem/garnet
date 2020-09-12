@@ -22,6 +22,7 @@ class TrashType(models.Model):
 
 class BinType(models.Model):
     name = models.CharField(max_length = 100)
+
     
 
 class District(models.Model):

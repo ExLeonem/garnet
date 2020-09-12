@@ -25,10 +25,10 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     1. [Visual Concept](https://www.figma.com/file/RKXHEMSCQr9gEqnpWOKq6cpQ/Teamprojekt?node-id=208%3A1450)
     2. [Project Structure](./frontend/README.md#Project-Structure)
     3. [Available Scripts](./frontend/README.md#Available-Scripts)
-4. [Backend](./api_server/README.md)
-    1. [Local Setup](./api_server/README.md#Setup)
-    2. [Endpoints](./api_server/README.md#Endpoints)
-    3. [Architecture](./api_server/README.md#Architecture)
+4. [Backend](./dj_backend)
+    1. [Local Setup](./dj_backend/README.md#Setup)
+    2. [Endpoints](./dj_backend/README.md#Endpoints)
+    3. [Architecture](./dj_backend/README.md#Architecture)
 5. [Known Issues](#Known-Issues)
 
 

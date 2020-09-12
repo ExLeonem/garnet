@@ -27,18 +27,18 @@ urlpatterns = [
     re_path(r'api/auth/', include('djoser.urls')),
     re_path(r'api/auth/', include('djoser.urls.jwt')),
 
-    re_path(r'api/bin/(?P<bin_id>.+)/$', BinDetail.as_view()),
-    re_path(r'api/bin/$', BinList.as_view()),
+    re_path(r'api/bin/(?P<bin_id>.+)', BinDetail.as_view()),
+    re_path(r'api/bin', BinList.as_view()),
 
-    re_path(r'api/types/bin/(?P<pk>.+)/$', BinTypeDetail.as_view()),
-    re_path(r'api/types/bin/$', BinTypeList.as_view()),
+    re_path(r'api/types/bin/(?P<pk>.+)', BinTypeDetail.as_view()),
+    re_path(r'api/types/bin', BinTypeList.as_view()),
 
-    re_path(r'api/types/trash/(?P<pk>.+)/$', TrashTypeDetail.as_view()),
-    re_path(r'api/types/trash/$', TrashTypeList.as_view()),
+    re_path(r'api/types/trash/(?P<pk>.+)', TrashTypeDetail.as_view()),
+    re_path(r'api/types/trash', TrashTypeList.as_view()),
 
-    re_path(r'api/district/(?P<pk>.+)/$', DistrictDetail.as_view()),
-    re_path(r'api/district/$', DistrictList.as_view()),
+    re_path(r'api/district/(?P<pk>.+)', DistrictDetail.as_view()),
+    re_path(r'api/district', DistrictList.as_view()),
 
-    re_path(r'api/types/$', BaseTypes.as_view()),
-    re_path(r'api/$', Base.as_view()),
+    re_path(r'api/types', BaseTypes.as_view()),
+    re_path(r'api', Base.as_view()),
 ]

@@ -27,7 +27,7 @@ def get_hateoas(request, **kwargs):
 
         # Split and filter for empty values
         path_split = list(filter(lambda seg: seg != "", path.split("/")))
-        link_split = list(filter(lambda seg: seg != "" and seg != "$", link.split("/")))
+        link_split = list(filter(lambda seg: seg != "" and seg != "?$", link.split("/")))
 
         _links = {}
 
@@ -60,9 +60,13 @@ def get_hateoas(request, **kwargs):
             
             # Path segments match up?
             if link_seg and path_seg:
-                if path_seg == link_seg or is_pattern:
+                if path_seg == link_seg and not is_pattern:
                     href += "/"+path_seg
                     key = path_seg
+                    continue
+
+                if is_pattern:
+                    href += "/"+path_seg
                     continue
 
                 return (None, None)
@@ -78,7 +82,7 @@ def get_hateoas(request, **kwargs):
 
 
         # Path is the current url?
-        if href == path[:-1]:
+        if href == path:
             key = "self"
 
         return (key, url_join(scheme, base, href))
@@ -132,7 +136,17 @@ def _build_follow_up(acc):
     return base
 
 
-def fill_template():
+def fill_template(template, key, id):
     """
         Fills each template with a specific parameter    
     """
+
+    template_url = template["_links"][key]
+
+    if template_url:
+
+        formatted_string = template_url["href"].format(id)
+        template["_links"][key]["href"] = formatted_string
+
+    return template
+

@@ -26,6 +26,7 @@ SECRET_KEY = 'bber@7(k-vtwh)c0ac71as_vu+23_5di-t%pr28jfmnf2^q-+q'
 DEBUG = True
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'drf_ignore_slash_middleware.SlashIgnoreMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -129,12 +131,12 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication'
     ),
@@ -149,3 +151,5 @@ SIMPLE_JWT = {
 
 
 ALLOWED_HOSTS = []
+
+APPEND_SLASH = False
