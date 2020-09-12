@@ -79,13 +79,26 @@ WSGI_APPLICATION = 'dj_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# Local development settings
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'garnet_db',
+#         'USER': 'garnet',
+#         'PASSWORD': 'garnet',
+#         'HOST': '127.0.0.1',
+#     }
+# }
+
+
+# Docker container settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'garnet_db',
         'USER': 'garnet',
         'PASSWORD': 'garnet',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
     }
 }
 
@@ -150,6 +163,8 @@ SIMPLE_JWT = {
 }
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "0.0.0.0"
+]
 
 APPEND_SLASH = False

@@ -29,6 +29,16 @@ services:
   #   #   - CARGO_INCREMENTAL=1
   #   command: bash -c "bash ./wait-for-it.sh db:3306 -q -- diesel setup && cargo watch -x 'run --bin crud'"
 
+
+  backend:
+    container_name: garnet_backend
+    build: ./dj_backend
+    command: python manage.py runserver 0.0.0.0:3000
+    ports:
+      - 3000:3000
+    links:
+      - db
+
   routing:
     container_name: osrm_router
     image: osrm/osrm-backend:v5.22.0
