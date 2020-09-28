@@ -25,10 +25,10 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
     1. [Visual Concept](https://www.figma.com/file/RKXHEMSCQr9gEqnpWOKq6cpQ/Teamprojekt?node-id=208%3A1450)
     2. [Project Structure](./frontend/README.md#Project-Structure)
     3. [Available Scripts](./frontend/README.md#Available-Scripts)
-4. [Backend](./api_server/README.md)
-    1. [Local Setup](./api_server/README.md#Setup)
-    2. [Endpoints](./api_server/README.md#Endpoints)
-    3. [Architecture](./api_server/README.md#Architecture)
+4. [Backend](./dj_backend)
+    1. [Local Setup](./dj_backend/README.md#Setup)
+    2. [Endpoints](./dj_backend/README.md#Endpoints)
+    3. [Architecture](./dj_backend/README.md#Architecture)
 5. [Known Issues](#Known-Issues)
 
 
@@ -37,12 +37,16 @@ A proof of concept for an intelligent waste-management-system. Trashcans sending
 
 ### Roadmap
 
+- [ ] Utilities
+    - [ ] Script to read data into the database 
 - [ ] API/Backend
     - [x] Endpoint for retrieval of districts containing filled trashcans  
     - [x] Endpoint for retrieval of filled trashcans
     - [ ] TSP Calculation using airline distance
     - [ ] Path optimization using a Neural Network(?)
-    - [ ] Maturity level 3 REST API
+    - [x] Maturity level 3 REST API
+    - [ ] Endpoint for batch import (models/each model)
+    - [ ] Additional endpoints for district (area => give the district area,...)?
 - [ ] Frontend
     - [x] Display district in which to collect 
     - [x] Display the a route to collect the filled trashcans 
@@ -135,6 +139,40 @@ For that you need to change the mysql address to `mysql://garnet:garnet@127.0.0.
 
 - `./api_server/Rocket.toml`
 - `./api_server/.env`
+
+### Django backend
+
+`Django version: 3.1`
+
+Create a [virtual environment](https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/), and install the requirements.txt.
+After the backend is successfully setup you can get an JWT Token by using the `/api/auth/jwt/create` endpoint. Execute a POST request against it with 
+super-user credentials or alternativly create a new user in the database via the admin pannel. 
+
+#### Create a virtual environment
+
+1. `$ pip install virtualenv`
+2. `$ python -m venv <environment_name>`
+
+Linux/Mac 
+`$ source ./<env_name>/bin/activate`
+
+Window
+`$ source ./<env_name>/scripts/activate`
+
+You can always deactivate the environment by typing: `deactivate`
+
+#### Following packages are needed to execute
+- [mysqlclient](#https://pypi.org/project/mysqlclient/)
+- [django-oauth-toolkit](#https://github.com/lepture/authlib)
+
+
+#### Creating a super user to acess the admin
+
+Execute following command in `./dj_backend` to create a super user.
+
+`$ python manage.py createsuperuser`
+
+After answering all questions you should be able to access the admin panel via `http://localhost:8000/admin/`
 
 
 #### Map setup
