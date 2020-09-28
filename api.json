@@ -1,0 +1,2558 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Garnet API",
+        "version": "1.0"
+    },
+    "tags": [{
+            "name": "bin",
+            "description": "Endpoints to interact with trashcans and their properties."
+        },
+        {
+            "name": "types-bin",
+            "description": "Endpoints to do operations on trashcan types."
+        },
+        {
+            "name": "types-trash",
+            "description": "Endpoints to do operations on trashcan types."
+        },
+        {
+            "name": "district",
+            "description": "Endpoints to get demographic information about the area."
+        }
+    ],
+    "servers": [{
+        "url": "https://localhost:8000/api"
+    }],
+    "components": {
+        "schemas": {
+            "href": {
+                "type": "object",
+                "properties": {
+                    "href": {
+                        "type": "string",
+                        "format": "url"
+                    }
+                }
+            },
+            "district": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "plz": {
+                        "type": "string"
+                    }
+                }
+            },
+            "district-return": {
+                "allOf": [{
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "format": "int64"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/district"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "_links": {
+                                "anyOf": [{
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "district": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "bin": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "bin": {
+                "type": "object",
+                "properties": {
+                    "fill_weight": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "float64"
+                    },
+                    "trash_type": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "bin_type": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "bin_district": {
+                        "type": "number",
+                        "format": "int32"
+                    }
+                }
+            },
+            "bin-return": {
+                "allOf": [{
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "format": "int64"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/bin"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+
+                            "_links": {
+                                "anyOf": [{
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "bin": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "error": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "error": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "help": {
+                        "type": "string",
+                        "format": "url"
+                    }
+                }
+            },
+            "type": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "format": "int32"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "type-return": {
+                "allOf": [{
+                        "$ref": "#/components/schemas/type"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "_links": {
+                                "anyOf": [{
+                                        "type": "object",
+                                        "properties": {
+                                            "self": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "parent": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "$ref": "#/components/schemas/href"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "parameters": {
+            "userId": {
+                "name": "userId",
+                "in": "query",
+                "required": true,
+                "description": "",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                }
+            },
+            "districtId": {
+                "name": "districtId",
+                "in": "path",
+                "required": true,
+                "description": "A unique identifier for a single district",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                }
+            },
+            "binId": {
+                "name": "binId",
+                "in": "path",
+                "required": true,
+                "description": "A unique identifier for a single trashcan.",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                }
+            },
+            "typeId": {
+                "name": "typeId",
+                "in": "path",
+                "required": true,
+                "description": "A unique identifier for the trashtype.",
+                "schema": {
+                    "type": "number",
+                    "format": "int64"
+                }
+            },
+            "filled": {
+                "name": "filled",
+                "in": "query",
+                "required": false,
+                "description": "Wether only return trashcans that are filled.",
+                "example": "true",
+                "schema": {
+                    "type": "boolean"
+                }
+            },
+            "content-type": {
+                "name": "Content-Type",
+                "in": "header",
+                "required": true,
+                "example": "Content-Type: application/json",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "auth-token": {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "example": "Authorization: JWT <your_token>",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Retrieve basic links to navigate the api.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved information.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_links": {
+                                            "type": "object",
+                                            "properties": {
+                                                "self": {
+                                                    "allOf": [{
+                                                        "$ref": "#/components/schemas/href"
+                                                    }]
+                                                },
+                                                "bin": {
+                                                    "allOf": [{
+                                                        "$ref": "#/components/schemas/href"
+                                                    }]
+                                                },
+                                                "district": {
+                                                    "allOf": [{
+                                                        "$ref": "#/components/schemas/href"
+                                                    }]
+                                                }
+                                            }
+                                        },
+                                        "welcome": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "_links": {
+                                        "self": {
+                                            "href": "https://localhost:8000/api/"
+                                        },
+                                        "bin": {
+                                            "href": "https://localhost:8000/api/bin"
+                                        },
+                                        "district": {
+                                            "href": "https://localhost:8000/api/district"
+                                        }
+                                    },
+                                    "welcome": "Welcome to the GarNet REST API. To get more information read the docs at https://localhost:8000"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "status": 405,
+                                    "error": "Method not allowed",
+                                    "message": "Post method not allowed for this action. Only allowed method(s) are GET.",
+                                    "help": "https://localhost:8000/docs"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                },
+                                "example": {
+                                    "status": 415,
+                                    "error": "Unsupported Media Type",
+                                    "message": "The media format of the requested data is not supported.",
+                                    "help": "https://localhost:8000/docs"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bin": {
+            "get": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Retriev all trashcans from the system, optionally only the filled trashcans.",
+                "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filled"
+                    },
+                    {
+                        "name": "districts",
+                        "in": "query",
+                        "description": "The districts within the trashcan should reside.",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "format": "int64"
+                            }
+                        },
+                        "example": [1, 3, 2]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved trashcans",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/bin-return"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [{
+                                            "id": 1,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trashtype": 1,
+                                            "district": 2,
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/bin"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "bin": {
+                                                    "href": "http://localhost:8000/api/bin/1"
+                                                },
+                                                "type": {
+                                                    "href": "http://localhost:8000/api/bin/type"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trashtype": 1,
+                                            "district": 2,
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/bin"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "update": {
+                                                    "href": "http://localhost:8000/api/bin/2"
+                                                },
+                                                "type": {
+                                                    "href": "http://localhost:8000/api/bin/type"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Create a single or multiple new trashcans in the system.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [{
+                                        "$ref": "#/components/schemas/bin"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "data": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/bin"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "examples": {
+                                "single": {
+                                    "description": "Create a single new trashcan in the system.",
+                                    "value": {
+                                        "fill_weight": 0.0,
+                                        "latitude": 0.0,
+                                        "longitude": 0.0,
+                                        "trash_type": 1,
+                                        "bin_type": 2,
+                                        "bin_disctrict": 2
+                                    }
+                                },
+                                "batch": {
+                                    "description": "Create a batch of new trashcans in the system.",
+                                    "value": {
+                                        "data": [{
+                                                "fill_weight": 0.0,
+                                                "latitude": 0.0,
+                                                "longitude": 0.0,
+                                                "trash_type": 1,
+                                                "bin_type": 2,
+                                                "bin_disctrict": 2
+                                            },
+                                            {
+                                                "fill_weight": 0.0,
+                                                "latitude": 0.09,
+                                                "longitude": 0.004,
+                                                "trash_type": 1,
+                                                "bin_type": 4,
+                                                "bin_disctrict": 4
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created a new trashcan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/bin-return"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/bin-return"
+                                                    }
+                                                },
+                                                "count": {
+                                                    "type": "number",
+                                                    "format": "int32"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "single": {
+                                        "description": "Created a single trashcan.",
+                                        "value": {
+                                            "id": 1,
+                                            "fill_weight": 0.0,
+                                            "latitude": 0.0,
+                                            "longitude": 0.0,
+                                            "trash_type": 1,
+                                            "bin_type": 2,
+                                            "bin_disctrict": 2,
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/bin"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "bin": {
+                                                    "href": "http://localhost:8000/api/bin/1"
+                                                },
+                                                "type": {
+                                                    "href": "http://localhost:8000/api/bin/type"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Created multiple trashcans.",
+                                        "value": {
+                                            "data": [{
+                                                    "id": 2,
+                                                    "fill_weight": 0.0,
+                                                    "latitude": 0.09,
+                                                    "longitude": 0.01,
+                                                    "trash_type": 1,
+                                                    "bin_type": 2,
+                                                    "bin_disctrict": 2,
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api"
+                                                        },
+                                                        "bin": {
+                                                            "href": "http://localhost:8000/api/bin/2"
+                                                        },
+                                                        "type": {
+                                                            "href": "http://localhost:8000/api/bin/type"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "fill_weight": 0.0,
+                                                    "latitude": 0.0,
+                                                    "longitude": 0.0,
+                                                    "trash_type": 1,
+                                                    "bin_type": 4,
+                                                    "bin_disctrict": 1,
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api"
+                                                        },
+                                                        "bin": {
+                                                            "href": "http://localhost:8000/api/bin/2340234"
+                                                        },
+                                                        "type": {
+                                                            "href": "http://localhost:8000/api/bin/type"
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "count": 2
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bin/{binId}": {
+            "get": {
+                "description": "",
+                "tags": ["bin"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/binId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Succefully retrieved specific bin from the system.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bin-return"
+                                },
+                                "example": {
+                                    "id": 2,
+                                    "fill_state": 4.3,
+                                    "latitude": 352.423,
+                                    "longitude": 2342.33,
+                                    "trash_type": 2,
+                                    "bin_type": 5,
+                                    "bin_district": 2
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Update a single trashcan",
+                "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/binId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/bin"
+                            },
+                            "example": {
+                                "fill_weight": 0.0
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated the trashcan.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bin-return"
+                                },
+                                "example": {
+                                    "id": 2,
+                                    "fill_weight": 12.5,
+                                    "latitude": 0.0,
+                                    "longitude": 0.0,
+                                    "trash_type": 2,
+                                    "bin_type": 5,
+                                    "bin_district": 2,
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/bin/2"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/bin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "bin"
+                ],
+                "description": "Delete a existing bin.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/binId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Bin deleted succesfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/bin-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "fill_weight": 43.3,
+                                    "latitude": 343.34,
+                                    "longitude": 343.36,
+                                    "trash_type": 2,
+                                    "bin_type": 5,
+                                    "bin_district": 2,
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/bin/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/bin"
+                                        },
+                                        "type": {
+                                            "href": "http://localhost:8000/api/bin/type"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types": {
+            "get": {
+                "tags": [
+                    "types-bin", "types-trash"
+                ],
+                "description": "List existing links for each type.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved links for types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "self": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "parent": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "bin": {
+                                            "$ref": "#/components/schemas/href"
+                                        },
+                                        "trash": {
+                                            "$ref": "#/components/schemas/href"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api"
+                                        },
+                                        "bin": {
+                                            "href": "http://localhost:8000/api/types/bin"
+                                        },
+                                        "trash": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types/trash": {
+            "get": {
+                "description": "Get all available trash types in the system.",
+                "tags": ["types-trash"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved trash types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/type-return"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "i32"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [{
+                                            "id": 1,
+                                            "name": "green",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/types/trash"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api/types"
+                                                },
+                                                "trash": {
+                                                    "href": "http://localhost:8000/api/types/trash/1"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "recyclable",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/types/trash"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api/types"
+                                                },
+                                                "trash": {
+                                                    "href": "http://localhost:8000/api/types/trash/2"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new trash type.",
+                "tags": ["types-trash"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/type"
+                            },
+                            "example": {
+                                "id": 1,
+                                "name": "construction debris"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "construction debris",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/types"
+                                        },
+                                        "trash": {
+                                            "href": "http://localhost:8000/api/types/1"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types/trash/{typeId}": {
+            "get": {
+                "description": "Get a specific trash type.",
+                "tags": ["types-trash"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/typeId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved specific trash type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "green",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types/trash/1"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update a specific trash type.",
+                "tags": ["types-trash"],
+                "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/typeId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated a specific trash type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "green",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types/trash/1"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a trash type.",
+                "tags": ["types-trash"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/typeId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the trash type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "green",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types/trash/1"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/types/trash"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types/bin": {
+            "get": {
+                "tags": [
+                    "types-bin"
+                ],
+                "description": "Retrieve the existing trashcan types.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved trashcan types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/type-return"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [{
+                                        "id": 1,
+                                        "name": "Paper",
+                                        "_links": {
+                                            "self": {
+                                                "href": "http://localhost:8000/api/bin/type"
+                                            },
+                                            "parent": {
+                                                "href": "http://localhost:8000/api/bin"
+                                            },
+                                            "type": {
+                                                "href": "http://localhost:8000/api/bin/type/1"
+                                            }
+                                        }
+                                    }],
+                                    "count": 1
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "types-bin"
+                ],
+                "description": "Create one or more trashcan type(s).",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "oneOf": [{
+                                        "$ref": "#/components/schemas/type"
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "data": {
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/components/schemas/type"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            "examples": {
+                                "single": {
+                                    "description": "",
+                                    "value": {
+                                        "id": 1,
+                                        "name": "Paper"
+                                    }
+                                },
+                                "batch": {
+                                    "description": "",
+                                    "value": {
+                                        "data": [{
+                                                "id": 1,
+                                                "name": "Paper"
+                                            },
+                                            {
+                                                "id": 2,
+                                                "name": "Organic"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created one or many trashcan types.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/type-return"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/type-return"
+                                                },
+                                                "count": {
+                                                    "type": "number",
+                                                    "format": "int32"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "single": {
+                                        "description": "Created a single trashtype.",
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Paper",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/types/bin"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api/types"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Created a multiple of trashtypes.",
+                                        "value": {
+                                            "data": [{
+                                                    "id": 1,
+                                                    "name": "Paper",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/types/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api/types"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "name": "Organic",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/types/bin"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api/types"
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "count": 2
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/types/bin/{typeId}": {
+            "get": {
+                "description": "Get all bin types.",
+                "tags": ["types-bin"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/typeId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved bin types from the system.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 1,
+                                    "name": "green",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/types/bin"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/types"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "types-bin"
+                ],
+                "description": "Update an trashcan type.",
+                "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/typeId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/type"
+                            },
+                            "example": {
+                                "id": "2",
+                                "name": "Organic"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated a trashtype.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "name": "Paper",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/bin/type/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/bin/type"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "types-bin"
+                ],
+                "description": "Delete a trashcan type.",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/typeId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted a trashcan type.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/type-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "name": "Paper",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/bin/type/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/bin/type"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/district": {
+            "post": {
+                "tags": [
+                    "district"
+                ],
+                "description": "Create a new district",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/district"
+                            },
+                            "example": {
+                                "district_number": 41,
+                                "district_flag": 22
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully created a new district.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [{
+                                            "$ref": "#/components/schemas/district-return"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/district-return"
+                                                    }
+                                                },
+                                                "count": {
+                                                    "type": "number",
+                                                    "format": "int64"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "single": {
+                                        "description": "Create a single district",
+                                        "value": {
+                                            "id": 12,
+                                            "district_number": 12,
+                                            "district_flag": "Petershausen",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:8000/api/district/12"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:8000/api/district/12/bin"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "batch": {
+                                        "description": "Create a batch of districts.",
+                                        "value": {
+                                            "data": [{
+                                                    "id": 1,
+                                                    "district_number": 12,
+                                                    "district_flag": "Petershausen",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/district"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api"
+                                                        },
+                                                        "district:update": {
+                                                            "href": "http://localhost:8000/api/district/1"
+                                                        },
+                                                        "district:bin": {
+                                                            "href": "http://localhost:8000/api/district/1/bin"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "district_number": 13,
+                                                    "district_flag": "Paradies",
+                                                    "_links": {
+                                                        "self": {
+                                                            "href": "http://localhost:8000/api/district"
+                                                        },
+                                                        "parent": {
+                                                            "href": "http://localhost:8000/api"
+                                                        },
+                                                        "district:update": {
+                                                            "href": "http://localhost:8000/api/district/2"
+                                                        },
+                                                        "district:bin": {
+                                                            "href": "http://localhost:8000/api/district/2/bin"
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "count": 2
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request, missing parameters.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The ressource already exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            "get": {
+                "tags": [
+                    "district"
+                ],
+                "description": "Retriev all districts",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/filled"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved available districts.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/district-return"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "number",
+                                            "format": "int64"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "data": [{
+                                            "id": 1,
+                                            "district_number": 12,
+                                            "district_flag": "Petershausen",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:8000/api/district/1"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:8000/api/district/1/bin"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "id": 2,
+                                            "district_number": 13,
+                                            "district_flag": "Paradies",
+                                            "_links": {
+                                                "self": {
+                                                    "href": "http://localhost:8000/api/district"
+                                                },
+                                                "parent": {
+                                                    "href": "http://localhost:8000/api"
+                                                },
+                                                "district:update": {
+                                                    "href": "http://localhost:8000/api/district/2"
+                                                },
+                                                "district:bin": {
+                                                    "href": "http://localhost:8000/api/district/2/bin"
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "count": 2
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/district/{districtId}": {
+            "patch": {
+                "tags": [
+                    "district"
+                ],
+                "description": "Update a specific district.",
+                "parameters": [{
+                        "$ref": "#/components/parameters/auth-token"
+                    }, {
+                        "$ref": "#/components/parameters/content-type"
+                    },
+                    {
+                        "$ref": "#/components/parameters/districtId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully update the district.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/district-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "district_number": 12,
+                                    "district_flag": "Petershausen",
+                                    "_links": {
+                                        "self": {
+                                            "href": "http://localhost:8000/api/district/12"
+                                        },
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/district"
+                                        },
+                                        "district:bin": {
+                                            "href": "http://localhost:8000/api/district/12/bin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "district"
+                ],
+                "description": "Delete a specific district",
+                "parameters": [{
+                    "$ref": "#/components/parameters/auth-token"
+                }, {
+                    "$ref": "#/components/parameters/districtId"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted the ressource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/district-return"
+                                },
+                                "example": {
+                                    "id": 12,
+                                    "district_number": 12,
+                                    "district_flag": "Petershausen",
+                                    "_links": {
+                                        "parent": {
+                                            "href": "http://localhost:8000/api/district"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The ressource can't be found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/create": {
+            "post": {
+                "description": "Takes a set of user credentials and returns an access and refresh JSON web token pair to prove the authentication of those credentials.",
+                "tags": ["auth"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "username": "admin",
+                                "password": "admin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully created an JWT token.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "refresh": {
+                                            "type": "string"
+                                        },
+                                        "verify": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTU5OTg2NTE3NSwianRpIjoiMDUxYjQzZjE1MGEyNDZlMzg2N2FhOTFhNjg4NDdiMjMiLCJ1c2VyX2lkIjoxfQ.nr6vc2qNwU-7gyYiO3n75Qhn5TDD3HVnV91oO5oXdus",
+                                    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "password": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "username": [
+                                        "This field is required."
+                                    ],
+                                    "password": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "No active account found with the given credentials."
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/refresh": {
+            "post": {
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.",
+                "tags": ["auth"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "access": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5OTY3LCJqdGkiOiI4NjgwNDZlOTRkZTc0MDhjYTZjNWZlZjMzZmQ1ZjFiZCIsInVzZXJfaWQiOjF9.x0ohz8UB0FObKlJKf7YhTOtNVBzHwSRm9guM24aHbYQ"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "refresh": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "refresh": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. Token is not valid or expired.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "Token is invalid or expired",
+                                    "code": "token_not_valid"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/jwt/verify": {
+            "post": {
+                "description": "Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.",
+                "tags": ["auth"],
+                "parameters": [{
+                    "$ref": "#/components/parameters/content-type"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNTk5Nzc5MDc1LCJqdGkiOiI4M2E1ZmMzMTNiOGE0NmZmODQxNTc1NDA4N2Y1ZDliNiIsInVzZXJfaWQiOjF9.8GgacPFBsiD86fWRchlj-vPsjzHtUxYt6he2cQmSLEM"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token is valid.",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "example": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "token": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "token": [
+                                        "This field is required."
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. Token not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "detail": {
+                                            "type": "string"
+                                        },
+                                        "code": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "detail": "Token is invalid or expired",
+                                    "code": "token_not_valid"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Used HTTP method is not allowed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "Wrong media type used for the request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
