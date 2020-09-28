@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'garnet_db',
         'USER': 'garnet',
         'PASSWORD': 'garnet',
-        'HOST': 'db',
+        'HOST': '0.0.0.0',
     }
 }
 
@@ -164,7 +164,8 @@ SIMPLE_JWT = {
 
 
 ALLOWED_HOSTS = [
-    "0.0.0.0"
+    "0.0.0.0",
+    "localhost"
 ]
 
 APPEND_SLASH = False
