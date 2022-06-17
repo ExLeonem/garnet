@@ -12,7 +12,7 @@ csv = "1.1"
 # Powerful date and time functionality
 chrono = { version = "0.4.6", features = ["serde"] }
 # For connecting with the MySQL database
-diesel = { version = "1.4.2", features = ["mysql", "numeric"] }
+diesel = { version = "1.4.6", features = ["mysql", "numeric"] }
 dotenv = "0.15.0"
 fast_paths = "0.1.0"
 rocket_cors = "0.5.0"
