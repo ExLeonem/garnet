@@ -19,6 +19,6 @@ rocket_cors = "0.5.0"
 
 # TSP Crates
 darwin-rs = "0.4"
-time = "0.1"
+time = "0.2"
 rand = "0.3"
 simplelog = "0.4"
